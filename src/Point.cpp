@@ -10,6 +10,16 @@ Vector2D operator-(const Point &A, const Point &B) {
     return {A.x - B.x, A.y - B.y};
 }
 
+bool isClockwiseTurn(const Point &A, const Point &B, const Point &C) {
+    Vector2D AB = B - A, AC = C - A;
+    return AC.x*AB.y > AB.x*AC.y;
+}
+
+//Equality operators
+bool operator==(const Point &A, const Point &B) { return A.x == B.x and A.y == B.y; }
+
+bool operator!=(const Point &A, const Point &B) { return not(A == B); }
+
 
 // Strict weak Point comparison functions
 namespace PointComp {

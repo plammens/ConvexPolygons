@@ -2,6 +2,8 @@
 #define CONVEXPOLYGON_CONVEXPOLYGON_H
 
 #include <vector>
+#include <string>
+
 #include "Point.h"
 
 using namespace std;
@@ -9,15 +11,18 @@ using namespace std;
 
 typedef vector<Point> Points;
 
+
 class ConvexPolygon {
 private:
     Points vertices;
-    unsigned vertexCount = 0;
-    unsigned edgeCount = 0;
+    string ID;
 
 public:
     ConvexPolygon(Points &points);
 
+    unsigned long vertexCount() const;
+
+    void print() const;
 };
 
 

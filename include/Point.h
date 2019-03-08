@@ -13,6 +13,10 @@ struct Point {
 // Vector difference between points
 Vector2D operator-(const Point &A, const Point &B);
 
+// Equality comparison between points
+bool operator==(const Point &A, const Point &B);
+bool operator!=(const Point &A, const Point &B);
+
 // Point comparison functions
 namespace PointComp {
     bool yCoord(const Point &A, const Point &B);
@@ -25,6 +29,9 @@ namespace PointComp {
         bool operator()(const Point &A, const Point &B);
     };
 }
+
+
+bool isClockwiseTurn(const Point &A, const Point &B, const Point &C);
 
 
 #endif //CONVEXPOLYGON_POINT_H
