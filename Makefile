@@ -3,8 +3,9 @@
 CXX = g++
 CXXFLAGS = -Wall -std=c++11 -O2
 
-## Directory names (for source, header and object files) ##
+## Directory names (for source, binaries, header and object files) ##
 SRC_DIR = src
+BIN_DIR = bin
 INCLUDE_DIR = include
 OBJ_DIR = obj
 
@@ -23,15 +24,29 @@ OBJ = $(patsubst %, $(OBJ_DIR)/%.o, $(MAIN) $(DEPENDENCIES))
 
 ### Rules ###
 
-all: main
+all: $(BIN_DIR)/$(MAIN)
 
 clean:
-	rm -f main.exe *.o
+	rm -r -f $(BIN_DIR) $(OBJ_DIR)
 
-# This rule links all object files together and outputs an executable.
-main: $(OBJ)
+.PHONY: all clean
+
+
+## Non-phony ##
+
+# This rule links all object files together and outputs the main executable.
+$(BIN_DIR)/$(MAIN): $(OBJ) | $(BIN_DIR)
 	$(CXX) $^ -o $@ $(CXXFLAGS)
 
 # This rule compiles source files into their corresponding object file.
-$(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp $(DEPS)
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp $(DEPS) | $(OBJ_DIR)
 	$(CXX) -c $< -o $@ $(CXXFLAGS)
+
+# Create binary file directory if it doesn't exist
+$(BIN_DIR):
+	mkdir -p $(BIN_DIR)
+
+# Create object file directory if it doesn't exist
+$(OBJ_DIR):
+	mkdir -p $(OBJ_DIR)
+
