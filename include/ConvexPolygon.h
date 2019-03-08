@@ -16,7 +16,7 @@ private:
     unsigned edgeCount = 0;
 
 public:
-    ConvexPolygon(Points P);
+    ConvexPolygon(Points &points);
 
 };
 
