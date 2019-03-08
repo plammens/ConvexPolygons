@@ -11,7 +11,7 @@
 
 using namespace std;
 
-// Returns the minimal element of a vector according to a certain comparison
+// Returns the minimal element of a vector according to a certain comparison functor
 template<typename T, class Comp>
 T min(const vector<T> &vec, Comp comp) {
     assert(not vec.empty());

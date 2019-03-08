@@ -22,11 +22,13 @@ public:
 
 // Point comparison functions
 namespace PointComp {
-    bool yComp(const Point &A, const Point &B);
+    bool yCoord(const Point &A, const Point &B);
 
-    struct angleComp {
+    struct xAngle {
         Point origin;
-        angleComp(const Point &P);
+        bool reversed;
+
+        xAngle(const Point &P, bool reversed = false);
         bool operator()(const Point &A, const Point &B);
     };
 }

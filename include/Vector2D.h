@@ -9,8 +9,8 @@ private:
 public:
     Vector2D(double x, double y);
 
-    inline double x() const;
-    inline double y() const;
+    double x() const;
+    double y() const;
     double sqrNorm() const;
 };
 
