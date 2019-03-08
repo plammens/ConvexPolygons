@@ -5,20 +5,13 @@
 
 #include "Vector2D.h"
 
-// Interface for 2D Points
-class Point {
-private:
-    double _x, _y;
-
-public:
-    Point(double x, double y);
-
-    inline double x() const;
-    inline double y() const;
-
-    Vector2D operator-(const Point &other) const;
+// 2D Point representation
+struct Point {
+    double x, y;
 };
 
+// Vector difference between points
+Vector2D operator-(const Point &A, const Point &B);
 
 // Point comparison functions
 namespace PointComp {

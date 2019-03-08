@@ -2,15 +2,9 @@
 #define CONVEXPOLYGON_GEOMETRICVECTOR_H
 
 // Interface for 2D (geometric) vectors
-class Vector2D {
-private:
-    double _x, _y;
+struct Vector2D {
+    double x, y;
 
-public:
-    Vector2D(double x, double y);
-
-    double x() const;
-    double y() const;
     double sqrNorm() const;
 };
 
