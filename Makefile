@@ -13,7 +13,7 @@ OBJ_DIR = obj
 # source files (e.g. `foo.cpp`) and header files (e.g. `foo.h`) share
 # the same name (besides the extension).
 MAIN = main
-DEPENDENCIES = utils GeometricVector Point ConvexPolygon
+DEPENDENCIES = utils Vector2D Point ConvexPolygon
 
 ## Header and object file paths ##
 HEADERS = $(patsubst %, $(INCLUDE_DIR)/%.h, $(DEPENDENCIES))

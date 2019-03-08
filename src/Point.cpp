@@ -14,8 +14,8 @@ double Point::y() const { return _y; }
 
 
 // Returns the vector difference between two points
-GeometricVector Point::operator-(const Point &other) const {
-    return GeometricVector(this->_x - other._x, this->_y - other._y);
+Vector2D Point::operator-(const Point &other) const {
+    return Vector2D(this->_x - other._x, this->_y - other._y);
 }
 
 
@@ -34,9 +34,10 @@ namespace PointComp {
 
     // Compares according to the angles that the lines joining each point
     // to a given origin form with the x-axis. True if first angle is smaller.
+    // Pre: angles are in [0, PI]
     bool angleComp::operator()(const Point &A, const Point &B) {
-        GeometricVector u = A - origin, v = B - origin;
-        return u.x()*u.x()*u.sqrNorm() > v.x()*v.x()*v.sqrNorm();
+        Vector2D u = A - origin, v = B - origin;
+        return u.x()*u.x()*v.sqrNorm() > v.x()*v.x()*u.sqrNorm();
     }
 
 }

@@ -1,9 +1,9 @@
 #include <iostream>
-#include "../include/utils.h"
+#include "../include/Point.h"
 
 using namespace std;
 
 int main() {
-    vector<int> foo = {1, 2, 3};
-    cout << min(foo) << endl;
+    Point P{1, 1}, Q{1, 0.5};
+    cout << PointComp::angleComp({0, 0})(P, Q) << endl;
 }

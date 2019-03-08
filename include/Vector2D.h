@@ -1,17 +1,16 @@
 #ifndef CONVEXPOLYGON_GEOMETRICVECTOR_H
 #define CONVEXPOLYGON_GEOMETRICVECTOR_H
 
-class GeometricVector {
+// Interface for 2D (geometric) vectors
+class Vector2D {
 private:
     double _x, _y;
 
 public:
-    GeometricVector(double x, double y);
+    Vector2D(double x, double y);
 
-    double x() const;
-
-    double y() const;
-
+    inline double x() const;
+    inline double y() const;
     double sqrNorm() const;
 };
 

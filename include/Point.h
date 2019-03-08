@@ -3,7 +3,7 @@
 #ifndef CONVEXPOLYGON_POINT_H
 #define CONVEXPOLYGON_POINT_H
 
-#include "GeometricVector.h"
+#include "Vector2D.h"
 
 // Interface for 2D Points
 class Point {
@@ -13,10 +13,10 @@ private:
 public:
     Point(double x, double y);
 
-    double x() const;
-    double y() const;
+    inline double x() const;
+    inline double y() const;
 
-    GeometricVector operator-(const Point &other) const;
+    Vector2D operator-(const Point &other) const;
 };
 
 
