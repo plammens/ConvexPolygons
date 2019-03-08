@@ -22,19 +22,21 @@ namespace PointComp {
     }
 
     // Constructs a new xAngle comparison with P as origin. If `reversed` is true,
-    // comparison is reversed.
+    // comparison by angle (not the whole ordering) is reversed.
     xAngle::xAngle(const Point &P, bool reversed) : origin(P), reversed(reversed) {}
 
-    // Compares according to the angles that the lines joining each point
-    // to a given origin form with the x-axis. If `reversed` is `false, returns
-    // true if first xAngle is smaller, and vice-versa.
+    // Compares Points according to the angles that the vectors joining the origin
+    // with each point form with the x-axis. Returns whether the first angle is smaller
+    // (if reversed is false; otherwise, vice-versa). In case the angles coincide
+    // (or one of them is undefined), returns whether the first vector has smaller norm.
     // Pre: angles are in [0, PI]
     bool xAngle::operator()(const Point &A, const Point &B) {
         Vector2D OA = A - origin, OB = B - origin;
-        double projA, projB;  // Scaled projections onto the x-axis
-        projA = OA.x*OA.x*OB.sqrNorm();
-        projB = OB.x*OB.x*OA.sqrNorm();
-        return (not reversed ? projA > projB : projA < projB);
+        double normA = OA.sqrNorm(), normB = OB.sqrNorm();
+        double projA = OA.x*OA.x*normB, projB = OB.x*OB.x*normA;  // Scaled projections onto the x-axis
+
+        if (projA != projB) return (not reversed ? projA > projB : projA < projB);
+        else return normA < normB;
     }
 
 }
