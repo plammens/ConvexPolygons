@@ -44,9 +44,9 @@ $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp $(DEPS) | $(OBJ_DIR)
 
 # Create binary file directory if it doesn't exist
 $(BIN_DIR):
-	mkdir -p $(BIN_DIR)
+	mkdir $(BIN_DIR)
 
 # Create object file directory if it doesn't exist
 $(OBJ_DIR):
-	mkdir -p $(OBJ_DIR)
+	mkdir $(OBJ_DIR)
 

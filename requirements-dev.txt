@@ -1,0 +1,2 @@
+GNU coreutils >=8.0
+g++ >=7.0
