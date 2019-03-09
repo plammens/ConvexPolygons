@@ -7,7 +7,7 @@ using namespace std;
 
 
 // Constructs a convex polygon from a given list of points with a Graham scan
-ConvexPolygon::ConvexPolygon(Points &points) {
+ConvexPolygon::ConvexPolygon(const string &ID, Points &points) : ID(move(ID)) {
     if (points.empty()) return;
 
     // Get point with lowest y coordinate:
@@ -25,13 +25,14 @@ ConvexPolygon::ConvexPolygon(Points &points) {
     }
 }
 
+// Returns the number of vertices in the polygon
 unsigned long ConvexPolygon::vertexCount() const {
     return vertices.size();
 }
 
+// Prints the vertices of the polygon
 void ConvexPolygon::print() const {
     cout << ID;
-    for (const Point &P : vertices)
-        cout << ' ' << P.x << ' ' << P.y;
+    for (const Point &P : vertices) cout << ' ' << P.x << ' ' << P.y;
     cout << endl;
 }

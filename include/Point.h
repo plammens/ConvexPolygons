@@ -3,7 +3,11 @@
 #ifndef CONVEXPOLYGON_POINT_H
 #define CONVEXPOLYGON_POINT_H
 
+#include <iostream>
 #include "Vector2D.h"
+
+using namespace std;
+
 
 // 2D Point representation
 struct Point {
@@ -32,6 +36,8 @@ namespace PointComp {
 
 
 bool isClockwiseTurn(const Point &A, const Point &B, const Point &C);
+
+istream &operator>>(istream &is, Point &P);
 
 
 #endif //CONVEXPOLYGON_POINT_H

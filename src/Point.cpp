@@ -20,8 +20,9 @@ bool operator==(const Point &A, const Point &B) { return A.x == B.x and A.y == B
 
 bool operator!=(const Point &A, const Point &B) { return not(A == B); }
 
-
 // Strict weak Point comparison functions
+
+
 namespace PointComp {
 
     // Returns whether A has a smaller y-coordinate than B
@@ -49,5 +50,9 @@ namespace PointComp {
         else return normA < normB;
     }
 
+}
+
+istream &operator>>(istream &is, Point &P) {
+    return (is >> P.x >> P.y);
 }
 

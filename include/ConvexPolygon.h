@@ -18,7 +18,8 @@ private:
     string ID;
 
 public:
-    ConvexPolygon(Points &points);
+    ConvexPolygon() = default;
+    ConvexPolygon(const string &ID, Points &points);
 
     unsigned long vertexCount() const;
 
