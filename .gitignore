@@ -35,3 +35,5 @@
 
 /CMakeLists.txt
 README.html
+bin/
+obj/
