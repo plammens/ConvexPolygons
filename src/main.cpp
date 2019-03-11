@@ -5,7 +5,7 @@
 
 using namespace std;
 
-typedef map<string, ConvexPolygon> Polygons;
+typedef map<string, ConvexPolygon> PolygonMap;
 
 
 inline
@@ -14,7 +14,7 @@ void handleMissingID() {
 }
 
 
-void parseCommand(const string &command, Polygons &polygons) {
+void parseCommand(const string &command, PolygonMap &polygons) {
     if (command == "polygon") {
         string id;
         cin >> id;
@@ -33,7 +33,7 @@ int main() {
     cout.setf(ios::fixed);
     cout.precision(3);
 
-    Polygons polygons;
+    PolygonMap polygons;
     string command;
     while (cin >> command) parseCommand(command, polygons);
 }
