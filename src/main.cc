@@ -65,7 +65,7 @@ void runPolygonMethod(const string &command, PolygonMap &polygons) {
 
             if (command == "print") P.print();
             else if (command == "area") cout << P.area() << endl;
-            else if (command == "perimeter");
+            else if (command == "perimeter") cout << P.perimeter() << endl;
             else if (command == "vertices") cout << P.vertexCount() << endl;
             else if (command == "centroid");
             else if (command == "setcol");

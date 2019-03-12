@@ -23,6 +23,7 @@ public:
 
     unsigned long vertexCount() const;
     double area() const;
+    double perimeter() const;
 
     void print() const;
 };

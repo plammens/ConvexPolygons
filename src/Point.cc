@@ -2,7 +2,7 @@
 // Created by Paolo on 07/03/2019.
 //
 
-#include "../include/Point.h"
+#include <Point.h>
 
 
 // Returns the vector difference between two points
@@ -54,5 +54,9 @@ namespace PointComp {
 
 istream &operator>>(istream &is, Point &P) {
     return (is >> P.x >> P.y);
+}
+
+double distance(const Point &A, const Point &B) {
+    return (A - B).norm();
 }
 

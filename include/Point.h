@@ -21,6 +21,9 @@ Vector2D operator-(const Point &A, const Point &B);
 bool operator==(const Point &A, const Point &B);
 bool operator!=(const Point &A, const Point &B);
 
+// Euclidean distance
+double distance(const Point &A, const Point &B);
+
 // Point comparison functions
 namespace PointComp {
     bool yCoord(const Point &A, const Point &B);
