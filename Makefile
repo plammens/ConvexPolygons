@@ -39,7 +39,7 @@ $(BIN_DIR)/$(MAIN): $(OBJ) | $(BIN_DIR)
 	$(CXX) $^ -o $@ $(CXXFLAGS)
 
 # This rule compiles source files into their corresponding object file.
-$(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp $(DEPS) | $(OBJ_DIR)
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.cc $(DEPS) | $(OBJ_DIR)
 	$(CXX) -c $< -o $@ $(CXXFLAGS)
 
 # Create binary file directory if it doesn't exist
