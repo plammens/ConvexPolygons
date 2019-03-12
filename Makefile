@@ -29,7 +29,11 @@ all: $(BIN_DIR)/$(MAIN)
 clean:
 	rm -r -f $(BIN_DIR) $(OBJ_DIR)
 
-.PHONY: all clean
+run: all
+	@printf "\e[1mExecuting main program... \n\n"
+	@bin/main
+
+.PHONY: all clean run
 
 
 ## Non-phony ##
