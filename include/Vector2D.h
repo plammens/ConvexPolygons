@@ -6,6 +6,7 @@ struct Vector2D {
     double x, y;
 
     double sqrNorm() const;
+    double norm() const;
 };
 
 #endif //CONVEXPOLYGON_GEOMETRICVECTOR_H
