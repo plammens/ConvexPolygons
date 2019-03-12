@@ -98,6 +98,11 @@ void parseCommand(const string &command, PolygonMap &polygons) {
     if (POLYGON_CMDS.count(command)) runPolygonMethod(command, polygons);
     else if (OP_CMDS.count(command)) runOperationCommand(command, polygons);
     else if (IO_CMDS.count(command)) runIOCommand(command, polygons);
+    else if (command[0] == '#') {
+        string comment;
+        getline(cin, comment);
+        cout << '#' << endl;
+    }
     else printError("unrecognized command");
 }
 
