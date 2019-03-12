@@ -30,7 +30,7 @@ clean:
 	rm -r -f $(BIN_DIR) $(OBJ_DIR)
 
 run: all
-	@printf "\e[1mExecuting main program... \n\n"
+	@printf "\e[1mExecuting main program... \n\n\e[0m"
 	@bin/main
 
 .PHONY: all clean run

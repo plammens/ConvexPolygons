@@ -22,6 +22,7 @@ public:
     ConvexPolygon(const string &ID, Points &points);
 
     unsigned long vertexCount() const;
+    double area() const;
 
     void print() const;
 };

@@ -1,7 +1,7 @@
 #include <algorithm>
 #include <iostream>
-
 #include "../include/ConvexPolygon.h"
+
 
 using namespace std;
 
@@ -33,6 +33,21 @@ unsigned long ConvexPolygon::vertexCount() const {
 // Prints the vertices of the polygon
 void ConvexPolygon::print() const {
     cout << ID;
-    for (const Point &P : vertices) cout << ' ' << P.x << ' ' << P.y;
+    for (const Point &P : vertices) cout << " {" << P.x << ", " << P.y << "} ";
     cout << endl;
+}
+
+// Returns the area of the polygon
+double ConvexPolygon::area() const {
+    double sum = 0;
+
+    // Using shoelace formula:
+    for (auto it = vertices.begin(); it < vertices.end() - 1; ++it)
+        sum += (it[1].x - it[0].x)*(it[1].y + it[0].y);
+
+    // Complete the cycle:
+    const Point &first = vertices.front(), &last = vertices.back();
+    sum += (first.x - last.x)*(first.y + last.y);
+
+    return abs(sum/2);
 }

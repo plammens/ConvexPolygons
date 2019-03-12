@@ -1,7 +1,6 @@
 #include <iostream>
 #include <map>
 #include <set>
-#include <exception>
 #include <cassert>
 #include "../include/ConvexPolygon.h"
 #include "../include/utils.h"
@@ -19,16 +18,17 @@ const set<string> POLYGON_CMDS = {
         "setcol"
 };
 
+const set<string> OP_CMDS = {
+        "intersection",
+        "union",
+        "inside",
+        "bbox"
+};
+
 const set<string> IO_CMDS = {
         "save",
         "load",
         "draw"
-};
-
-const set<string> OP_CMDS = {
-        "intersection",
-        "union",
-        "inside"
 };
 
 
@@ -64,9 +64,9 @@ void runPolygonMethod(const string &command, PolygonMap &polygons) {
             ConvexPolygon &P = polygons.at(id);
 
             if (command == "print") P.print();
-            else if (command == "area");
+            else if (command == "area") cout << P.area() << endl;
             else if (command == "perimeter");
-            else if (command == "vertices");
+            else if (command == "vertices") cout << P.vertexCount() << endl;
             else if (command == "centroid");
             else if (command == "setcol");
             else
