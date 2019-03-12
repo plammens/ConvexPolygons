@@ -9,7 +9,7 @@
 using namespace std;
 
 template<typename T>
-vector<T> readLineAsVec() {
+vector<T> readLineAsVector() {
     vector<T> vec;
     string line;
     getline(cin, line);
