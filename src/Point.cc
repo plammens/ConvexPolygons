@@ -52,6 +52,12 @@ istream &operator>>(istream &is, Point &P) {
     return (is >> P.x >> P.y);
 }
 
+ostream &operator<<(ostream &os, const Point &P) {
+    os.setf(ios::fixed);
+    os.precision(3);
+    return os << P.x << ' ' << P.y;
+}
+
 // Euclidean distance
 double distance(const Point &A, const Point &B) {
     return (A - B).norm();

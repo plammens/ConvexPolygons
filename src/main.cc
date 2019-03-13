@@ -38,41 +38,71 @@ typedef map<string, ConvexPolygon> PolygonMap;
 
 
 class IOError : exception {};
+
 class SyntaxError : exception {};
 
 
 // ------------------------------------------------
 
-inline
-void printOk() {
+inline void printOk() {
     cout << "ok" << endl;
 }
 
-inline
-void printError(const string &error) {
+inline void printError(const string &error) {
     cout << "error: " << error << endl;
 }
 
 // Discards line of input
-inline
-void handleComment() {
+inline void handleComment() {
     string comment;
     getline(cin, comment);
     cout << '#' << endl;
 }
 
+// Reads a sequence of points from `is` and saves a new polygon from it in `polygons`
+inline void readAndSavePolygon(istream &is, PolygonMap &polygons) {
+    string id;
+    is >> id;
+    Points points = readVector<Point>(is);
+    polygons[id] = ConvexPolygon(id, points);
+}
+
+void save(const string &file, const vector<string> &polygonIDs, const PolygonMap &polygons) {
+    ostringstream oss;
+    for (const string &id : polygonIDs) {
+        const ConvexPolygon &pol = polygons.at(id);
+        oss << pol << endl;
+    }
+
+    ofstream fileStream;
+    fileStream.open(file);
+    if (not fileStream.is_open()) throw IOError();
+    fileStream << oss.str();
+    fileStream.close();
+}
+
+void load(const string &file, PolygonMap &polygons) {
+    ifstream fileStream;
+    fileStream.open(file);
+    if (not fileStream.is_open()) throw IOError();
+
+    string line;
+    while (getline(fileStream, line)) {
+        istringstream argStream(line);
+        readAndSavePolygon(argStream, polygons);
+    }
+
+    fileStream.close();
+}
 
 // Subroutine to handle commands involving a single polygon
 void runPolygonMethod(const string &keyword, istream &argStream, PolygonMap &polygons) {
-    string id;
-    argStream >> id;
-
     if (keyword == "polygon") {
-        Points points = readVector<Point>();
-        polygons[id] = ConvexPolygon(id, points);
+        readAndSavePolygon(argStream, polygons);
         printOk();
-    }
-    else {
+    } else {
+        string id;
+        argStream >> id;
         // Get polygon (throws `out_of_range` if nonexistent):
         ConvexPolygon &pol = polygons.at(id);
 
@@ -86,36 +116,23 @@ void runPolygonMethod(const string &keyword, istream &argStream, PolygonMap &pol
     }
 }
 
+
 // Subroutine to handle operations with polygons
 void runOperationCommand(const string &command, istream &argStream, PolygonMap &polygons) {
 }
 
-
-void save(const string &file, const vector<string> &polygonIDs, const PolygonMap &polygons) {
-    ostringstream oss;
-
-    for (const string &id : polygonIDs) {
-        const ConvexPolygon &pol = polygons.at(id);
-        oss << pol << endl;
-    }
-
-    ofstream fileStream;
-    fileStream.open(file);
-    if (not fileStream.is_open()) throw IOError();
-    fileStream << oss.str();
-    fileStream.close();
-}
-
 // Subroutine to handle file-related commands
-void runIOCommand(const string &command, istream &argStream, PolygonMap &polygons) {
+void runIOCommand(const string &keyword, istream &argStream, PolygonMap &polygons) {
     string file;
     argStream >> file;
     if (file.empty()) throw SyntaxError();
     vector<string> polygonIDs = readVector<string>(argStream);
 
-    if (command == "save") save(file, polygonIDs, polygons);
-    else if (command == "load") {}
-    else if (command == "draw") {}
+    if (keyword == "save") save(file, polygonIDs, polygons);
+    else if (keyword == "load") load(file, polygons);
+    else if (keyword == "draw") {}
+    else
+        assert(false); // Shouldn't get here
 
     printOk();
 }
@@ -147,9 +164,6 @@ void parseCommand(const string &command, PolygonMap &polygons) {
 
 
 int main() {
-    cout.setf(ios::fixed);
-    cout.precision(3);
-
     PolygonMap polygons;
     string command;
     while (getline(cin, command)) parseCommand(command, polygons);

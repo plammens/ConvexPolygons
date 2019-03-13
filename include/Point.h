@@ -20,7 +20,7 @@ Vector2D operator-(const Point &A, const Point &B);
 bool operator==(const Point &A, const Point &B);
 bool operator!=(const Point &A, const Point &B);
 
-// Euclidean distance
+// Euclidean distance between A and B
 double distance(const Point &A, const Point &B);
 
 // Point comparison functions
@@ -36,11 +36,14 @@ namespace PointComp {
     };
 }
 
-// Whether the vectors AB and AC are in a clockwise configuration
+// Returns whether the vector AC lies clockwise with respect to AB
 bool isClockwiseTurn(const Point &A, const Point &B, const Point &C);
 
-// Extraction operation from input stream to a Point
+// Reads space-separated x, y coordinates into P
 istream &operator>>(istream &is, Point &P);
 
+// Formats P into space-separated x, y coordinates with 3-digit precision
+ostream &operator<<(ostream &os, const Point &P);
 
-#endif //CONVEXPOLYGON_POINT_H
+
+#endif

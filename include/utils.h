@@ -9,7 +9,7 @@
 using namespace std;
 
 template<typename T>
-vector<T> readVector(istream &is = cin) {
+vector<T> readVector(istream &is) {
     vector<T> vec;
     T elem;
     while (is >> elem) vec.push_back(elem);

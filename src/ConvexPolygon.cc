@@ -58,9 +58,9 @@ void ConvexPolygon::print() const {
     cout << *this << endl;
 }
 
-// Writes polygon in text fornat to output stream
+// Writes polygon in text format to output stream
 ostream& operator<<(ostream& os, const ConvexPolygon& pol) {
     os << pol.ID;
-    for (const Point &P : pol.vertices) os << " {" << P.x << ", " << P.y << "}";
+    for (const Point &P : pol.vertices) os << ' ' << P;
     return os;
 }
