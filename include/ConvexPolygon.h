@@ -26,6 +26,7 @@ public:
     double perimeter() const;
 
     void print() const;
+    friend ostream& operator<<(ostream&, const ConvexPolygon&);
 };
 
 

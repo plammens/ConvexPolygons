@@ -1,8 +1,4 @@
-//
-// Created by Paolo on 07/03/2019.
-//
-
-#include <Point.h>
+#include "../include/Point.h"
 
 
 // Returns the vector difference between two points
@@ -10,6 +6,7 @@ Vector2D operator-(const Point &A, const Point &B) {
     return {A.x - B.x, A.y - B.y};
 }
 
+// Whether vectors AB and AC are in a clockwise configuration (in that order)
 bool isClockwiseTurn(const Point &A, const Point &B, const Point &C) {
     Vector2D AB = B - A, AC = C - A;
     return AC.x*AB.y > AB.x*AC.y;
@@ -17,12 +14,10 @@ bool isClockwiseTurn(const Point &A, const Point &B, const Point &C) {
 
 //Equality operators
 bool operator==(const Point &A, const Point &B) { return A.x == B.x and A.y == B.y; }
-
 bool operator!=(const Point &A, const Point &B) { return not(A == B); }
 
-// Strict weak Point comparison functions
 
-
+// Strict weak comparison functions for Point
 namespace PointComp {
 
     // Returns whether A has a smaller y-coordinate than B
@@ -38,7 +33,7 @@ namespace PointComp {
 
     // Compares Points according to the angles that the vectors joining the origin
     // with each point form with the x-axis. Returns whether the first angle is smaller
-    // (if reversed is false; otherwise, vice-versa). In case the angles coincide
+    // (if not reversed; otherwise, vice-versa). In case the angles coincide
     // (or one of them is undefined), returns whether the first vector has smaller norm.
     // Pre: angles are in [0, PI]
     bool xAngle::operator()(const Point &A, const Point &B) {
@@ -52,10 +47,12 @@ namespace PointComp {
 
 }
 
+// Extraction operation from an input stream into a point
 istream &operator>>(istream &is, Point &P) {
     return (is >> P.x >> P.y);
 }
 
+// Euclidean distance
 double distance(const Point &A, const Point &B) {
     return (A - B).norm();
 }

@@ -1,4 +1,5 @@
 #include <iostream>
+#include <fstream>
 #include <map>
 #include <set>
 #include <cassert>
@@ -47,6 +48,14 @@ void printError(const string &error) {
     cout << "error: " << error << endl;
 }
 
+// Discards line of input
+inline
+void handleComment() {
+    string comment;
+    getline(cin, comment);
+    cout << '#' << endl;
+}
+
 
 // Subroutine to handle commands involving a single polygon
 void runPolygonMethod(const string &command, PolygonMap &polygons) {
@@ -69,8 +78,7 @@ void runPolygonMethod(const string &command, PolygonMap &polygons) {
             else if (command == "vertices") cout << P.vertexCount() << endl;
             else if (command == "centroid");
             else if (command == "setcol");
-            else
-                assert(false);  // Shouldn't get here
+            else assert(false);  // Shouldn't get here
 
         }
         catch (out_of_range &) { printError("undefined identifier"); }
@@ -85,11 +93,24 @@ void runOperationCommand(const string &command, PolygonMap &polygons) {
 void runIOCommand(const string &command, PolygonMap &polygons) {
     string file;
     cin >> file;
-
-    if (command == "save") {}
+    fstream fileStream;
+    fileStream.open(file);
+    vector<string> polygonIDs = readLineAsVector<string>();
+    
+    if (command == "save") {
+        for (const string &id : polygonIDs) {
+            try {
+                const ConvexPolygon &pol = polygons.at(id);
+                fileStream << pol << endl;
+            } catch (out_of_range &) { 
+                printError("undefined identifier"); 
+            } 
+        }
+    }
     else if (command == "load") {}
     else if (command == "draw") {}
-
+    
+    fileStream.close();
     printOk();
 }
 
@@ -98,11 +119,7 @@ void parseCommand(const string &command, PolygonMap &polygons) {
     if (POLYGON_CMDS.count(command)) runPolygonMethod(command, polygons);
     else if (OP_CMDS.count(command)) runOperationCommand(command, polygons);
     else if (IO_CMDS.count(command)) runIOCommand(command, polygons);
-    else if (command[0] == '#') {
-        string comment;
-        getline(cin, comment);
-        cout << '#' << endl;
-    }
+    else if (command[0] == '#') handleComment();
     else printError("unrecognized command");
 }
 
