@@ -33,7 +33,6 @@
 *.out
 *.app
 
-/CMakeLists.txt
 README.html
 bin/
 obj/

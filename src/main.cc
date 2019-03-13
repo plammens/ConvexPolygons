@@ -33,6 +33,8 @@ const set<string> IO_CMDS = {
         "draw"
 };
 
+const string OUT_DIR = "out/";
+
 
 typedef map<string, ConvexPolygon> PolygonMap;
 
@@ -126,6 +128,7 @@ void runIOCommand(const string &keyword, istream &argStream, PolygonMap &polygon
     string file;
     argStream >> file;
     if (file.empty()) throw SyntaxError();
+    file = OUT_DIR + file;  // perfix with output directory
     vector<string> polygonIDs = readVector<string>(argStream);
 
     if (keyword == "save") save(file, polygonIDs, polygons);

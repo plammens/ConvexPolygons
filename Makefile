@@ -8,6 +8,7 @@ SRC_DIR = src
 BIN_DIR = bin
 INCLUDE_DIR = include
 OBJ_DIR = obj
+OUT_DIR = out
 
 ## Name of main program and dependencies ##
 # This is the only part that needs to be edited. Here we assume that
@@ -27,7 +28,7 @@ OBJ = $(patsubst %, $(OBJ_DIR)/%.o, $(MAIN) $(DEPENDENCIES))
 all: $(BIN_DIR)/$(MAIN)
 
 clean:
-	rm -r -f $(BIN_DIR) $(OBJ_DIR) *.txt *.png
+	rm -r -f $(BIN_DIR) $(OBJ_DIR) $(OUT_DIR)
 
 run: all
 	@printf "\e[1mExecuting main program... \n\n\e[0m"
