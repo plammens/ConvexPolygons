@@ -90,6 +90,22 @@ void runPolygonMethod(const string &keyword, istream &argStream, PolygonMap &pol
 void runOperationCommand(const string &command, istream &argStream, PolygonMap &polygons) {
 }
 
+
+void save(const string &file, const vector<string> &polygonIDs, const PolygonMap &polygons) {
+    ostringstream oss;
+
+    for (const string &id : polygonIDs) {
+        const ConvexPolygon &pol = polygons.at(id);
+        oss << pol << endl;
+    }
+
+    ofstream fileStream;
+    fileStream.open(file);
+    if (not fileStream.is_open()) throw IOError();
+    fileStream << oss.str();
+    fileStream.close();
+}
+
 // Subroutine to handle file-related commands
 void runIOCommand(const string &command, istream &argStream, PolygonMap &polygons) {
     string file;
