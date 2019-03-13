@@ -18,7 +18,7 @@ ConvexPolygon::ConvexPolygon(const string &ID, Points &points) : ID(move(ID)) {
     sort(points.begin(), points.end(), PointComp::xAngle(P0, true));
 
     vertices.push_back(P0);
-    if (points.size() > 1 and points[1] != P0) vertices.push_back(points[1]);
+    if (points.size() > 1 and points[1] != P0) vertices.push_back(points[1]);  // avoid duplicate
 
     for (auto it = points.begin() + 2; it < points.end(); ++it) {
         while (vertices.size() >= 2 and not isClockwiseTurn(vertices.end()[-2], vertices.end()[-1], *it))
@@ -49,10 +49,11 @@ double ConvexPolygon::area() const {
     return abs(sum/2);
 }
 
+// Returns perimeter of polygon
 double ConvexPolygon::perimeter() const {
     // Sum of euclidean distance between pairs of adjacent points
     return cyclicSum(vertices,
-            // This lambda returns euclidean distance
+                     // This lambda returns euclidean distance
                      [](const Point &P, const Point &Q) {
                          return distance(P, Q);
                      });

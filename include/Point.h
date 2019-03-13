@@ -1,5 +1,4 @@
 // Interface for 2D points
-
 #ifndef CONVEXPOLYGON_POINT_H
 #define CONVEXPOLYGON_POINT_H
 
@@ -37,9 +36,10 @@ namespace PointComp {
     };
 }
 
-
+// Whether the vectors AB and AC are in a clockwise configuration
 bool isClockwiseTurn(const Point &A, const Point &B, const Point &C);
 
+// Extraction operation from input stream to a Point
 istream &operator>>(istream &is, Point &P);
 
 
