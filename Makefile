@@ -28,7 +28,7 @@ OBJ = $(patsubst %, $(OBJ_DIR)/%.o, $(MAIN) $(DEPENDENCIES))
 all: $(BIN_DIR)/$(MAIN)
 
 clean:
-	rm -r -f $(BIN_DIR) $(OBJ_DIR) $(OUT_DIR)
+	rm -r -f $(BIN_DIR) $(OBJ_DIR) $(OUT_DIR)/*
 
 run: all
 	@printf "\e[1mExecuting main program... \n\n\e[0m"

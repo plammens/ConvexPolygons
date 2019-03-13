@@ -54,13 +54,6 @@ inline void printError(const string &error) {
     cout << "error: " << error << endl;
 }
 
-// Discards line of input
-inline void handleComment() {
-    string comment;
-    getline(cin, comment);
-    cout << '#' << endl;
-}
-
 // Reads a sequence of points from `is` and saves a new polygon from it in `polygons`
 inline void readAndSavePolygon(istream &is, PolygonMap &polygons) {
     string id;
@@ -134,14 +127,14 @@ void runIOCommand(const string &keyword, istream &argStream, PolygonMap &polygon
     if (keyword == "save") save(file, polygonIDs, polygons);
     else if (keyword == "load") load(file, polygons);
     else if (keyword == "draw") {}
-    else
-        assert(false); // Shouldn't get here
+    else assert(false); // Shouldn't get here
 
     printOk();
 }
 
 // Check whether command is valid and run corresponding subroutine
 void parseCommand(const string &command, PolygonMap &polygons) {
+    if (command.empty()) return;  // ignore empty lines
     try {
 
         istringstream iss(command);
@@ -151,7 +144,7 @@ void parseCommand(const string &command, PolygonMap &polygons) {
         if (POLYGON_CMDS.count(keyword)) runPolygonMethod(keyword, iss, polygons);
         else if (OP_CMDS.count(keyword)) runOperationCommand(keyword, iss, polygons);
         else if (IO_CMDS.count(keyword)) runIOCommand(keyword, iss, polygons);
-        else if (keyword[0] == '#') handleComment();
+        else if (keyword[0] == '#') cout << '#' << endl;  // handle comments
         else printError("unrecognized command");
 
     } catch (out_of_range &) {
