@@ -9,13 +9,10 @@
 using namespace std;
 
 template<typename T>
-vector<T> readLineAsVector() {
+vector<T> readVector(istream &is = cin) {
     vector<T> vec;
-    string line;
-    getline(cin, line);
-    istringstream iss(line);
     T elem;
-    while (iss >> elem) vec.push_back(elem);
+    while (is >> elem) vec.push_back(elem);
     return vec;
 }
 

@@ -1,5 +1,6 @@
 #include <iostream>
 #include <fstream>
+#include <sstream>
 #include <map>
 #include <set>
 #include <cassert>
@@ -36,6 +37,10 @@ const set<string> IO_CMDS = {
 typedef map<string, ConvexPolygon> PolygonMap;
 
 
+class IOError : exception {};
+class SyntaxError : exception {};
+
+
 // ------------------------------------------------
 
 inline
@@ -58,69 +63,68 @@ void handleComment() {
 
 
 // Subroutine to handle commands involving a single polygon
-void runPolygonMethod(const string &command, PolygonMap &polygons) {
+void runPolygonMethod(const string &keyword, istream &argStream, PolygonMap &polygons) {
     string id;
-    cin >> id;
+    argStream >> id;
 
-    if (command == "polygon") {
-        Points points = readLineAsVector<Point>();
+    if (keyword == "polygon") {
+        Points points = readVector<Point>();
         polygons[id] = ConvexPolygon(id, points);
         printOk();
     }
     else {
-        try {
-            // Get polygon (throws `out_of_range` if nonexistent):
-            ConvexPolygon &P = polygons.at(id);
+        // Get polygon (throws `out_of_range` if nonexistent):
+        ConvexPolygon &pol = polygons.at(id);
 
-            if (command == "print") P.print();
-            else if (command == "area") cout << P.area() << endl;
-            else if (command == "perimeter") cout << P.perimeter() << endl;
-            else if (command == "vertices") cout << P.vertexCount() << endl;
-            else if (command == "centroid");
-            else if (command == "setcol");
-            else assert(false);  // Shouldn't get here
-
-        }
-        catch (out_of_range &) { printError("undefined identifier"); }
+        if (keyword == "print") pol.print();
+        else if (keyword == "area") cout << pol.area() << endl;
+        else if (keyword == "perimeter") cout << pol.perimeter() << endl;
+        else if (keyword == "vertices") cout << pol.vertexCount() << endl;
+        else if (keyword == "centroid");
+        else if (keyword == "setcol");
+        else assert(false);  // Shouldn't get here
     }
 }
 
 // Subroutine to handle operations with polygons
-void runOperationCommand(const string &command, PolygonMap &polygons) {
+void runOperationCommand(const string &command, istream &argStream, PolygonMap &polygons) {
 }
 
 // Subroutine to handle file-related commands
-void runIOCommand(const string &command, PolygonMap &polygons) {
+void runIOCommand(const string &command, istream &argStream, PolygonMap &polygons) {
     string file;
-    cin >> file;
-    fstream fileStream;
-    fileStream.open(file);
-    vector<string> polygonIDs = readLineAsVector<string>();
-    
-    if (command == "save") {
-        for (const string &id : polygonIDs) {
-            try {
-                const ConvexPolygon &pol = polygons.at(id);
-                fileStream << pol << endl;
-            } catch (out_of_range &) { 
-                printError("undefined identifier"); 
-            } 
-        }
-    }
+    argStream >> file;
+    if (file.empty()) throw SyntaxError();
+    vector<string> polygonIDs = readVector<string>(argStream);
+
+    if (command == "save") save(file, polygonIDs, polygons);
     else if (command == "load") {}
     else if (command == "draw") {}
-    
-    fileStream.close();
+
     printOk();
 }
 
-// Check whether command exists and run corresponding subroutine
+// Check whether command is valid and run corresponding subroutine
 void parseCommand(const string &command, PolygonMap &polygons) {
-    if (POLYGON_CMDS.count(command)) runPolygonMethod(command, polygons);
-    else if (OP_CMDS.count(command)) runOperationCommand(command, polygons);
-    else if (IO_CMDS.count(command)) runIOCommand(command, polygons);
-    else if (command[0] == '#') handleComment();
-    else printError("unrecognized command");
+    try {
+
+        istringstream iss(command);
+        string keyword;
+        iss >> keyword;
+
+        if (POLYGON_CMDS.count(keyword)) runPolygonMethod(keyword, iss, polygons);
+        else if (OP_CMDS.count(keyword)) runOperationCommand(keyword, iss, polygons);
+        else if (IO_CMDS.count(keyword)) runIOCommand(keyword, iss, polygons);
+        else if (keyword[0] == '#') handleComment();
+        else printError("unrecognized command");
+
+    } catch (out_of_range &) {
+        printError("undefined ID");
+    } catch (IOError &) {
+        printError("unable to access file");
+    } catch (SyntaxError &) {
+        printError("invalid command syntax");
+    }
 }
 
 // ------------------------------------------------
@@ -132,5 +136,5 @@ int main() {
 
     PolygonMap polygons;
     string command;
-    while (cin >> command) parseCommand(command, polygons);
+    while (getline(cin, command)) parseCommand(command, polygons);
 }
