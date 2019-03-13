@@ -1,4 +1,5 @@
 #include <iostream>
+#include <fstream>
 #include <map>
 #include <set>
 #include <cassert>
@@ -92,11 +93,24 @@ void runOperationCommand(const string &command, PolygonMap &polygons) {
 void runIOCommand(const string &command, PolygonMap &polygons) {
     string file;
     cin >> file;
-
-    if (command == "save") {}
+    fstream fileStream;
+    fileStream.open(file);
+    vector<string> polygonIDs = readLineAsVector<string>();
+    
+    if (command == "save") {
+        for (const string &id : polygonIDs) {
+            try {
+                const ConvexPolygon &pol = polygons.at(id);
+                fileStream << pol << endl;
+            } catch (out_of_range &) { 
+                printError("undefined identifier"); 
+            } 
+        }
+    }
     else if (command == "load") {}
     else if (command == "draw") {}
-
+    
+    fileStream.close();
     printOk();
 }
 

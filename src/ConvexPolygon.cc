@@ -32,13 +32,6 @@ unsigned long ConvexPolygon::vertexCount() const {
     return vertices.size();
 }
 
-// Prints the vertices of the polygon
-void ConvexPolygon::print() const {
-    cout << ID;
-    for (const Point &P : vertices) cout << " {" << P.x << ", " << P.y << "}";
-    cout << endl;
-}
-
 // Returns the area of the polygon
 double ConvexPolygon::area() const {
     // We use a lambda to calculate the are of the polygon with the shoelace formula
@@ -57,4 +50,17 @@ double ConvexPolygon::perimeter() const {
                      [](const Point &P, const Point &Q) {
                          return distance(P, Q);
                      });
+}
+
+
+// Prints the vertices of the polygon to stdout
+void ConvexPolygon::print() const {
+    cout << *this << endl;
+}
+
+// Writes polygon in text fornat to output stream
+ostream& operator<<(ostream& os, const ConvexPolygon& pol) {
+    os << pol.ID;
+    for (const Point &P : pol.vertices) os << " {" << P.x << ", " << P.y << "}";
+    return os;
 }
