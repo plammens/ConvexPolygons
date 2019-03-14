@@ -2,36 +2,13 @@
 #include <fstream>
 #include <sstream>
 #include <map>
-#include <set>
 #include <cassert>
 #include "../include/ConvexPolygon.h"
 #include "../include/utils.h"
+#include "../include/commands.h"
 
 using namespace std;
 
-
-const set<string> POLYGON_CMDS = {
-        "polygon",
-        "print",
-        "area",
-        "perimeter",
-        "vertices",
-        "centroid",
-        "setcol"
-};
-
-const set<string> OP_CMDS = {
-        "intersection",
-        "union",
-        "inside",
-        "bbox"
-};
-
-const set<string> IO_CMDS = {
-        "save",
-        "load",
-        "draw"
-};
 
 const string OUT_DIR = "out/";
 
@@ -92,7 +69,7 @@ void load(const string &file, PolygonMap &polygons) {
 
 // Subroutine to handle commands involving a single polygon
 void runPolygonMethod(const string &keyword, istream &argStream, PolygonMap &polygons) {
-    if (keyword == "polygon") {
+    if (keyword == CMD::POLYGON) {
         readAndSavePolygon(argStream, polygons);
         printOk();
     } else {
@@ -101,12 +78,12 @@ void runPolygonMethod(const string &keyword, istream &argStream, PolygonMap &pol
         // Get polygon (throws `out_of_range` if nonexistent):
         ConvexPolygon &pol = polygons.at(id);
 
-        if (keyword == "print") pol.print();
-        else if (keyword == "area") cout << pol.area() << endl;
-        else if (keyword == "perimeter") cout << pol.perimeter() << endl;
-        else if (keyword == "vertices") cout << pol.vertexCount() << endl;
-        else if (keyword == "centroid");
-        else if (keyword == "setcol");
+        if (keyword == CMD::PRINT) pol.print();
+        else if (keyword == CMD::AREA) cout << pol.area() << endl;
+        else if (keyword == CMD::PERIMETER) cout << pol.perimeter() << endl;
+        else if (keyword == CMD::VERTICES) cout << pol.vertexCount() << endl;
+        else if (keyword == CMD::CENTROID);
+        else if (keyword == CMD::SETCOL);
         else assert(false);  // Shouldn't get here
     }
 }
@@ -124,9 +101,9 @@ void runIOCommand(const string &keyword, istream &argStream, PolygonMap &polygon
     file = OUT_DIR + file;  // perfix with output directory
     vector<string> polygonIDs = readVector<string>(argStream);
 
-    if (keyword == "save") save(file, polygonIDs, polygons);
-    else if (keyword == "load") load(file, polygons);
-    else if (keyword == "draw") {}
+    if (keyword == CMD::SAVE) save(file, polygonIDs, polygons);
+    else if (keyword == CMD::LOAD) load(file, polygons);
+    else if (keyword == CMD::DRAW) {}
     else assert(false); // Shouldn't get here
 
     printOk();
