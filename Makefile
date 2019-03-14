@@ -15,10 +15,11 @@ OUT_DIR = out
 # source files (e.g. `foo.cpp`) and header files (e.g. `foo.h`) share
 # the same name (besides the extension).
 MAIN = main
-DEPENDENCIES = utils Vector2D Point ConvexPolygon
+HEADER_ONLY = errors
+DEPENDENCIES = utils commands handlers Vector2D Point ConvexPolygon
 
 ## Header and object file paths ##
-HEADERS = $(patsubst %, $(INCLUDE_DIR)/%.h, $(DEPENDENCIES))
+HEADERS = $(patsubst %, $(INCLUDE_DIR)/%.h, $(HEADER_ONLY) $(DEPENDENCIES))
 OBJ = $(patsubst %, $(OBJ_DIR)/%.o, $(MAIN) $(DEPENDENCIES))
 
 

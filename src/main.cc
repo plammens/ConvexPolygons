@@ -1,19 +1,14 @@
 #include <iostream>
 #include <sstream>
-#include <map>
-#include <functional>
-#include "../include/ConvexPolygon.h"
 #include "../include/commands.h"
+#include "../include/handlers.h"
+#include "../include/errors.h"
 
 
 using namespace std;
 
 
-
-// ------------------------------------------------
-
-
-// Check whether command is valid and run corresponding subroutine
+// Check whether command is valid and run corresponding handler
 void parseCommand(const string &command, PolygonMap &polygons) {
     if (command.empty()) return;  // ignore empty lines
     try {
@@ -36,7 +31,7 @@ void parseCommand(const string &command, PolygonMap &polygons) {
     }
 }
 
-// ------------------------------------------------
+// -----------------------------------------------------------------
 
 
 int main() {
