@@ -1,8 +1,17 @@
+
+#include <handlers.h>
+
 #include "../include/handlers.h"
 #include "../include/errors.h"
 #include "../include/utils.h"
 
 
+
+ConvexPolygon &getPolygon(const string &id, PolygonMap &polygons) {
+    auto it = polygons.find(id);
+    if (it == polygons.end()) throw UndefinedID();
+    return it->second;
+}
 
 void runPolygonMethod(const string &keyword, istream &argStream, PolygonMap &polygons) {
     if (keyword == CMD::POLYGON) {
@@ -11,8 +20,8 @@ void runPolygonMethod(const string &keyword, istream &argStream, PolygonMap &pol
     } else {
         string id;
         argStream >> id;
-        // Get polygon (throws `out_of_range` if nonexistent):
-        ConvexPolygon &pol = polygons.at(id);
+        // Get polygon (throws `UndefinedID` if nonexistent):
+        ConvexPolygon &pol = getPolygon(id, polygons);
 
         if (keyword == CMD::PRINT) pol.print();
         else if (keyword == CMD::AREA) cout << pol.area() << endl;

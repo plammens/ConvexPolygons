@@ -18,8 +18,8 @@ Non-constant variables, functions and methods are named in
 Header files are given the extension `.h`. Source files are given
 the extension `.cc`.
 
-Each header file containing a class declaration has the
-same name as that class (which is in `PascalCase`. The source 
+Header files dedicated to a single class have the
+same name as the class (which is in `PascalCase`. The source 
 file implementing it also has that same name.
 
 Other header files (and their corresponding implementation files)

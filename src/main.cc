@@ -22,12 +22,12 @@ void parseCommand(const string &command, PolygonMap &polygons) {
 
     } catch (UnrecognizedCommand &) {
         printError("unrecognized command");
-    } catch (out_of_range &) {
+    } catch (SyntaxError &) {
+        printError("invalid command syntax");
+    } catch (UndefinedID &) {
         printError("undefined ID");
     } catch (IOError &) {
         printError("unable to access file");
-    } catch (SyntaxError &) {
-        printError("invalid command syntax");
     }
 }
 

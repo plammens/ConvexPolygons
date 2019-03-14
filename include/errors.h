@@ -9,10 +9,12 @@
 
 using namespace std;
 
-class IOError : exception {};
+class UnrecognizedCommand : exception {};
 
 class SyntaxError : exception {};
 
-class UnrecognizedCommand : exception {};
+class UndefinedID : exception {};
+
+class IOError : exception {};
 
 #endif //CONVEXPOLYGONS_ERRORS_H

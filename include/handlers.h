@@ -13,6 +13,8 @@ typedef function<void(const string &, istream &, PolygonMap &)> CommandHandler;
 // ---------------------------------------------------------------
 
 
+ConvexPolygon& getPolygon(const string &id, PolygonMap &polygons);
+
 // Subroutine to handle commands involving a single polygon
 void runPolygonMethod(const string &keyword, istream &argStream, PolygonMap &polygons);
 
