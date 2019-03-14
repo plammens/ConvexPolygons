@@ -11,6 +11,7 @@ using namespace std;
 // Check whether command is valid and run corresponding handler
 void parseCommand(const string &command, PolygonMap &polygons) {
     if (command.empty()) return;  // ignore empty lines
+
     try {
 
         istringstream iss(command);
@@ -20,14 +21,8 @@ void parseCommand(const string &command, PolygonMap &polygons) {
         CommandHandler handler = getCommandHandler(keyword);
         handler(keyword, iss, polygons);
 
-    } catch (UnrecognizedCommand &) {
-        printError("unrecognized command");
-    } catch (SyntaxError &) {
-        printError("invalid command syntax");
-    } catch (UndefinedID &) {
-        printError("undefined ID");
-    } catch (IOError &) {
-        printError("unable to access file");
+    } catch (CommandError &error) {
+        printError(error.message());
     }
 }
 

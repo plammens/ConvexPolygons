@@ -33,14 +33,6 @@ const string OUT_DIR = "out/";
 
 // ---------------------------------------
 
-inline void printOk() {
-    cout << "ok" << endl;
-}
-
-inline void printError(const string &error) {
-    cout << "error: " << error << endl;
-}
-
 // Reads a sequence of points from `is` and saves a new polygon from it in `polygons`
 void readAndSavePolygon(istream &is, PolygonMap &polygons);
 
