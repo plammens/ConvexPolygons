@@ -3,7 +3,7 @@
 
 #include <string>
 #include <map>
-#include "ConvexPolygon.h"
+#include "class/ConvexPolygon.h"
 
 
 typedef map<string, ConvexPolygon> PolygonMap;

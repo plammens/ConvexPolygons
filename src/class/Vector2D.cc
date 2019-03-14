@@ -1,5 +1,5 @@
 #include <cmath>
-#include "../include/Vector2D.h"
+#include "class/Vector2D.h"
 
 
 // Returns the squared euclidean norm

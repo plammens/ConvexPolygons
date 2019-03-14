@@ -1,4 +1,4 @@
-#include "../include/Point.h"
+#include "class/Point.h"
 
 
 // Returns the vector difference between two points

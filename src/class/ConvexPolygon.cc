@@ -1,8 +1,8 @@
 #include <algorithm>
 #include <iostream>
 
-#include "../include/ConvexPolygon.h"
-#include "../include/utils.h"
+#include "class/ConvexPolygon.h"
+#include "utils.h"
 
 
 using namespace std;
