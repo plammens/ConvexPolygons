@@ -54,10 +54,21 @@ public:
 };
 
 
-class UndefinedID : public CommandError {
+class ValueError : public Error {
 public:
-    UndefinedID(const string &specification) : CommandError(specification) {}
-    UndefinedID(const char *specification) : CommandError(specification) {}
+    ValueError(const string &spec) : Error(spec) {}
+    ValueError(const char *spec) : Error(spec) {}
+
+    const char *baseMessage() const override {
+        return "invalid value";
+    }
+};
+
+
+class UndefinedID : public Error {
+public:
+    UndefinedID(const string &spec) : Error(spec) {}
+    UndefinedID(const char *spec) : Error(spec) {}
 
     const char *baseMessage() const override {
         return "undefined ID";

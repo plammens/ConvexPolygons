@@ -18,6 +18,7 @@ class ConvexPolygon {
 private:
     Points vertices;
     string ID;
+    RGBColor color;
 
 public:
     ConvexPolygon() = default;
@@ -26,6 +27,8 @@ public:
     unsigned long vertexCount() const;
     double area() const;
     double perimeter() const;
+    
+    void setcol(double r, double g, double b);
 
     void print() const;
     friend ostream& operator<<(ostream&, const ConvexPolygon&);

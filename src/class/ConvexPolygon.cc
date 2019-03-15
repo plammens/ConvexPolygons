@@ -64,3 +64,7 @@ ostream& operator<<(ostream& os, const ConvexPolygon& pol) {
     for (const Point &P : pol.vertices) os << ' ' << P;
     return os;
 }
+
+void ConvexPolygon::setcol(double r, double g, double b) {
+    color = {r, g, b};
+}

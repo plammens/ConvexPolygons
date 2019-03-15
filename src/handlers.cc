@@ -19,7 +19,8 @@ void runPolygonMethod(const string &keyword, istream &argStream, PolygonMap &pol
     if (keyword == CMD::POLYGON) {
         readAndSavePolygon(argStream, polygons);
         printOk();
-    } else {
+    }
+    else {
         string id;
         argStream >> id;
         ConvexPolygon &pol = getPolygon(id, polygons);  // throws `UndefinedID` if nonexistent
@@ -29,7 +30,11 @@ void runPolygonMethod(const string &keyword, istream &argStream, PolygonMap &pol
         else if (keyword == CMD::PERIMETER) cout << pol.perimeter() << endl;
         else if (keyword == CMD::VERTICES) cout << pol.vertexCount() << endl;
         else if (keyword == CMD::CENTROID);  // TODO: centroid
-        else if (keyword == CMD::SETCOL);  // TODO: setcol
+        else if (keyword == CMD::SETCOL) {
+            double r, g, b;
+            argStream >> r >> g >> b;
+            pol.setcol(r, g, b);
+        }
         else assert(false);  // Shouldn't get here
     }
 }
@@ -52,6 +57,9 @@ void runIOCommand(const string &keyword, istream &argStream, PolygonMap &polygon
 
     printOk();
 }
+
+// -------------------
+
 
 CommandHandler getCommandHandler(const string &keyword) {
     auto it = commandHandler.find(keyword);
