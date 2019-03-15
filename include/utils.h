@@ -31,5 +31,29 @@ double cyclicSum(const vector<T> &vec, BinaryOp binaryOp) {
     return sum;
 }
 
+// Base case
+void format(string::const_iterator &it, const string::const_iterator &end, ostream &os);
+
+// Recursive variadic template
+template<typename T, typename ... Types>
+void format(string::const_iterator &it, const string::const_iterator &end,
+            ostream &os, T first, Types ... args) {
+
+    for (; it < end and *it != '%'; ++it) os << *it;
+    if (it < end) {
+        os << first;
+        format(++it, end, os, args...);
+    }
+}
+
+// User interface
+template<typename ... Types>
+string format(const string &pattern, Types ... args) {
+    ostringstream oss;
+    auto it = pattern.cbegin(), end = pattern.cend();
+    format(it, end, oss, args...);
+    return oss.str();
+}
+
 
 #endif //CONVEXPOLYGON_UTILS_H
