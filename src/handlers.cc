@@ -1,7 +1,7 @@
 #include <iostream>
-#include "../include/handlers.h"
-#include "../include/errors.h"
-#include "../include/utils.h"
+#include "handlers.h"
+#include "errors.h"
+#include "utils.h"
 
 
 const ConvexPolygon &getPolygon(const string &id, const PolygonMap &polygons) {

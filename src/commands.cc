@@ -1,7 +1,7 @@
 #include <fstream>
-#include "../include/handlers.h"
-#include "../include/errors.h"
-#include "../include/utils.h"
+#include "handlers.h"
+#include "errors.h"
+#include "utils.h"
 
 
 void readAndSavePolygon(istream &is, PolygonMap &polygons) {

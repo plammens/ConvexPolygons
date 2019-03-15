@@ -4,7 +4,9 @@
 #include <vector>
 #include <string>
 
-#include "Point.h"
+#include "class/Point.h"
+#include "class/RGBColor.h"
+
 
 using namespace std;
 

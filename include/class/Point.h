@@ -3,7 +3,7 @@
 #define CONVEXPOLYGON_POINT_H
 
 #include <iostream>
-#include "Vector2D.h"
+#include "class/Vector2D.h"
 
 using namespace std;
 

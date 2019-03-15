@@ -1,8 +1,8 @@
 #include <iostream>
 #include <sstream>
-#include "../include/commands.h"
-#include "../include/handlers.h"
-#include "../include/errors.h"
+#include "commands.h"
+#include "handlers.h"
+#include "errors.h"
 
 
 using namespace std;

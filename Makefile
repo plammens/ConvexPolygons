@@ -1,8 +1,5 @@
 ### Macros ###
 
-CXX = g++
-CXXFLAGS = -Wall -std=c++11 -O2
-
 ## Directory names (for source, binaries, header and object files) ##
 INCLUDE_DIR = include
 SRC_DIR = src
@@ -11,6 +8,10 @@ BIN_DIR = bin
 MAIN = main
 OBJ_DIR = obj
 OUT_DIR = out
+
+## Compiler options ##
+CXX = g++
+CXXFLAGS = -Wall -I $(INCLUDE_DIR) -std=c++11 -O2
 
 ## Directory search paths
 vpath %.h $(INCLUDE_DIR)
@@ -43,7 +44,7 @@ run: all
 	@bin/main
 
 test:
-	$(info [$(all_headers)])
+	$(info [$(VPATH)])
 
 
 
