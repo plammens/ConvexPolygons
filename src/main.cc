@@ -21,7 +21,7 @@ void parseCommand(const string &command, PolygonMap &polygons) {
         CommandHandler handler = getCommandHandler(keyword);
         handler(keyword, iss, polygons);
 
-    } catch (CommandError &error) {
+    } catch (Error &error) {
         printError(error.message());
     }
 }

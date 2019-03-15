@@ -11,17 +11,17 @@
 
 using namespace std;
 
-class CommandError : public exception {
+class Error : public exception {
 protected:
-    string specification;
+    string spec;
 
 public:
-    CommandError(const char *spec) : specification(spec) {}
-    CommandError(const string &spec) : specification(spec) {}
+    Error(const char *spec) : spec(spec) {}
+    Error(const string &spec) : spec(spec) {}
 
     const string message() const {
         ostringstream oss(baseMessage(), ios::ate);
-        oss << " (" << specification << ')';
+        oss << " (" << spec << ')';
         return oss.str();
     }
 
@@ -32,10 +32,10 @@ public:
 };
 
 
-class UnrecognizedCommand : public CommandError {
+class UnrecognizedCommand : public Error {
 public:
-    UnrecognizedCommand(const string &spec) : CommandError(spec) {}
-    UnrecognizedCommand(const char *spec) : CommandError(spec) {}
+    UnrecognizedCommand(const string &spec) : Error(spec) {}
+    UnrecognizedCommand(const char *spec) : Error(spec) {}
 
     const char *baseMessage() const override {
         return "unrecognized command";
@@ -43,10 +43,10 @@ public:
 };
 
 
-class SyntaxError : public CommandError {
+class SyntaxError : public Error {
 public:
-    SyntaxError(const string &specification) : CommandError(specification) {}
-    SyntaxError(const char *specification) : CommandError(specification) {}
+    SyntaxError(const string &spec) : Error(spec) {}
+    SyntaxError(const char *spec) : Error(spec) {}
 
     const char *baseMessage() const override {
         return "wrong syntax";
@@ -65,10 +65,10 @@ public:
 };
 
 
-class IOError : public CommandError {
+class IOError : public Error {
 public:
-    IOError(const string &specification) : CommandError(specification) {}
-    IOError(const char *specification) : CommandError(specification) {}
+    IOError(const string &spec) : Error(spec) {}
+    IOError(const char *spec) : Error(spec) {}
 
     const char *baseMessage() const override {
         return "unable to access file";
