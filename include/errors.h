@@ -16,12 +16,12 @@ protected:
     string spec;
 
 public:
-    Error(const char *spec) : spec(spec) {}
-    Error(const string &spec) : spec(spec) {}
+    Error(const char *spec = "") : spec(spec) {}
+    Error(const string &spec = "") : spec(spec) {}
 
     const string message() const {
         ostringstream oss(baseMessage(), ios::ate);
-        oss << " (" << spec << ')';
+        if (not spec.empty()) oss << " (" << spec << ')';
         return oss.str();
     }
 
@@ -53,14 +53,13 @@ public:
     }
 };
 
-
 class ValueError : public Error {
 public:
     ValueError(const string &spec) : Error(spec) {}
     ValueError(const char *spec) : Error(spec) {}
 
     const char *baseMessage() const override {
-        return "invalid value";
+        return "invalid argument value";
     }
 };
 

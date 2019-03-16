@@ -5,6 +5,8 @@
 #include <iostream>
 #include <sstream>
 #include <string>
+#include "errors.h"
+
 
 using namespace std;
 
@@ -53,6 +55,20 @@ string format(const string &pattern, Types ... args) {
     auto it = pattern.cbegin(), end = pattern.cend();
     format(it, end, oss, args...);
     return oss.str();
+}
+
+
+template<typename T>
+void getArgs(istream &argStream, T &first) {
+    if (not(argStream >> first))
+        throw ValueError("unable to parse arguments");
+}
+
+
+template<typename T, typename ... Types>
+void getArgs(istream &argStream, T &first, Types &... slots) {
+    getArgs(argStream, first);
+    getArgs(argStream, slots...);
 }
 
 

@@ -47,4 +47,6 @@ file implementing them also have that same name.
 Other header files (and their corresponding implementation files)
 are named in `camelCase`.
 
+## Error handling
+
 

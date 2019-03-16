@@ -17,7 +17,10 @@ typedef function<void(const string &, istream &, PolygonMap &)> CommandHandler;
 const ConvexPolygon &getPolygon(const string &id, const PolygonMap &polygons);
 ConvexPolygon &getPolygon(const string &id, PolygonMap &polygons);  // non-const version
 
-// Subroutine to handle commands involving a single polygon
+// Subroutine to handle creation/assignment of a single polygon
+void runPolygonAssignment(const string &keyword, istream &argStream, PolygonMap &polygons);
+
+// Subroutine to handle commands involving printing info about a single polygon
 void runPolygonMethod(const string &keyword, istream &argStream, PolygonMap &polygons);
 
 // Subroutine to handle operations with polygons
@@ -26,14 +29,17 @@ void runOperationCommand(const string &keyword, istream &argStream, PolygonMap &
 // Subroutine to handle file-related commands
 void runIOCommand(const string &keyword, istream &argStream, PolygonMap &polygons);
 
+
 inline
 void printOk() {
     cout << "ok" << endl;
 }
 
+
 inline
 void printError(const string &error) {
-    cout << "error: " << error << endl;
+    // \e[31m is the ANSI escape sequence for red text
+    cout << "\e[31;1m" << "error: " << error << endl;
 }
 
 
@@ -42,7 +48,7 @@ void printError(const string &error) {
 
 // Maps each command keyword to its corresponding command handler
 const map<string, CommandHandler> commandHandler = {
-        {CMD::POLYGON,      runPolygonMethod},
+        {CMD::POLYGON,      runPolygonAssignment},
         {CMD::PRINT,        runPolygonMethod},
         {CMD::AREA,         runPolygonMethod},
         {CMD::PERIMETER,    runPolygonMethod},

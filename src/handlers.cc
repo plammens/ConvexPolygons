@@ -1,5 +1,6 @@
 #include <iostream>
-#include "handlers.h"
+#include <handlers.h>
+
 #include "errors.h"
 #include "utils.h"
 
@@ -10,38 +11,44 @@ const ConvexPolygon &getPolygon(const string &id, const PolygonMap &polygons) {
     return it->second;
 }
 
+
 ConvexPolygon &getPolygon(const string &id, PolygonMap &polygons) {
     // Behaviour is same as const version, so we just cast away to avoid duplication
     return const_cast<ConvexPolygon &>(getPolygon(id, const_cast<const PolygonMap &>(polygons)));
 }
 
+
+void runPolygonAssignment(const string &keyword, istream &argStream, PolygonMap &polygons) {
+    assert(keyword == CMD::POLYGON);  // TODO: remove assert
+    readAndSavePolygon(argStream, polygons);
+    printOk();
+}
+
+
 void runPolygonMethod(const string &keyword, istream &argStream, PolygonMap &polygons) {
-    if (keyword == CMD::POLYGON) {
-        readAndSavePolygon(argStream, polygons);
+    string id;
+    getArgs(argStream, id);
+    ConvexPolygon &pol = getPolygon(id, polygons);  // throws `UndefinedID` if nonexistent
+
+         if (keyword == CMD::PRINT) pol.print();
+    else if (keyword == CMD::AREA) cout << pol.area() << endl;
+    else if (keyword == CMD::PERIMETER) cout << pol.perimeter() << endl;
+    else if (keyword == CMD::VERTICES) cout << pol.vertexCount() << endl;
+    else if (keyword == CMD::CENTROID);  // TODO: centroid
+    else if (keyword == CMD::SETCOL) {
+        double r, g, b;
+        getArgs(argStream, r, g, b);
+        pol.setcol(r, g, b);
         printOk();
     }
-    else {
-        string id;
-        argStream >> id;
-        ConvexPolygon &pol = getPolygon(id, polygons);  // throws `UndefinedID` if nonexistent
-
-        if (keyword == CMD::PRINT) pol.print();
-        else if (keyword == CMD::AREA) cout << pol.area() << endl;
-        else if (keyword == CMD::PERIMETER) cout << pol.perimeter() << endl;
-        else if (keyword == CMD::VERTICES) cout << pol.vertexCount() << endl;
-        else if (keyword == CMD::CENTROID);  // TODO: centroid
-        else if (keyword == CMD::SETCOL) {
-            double r, g, b;
-            argStream >> r >> g >> b;
-            pol.setcol(r, g, b);
-        }
-        else assert(false);  // Shouldn't get here
-    }
+    else assert(false);  // Shouldn't get here
 }
+
 
 void runOperationCommand(const string &keyword, istream &argStream, PolygonMap &polygons) {
     // TODO: operation commands
 }
+
 
 void runIOCommand(const string &keyword, istream &argStream, PolygonMap &polygons) {
     string file;
@@ -58,8 +65,8 @@ void runIOCommand(const string &keyword, istream &argStream, PolygonMap &polygon
     printOk();
 }
 
-// -------------------
 
+// -------------------
 
 CommandHandler getCommandHandler(const string &keyword) {
     auto it = commandHandler.find(keyword);

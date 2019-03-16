@@ -6,7 +6,7 @@
 
 void readAndSavePolygon(istream &is, PolygonMap &polygons) {
     string id;
-    is >> id;
+    getArgs(is, id);
     Points points = readVector<Point>(is);
     polygons[id] = ConvexPolygon(id, points);
 }
