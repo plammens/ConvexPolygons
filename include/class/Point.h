@@ -1,6 +1,6 @@
 // Interface for 2D points
-#ifndef CONVEXPOLYGON_POINT_H
-#define CONVEXPOLYGON_POINT_H
+#ifndef CONVEXPOLYGONS_POINT_H
+#define CONVEXPOLYGONS_POINT_H
 
 #include <iostream>
 #include <vector>

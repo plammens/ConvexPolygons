@@ -1,5 +1,5 @@
-#ifndef CONVEXPOLYGONS_HANDLERS_H
-#define CONVEXPOLYGONS_HANDLERS_H
+#ifndef CONVEXPOLYGONSS_HANDLERS_H
+#define CONVEXPOLYGONSS_HANDLERS_H
 
 #include <functional>
 #include <cassert>
@@ -66,4 +66,4 @@ const map<string, CommandHandler> commandHandler = {
 CommandHandler getCommandHandler(const string &keyword);
 
 
-#endif //CONVEXPOLYGONS_HANDLERS_H
+#endif //CONVEXPOLYGONSS_HANDLERS_H

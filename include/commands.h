@@ -1,5 +1,5 @@
-#ifndef CONVEXPOLYGONS_COMMANDS_H
-#define CONVEXPOLYGONS_COMMANDS_H
+#ifndef CONVEXPOLYGONSS_COMMANDS_H
+#define CONVEXPOLYGONSS_COMMANDS_H
 
 #include <string>
 #include <map>
@@ -51,4 +51,4 @@ void load(const string &file, PolygonMap &polygons);
 
 
 
-#endif //CONVEXPOLYGONS_COMMANDS_H
+#endif //CONVEXPOLYGONSS_COMMANDS_H

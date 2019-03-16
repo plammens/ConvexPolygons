@@ -2,8 +2,8 @@
 // Created by paolo on 3/14/19.
 //
 
-#ifndef CONVEXPOLYGONS_ERRORS_H
-#define CONVEXPOLYGONS_ERRORS_H
+#ifndef CONVEXPOLYGONSS_ERRORS_H
+#define CONVEXPOLYGONSS_ERRORS_H
 
 #include <exception>
 #include <sstream>
@@ -85,4 +85,4 @@ public:
     }
 };
 
-#endif //CONVEXPOLYGONS_ERRORS_H
+#endif //CONVEXPOLYGONSS_ERRORS_H

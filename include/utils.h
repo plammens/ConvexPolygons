@@ -1,5 +1,5 @@
-#ifndef CONVEXPOLYGON_UTILS_H
-#define CONVEXPOLYGON_UTILS_H
+#ifndef CONVEXPOLYGONS_UTILS_H
+#define CONVEXPOLYGONS_UTILS_H
 
 #include <vector>
 #include <iostream>
@@ -89,4 +89,4 @@ ValueT<InputIt> average(InputIt first, InputIt last) {
 }
 
 
-#endif //CONVEXPOLYGON_UTILS_H
+#endif //CONVEXPOLYGONS_UTILS_H
