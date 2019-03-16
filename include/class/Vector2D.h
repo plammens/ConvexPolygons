@@ -9,4 +9,9 @@ struct Vector2D {
     double norm() const;
 };
 
+// Some basic arithmetic
+Vector2D operator*(double a, const Vector2D &u);
+Vector2D operator/(const Vector2D &u, double a);
+Vector2D operator+(const Vector2D &u, const Vector2D &v);
+
 #endif //CONVEXPOLYGON_GEOMETRICVECTOR_H
