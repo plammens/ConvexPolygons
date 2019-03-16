@@ -13,9 +13,7 @@ typedef function<void(const string &, istream &, PolygonMap &)> CommandHandler;
 // ---------------------------------------------------------------
 
 
-// Gets polygon with ID `id` in `polygons`; throws `UndefinedID` if nonexistent
-const ConvexPolygon &getPolygon(const string &id, const PolygonMap &polygons);
-ConvexPolygon &getPolygon(const string &id, PolygonMap &polygons);  // non-const version
+// non-const version
 
 // Subroutine to handle creation/assignment of a single polygon
 void runPolygonAssignment(const string &keyword, istream &argStream, PolygonMap &polygons);

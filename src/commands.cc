@@ -1,14 +1,29 @@
+#include <iostream>
 #include <fstream>
+#include <commands.h>
+
 #include "handlers.h"
 #include "errors.h"
 #include "utils.h"
 
 
+const ConvexPolygon &getPolygon(const string &id, const PolygonMap &polygons) {
+    auto it = polygons.find(id);
+    if (it == polygons.end()) throw UndefinedID(id);
+    return it->second;
+}
+
+
+ConvexPolygon &getPolygon(const string &id, PolygonMap &polygons) {
+    // Behaviour is same as const version, so we just cast away to avoid duplication
+    return const_cast<ConvexPolygon &>(getPolygon(id, const_cast<const PolygonMap &>(polygons)));
+}
+
 void readAndSavePolygon(istream &is, PolygonMap &polygons) {
     string id;
     getArgs(is, id);
     Points points = readVector<Point>(is);
-    polygons[id] = ConvexPolygon(id, points);
+    polygons[id] = ConvexPolygon(points);
 }
 
 void save(const string &file, const vector<string> &polygonIDs, const PolygonMap &polygons) {
@@ -20,12 +35,13 @@ void save(const string &file, const vector<string> &polygonIDs, const PolygonMap
     ostringstream oss;
     for (const string &id : polygonIDs) {
         const ConvexPolygon &pol = getPolygon(id, polygons);  // may throw UndefinedID
-        oss << pol << endl;
+        printPolygon(id, pol, fileStream);
     }
 
     fileStream << oss.str();
     fileStream.close();
 }
+
 
 void load(const string &file, PolygonMap &polygons) {
     ifstream fileStream;
@@ -41,3 +57,10 @@ void load(const string &file, PolygonMap &polygons) {
     fileStream.close();
 }
 
+
+void printPolygon(const string &id, const ConvexPolygon &pol, ostream &os) {
+    os << id;
+    for (const Point &P : pol.getVertices())
+        os << ' ' << P;
+    os << endl;
+}

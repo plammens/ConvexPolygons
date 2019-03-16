@@ -5,19 +5,6 @@
 #include "utils.h"
 
 
-const ConvexPolygon &getPolygon(const string &id, const PolygonMap &polygons) {
-    auto it = polygons.find(id);
-    if (it == polygons.end()) throw UndefinedID(id);
-    return it->second;
-}
-
-
-ConvexPolygon &getPolygon(const string &id, PolygonMap &polygons) {
-    // Behaviour is same as const version, so we just cast away to avoid duplication
-    return const_cast<ConvexPolygon &>(getPolygon(id, const_cast<const PolygonMap &>(polygons)));
-}
-
-
 void runPolygonAssignment(const string &keyword, istream &argStream, PolygonMap &polygons) {
     assert(keyword == CMD::POLYGON);  // TODO: remove assert
     readAndSavePolygon(argStream, polygons);
@@ -30,7 +17,7 @@ void runPolygonMethod(const string &keyword, istream &argStream, PolygonMap &pol
     getArgs(argStream, id);
     ConvexPolygon &pol = getPolygon(id, polygons);  // throws `UndefinedID` if nonexistent
 
-         if (keyword == CMD::PRINT) pol.print();
+         if (keyword == CMD::PRINT) printPolygon(id, pol);
     else if (keyword == CMD::AREA) cout << pol.area() << endl;
     else if (keyword == CMD::PERIMETER) cout << pol.perimeter() << endl;
     else if (keyword == CMD::VERTICES) cout << pol.vertexCount() << endl;
@@ -38,7 +25,7 @@ void runPolygonMethod(const string &keyword, istream &argStream, PolygonMap &pol
     else if (keyword == CMD::SETCOL) {
         double r, g, b;
         getArgs(argStream, r, g, b);
-        pol.setcol(r, g, b);
+             pol.setColor(r, g, b);
         printOk();
     }
     else assert(false);  // Shouldn't get here

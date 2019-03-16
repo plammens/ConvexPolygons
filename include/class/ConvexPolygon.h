@@ -17,21 +17,19 @@ typedef vector<Point> Points;
 class ConvexPolygon {
 private:
     Points vertices;
-    string ID;
     RGBColor color;
 
 public:
     ConvexPolygon() = default;
-    ConvexPolygon(const string &ID, Points &points);
-
+    ConvexPolygon(Points &points);
     unsigned long vertexCount() const;
+
     double area() const;
     double perimeter() const;
-    
-    void setcol(double r, double g, double b);
 
-    void print() const;
-    friend ostream& operator<<(ostream&, const ConvexPolygon&);
+    const Points &getVertices() const;
+    const RGBColor &getColor() const;
+    void setColor(double r, double g, double b);
 };
 
 

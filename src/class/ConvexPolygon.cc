@@ -9,7 +9,7 @@ using namespace std;
 
 
 // Constructs a convex polygon from a given list of points with a Graham scan
-ConvexPolygon::ConvexPolygon(const string &ID, Points &points) : ID(move(ID)) {
+ConvexPolygon::ConvexPolygon(Points &points) {
     if (points.empty()) return;
 
     // Get point with lowest y coordinate:
@@ -32,6 +32,7 @@ unsigned long ConvexPolygon::vertexCount() const {
     return vertices.size();
 }
 
+
 // Returns the area of the polygon
 double ConvexPolygon::area() const {
     // We use a lambda to calculate the are of the polygon with the shoelace formula
@@ -42,29 +43,22 @@ double ConvexPolygon::area() const {
     return abs(sum/2);
 }
 
+
 // Returns perimeter of polygon
 double ConvexPolygon::perimeter() const {
     // Sum of euclidean distance between pairs of adjacent points
     return cyclicSum(vertices,
-                     // This lambda returns euclidean distance
+            // This lambda returns euclidean distance
                      [](const Point &P, const Point &Q) {
                          return distance(P, Q);
                      });
 }
 
 
-// Prints the vertices of the polygon to stdout
-void ConvexPolygon::print() const {
-    cout << *this << endl;
-}
+// ---------------- Getters and setters ----------------
 
-// Writes polygon in text format to output stream
-ostream& operator<<(ostream& os, const ConvexPolygon& pol) {
-    os << pol.ID;
-    for (const Point &P : pol.vertices) os << ' ' << P;
-    return os;
-}
+const Points &ConvexPolygon::getVertices() const { return vertices; }
 
-void ConvexPolygon::setcol(double r, double g, double b) {
-    color = {r, g, b};
-}
+const RGBColor &ConvexPolygon::getColor() const { return color; }
+
+void ConvexPolygon::setColor(double r, double g, double b) { color = {r, g, b}; }
