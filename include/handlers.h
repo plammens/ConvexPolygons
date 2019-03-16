@@ -37,7 +37,7 @@ void printOk() {
 inline
 void printError(const string &error) {
     // \e[31m is the ANSI escape sequence for red text
-    cout << "\e[31;1m" << "error: " << error << endl;
+    cout << "\e[31;1m" << "error: " << error << "\e[0m" << endl;
 }
 
 
