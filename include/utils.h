@@ -11,6 +11,10 @@
 
 using namespace std;
 
+template<typename Iter>
+using ValueT = typename iterator_traits<Iter>::value_type;
+
+
 template<typename T>
 vector<T> readVector(istream &is) {
     vector<T> vec;
@@ -74,9 +78,14 @@ void getArgs(istream &argStream, T &first, Types &... slots) {
 
 
 // Average of a vector whose type supports operator+ and operator/
-template<typename ArithmeticType>
-ArithmeticType average(const vector<ArithmeticType> &vec) {
-    return accumulate(vec.begin(), vec.end(), ArithmeticType{})/vec.size();
+template<typename R, class InputIt, class BinaryOp>
+R average(InputIt first, InputIt last, BinaryOp op) {
+    return accumulate(first, last, R{}, op)/distance(first, last);
+}
+
+template<class InputIt>
+ValueT<InputIt> average(InputIt first, InputIt last) {
+    return average(first, last, plus<ValueT<InputIt>>());
 }
 
 

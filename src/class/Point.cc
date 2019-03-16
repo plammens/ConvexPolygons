@@ -1,4 +1,5 @@
 #include "class/Point.h"
+#include "utils.h"
 
 
 // Returns the vector difference between two points
@@ -14,6 +15,7 @@ bool isClockwiseTurn(const Point &A, const Point &B, const Point &C) {
 
 //Equality operators
 bool operator==(const Point &A, const Point &B) { return A.x == B.x and A.y == B.y; }
+
 bool operator!=(const Point &A, const Point &B) { return not(A == B); }
 
 
@@ -63,3 +65,18 @@ double distance(const Point &A, const Point &B) {
     return (A - B).norm();
 }
 
+Point operator+(const Point &A, const Vector2D &u) {
+    return {A.x + u.x, A.y + u.y};
+}
+
+Point barycenter(const Points &points) {
+    if (points.empty()) throw ValueError("no points given for barycenter");
+
+    // Here we calculate the "average" of the points seen as vector.
+    // We use a custom binary operator that converts `Point`s to `Vector2D`s along the way.
+    Vector2D averageVec = average<Vector2D>(points.cbegin(), points.cend(),
+                                            [](const Vector2D &u, const Point &P) {
+                                                return u + (const Vector2D &)(P);
+                                            });
+    return Point{0, 0} + averageVec;
+}

@@ -11,9 +11,6 @@
 using namespace std;
 
 
-typedef vector<Point> Points;
-
-
 class ConvexPolygon {
 private:
     Points vertices;
@@ -26,6 +23,7 @@ public:
 
     double area() const;
     double perimeter() const;
+    Point centroid() const;
 
     const Points &getVertices() const;
     const RGBColor &getColor() const;

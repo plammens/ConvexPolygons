@@ -3,18 +3,25 @@
 #define CONVEXPOLYGON_POINT_H
 
 #include <iostream>
+#include <vector>
 #include "class/Vector2D.h"
+
 
 using namespace std;
 
-
-// 2D Point representation
+// 2D Point representation (as aggregate type)
 struct Point {
     double x, y;
 };
 
+typedef vector<Point> Points;  // alias
+
+
 // Vector difference between points
 Vector2D operator-(const Point &A, const Point &B);
+
+// Adding a vector to a point (yields another point)
+Point operator+(const Point &A, const Vector2D& u);
 
 // Equality comparison between points
 bool operator==(const Point &A, const Point &B);
@@ -38,6 +45,9 @@ namespace PointComp {
 
 // Returns whether the vector AC lies clockwise with respect to AB
 bool isClockwiseTurn(const Point &A, const Point &B, const Point &C);
+
+// Barycenter of a vector of points
+Point barycenter(const Points &points);  // TODO: should do for any container?
 
 // Reads space-separated x, y coordinates into P
 istream &operator>>(istream &is, Point &P);

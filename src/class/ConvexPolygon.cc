@@ -1,7 +1,8 @@
 #include <algorithm>
 #include <iostream>
+#include <class/ConvexPolygon.h>
 
-#include "class/ConvexPolygon.h"
+
 #include "utils.h"
 
 
@@ -54,6 +55,10 @@ double ConvexPolygon::perimeter() const {
                      });
 }
 
+
+Point ConvexPolygon::centroid() const {
+    return barycenter(vertices);
+}
 
 // ---------------- Getters and setters ----------------
 

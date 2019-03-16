@@ -21,7 +21,7 @@ void runPolygonMethod(const string &keyword, istream &argStream, PolygonMap &pol
     else if (keyword == CMD::AREA) cout << pol.area() << endl;
     else if (keyword == CMD::PERIMETER) cout << pol.perimeter() << endl;
     else if (keyword == CMD::VERTICES) cout << pol.vertexCount() << endl;
-    else if (keyword == CMD::CENTROID);  // TODO: centroid
+    else if (keyword == CMD::CENTROID) cout << pol.centroid() << endl;
     else if (keyword == CMD::SETCOL) {
         double r, g, b;
         getArgs(argStream, r, g, b);
