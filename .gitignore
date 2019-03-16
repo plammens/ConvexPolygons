@@ -34,5 +34,5 @@
 *.app
 
 README.html
-bin/
-obj/
+build/
+out/

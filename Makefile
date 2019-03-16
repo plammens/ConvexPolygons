@@ -1,72 +1,83 @@
-### Macros ###
+### Global environment variables ###
 
-## Directory names (for source, binaries, header and object files) ##
+## Directory names (for source, binaries, headers, objects...) ##
+
 INCLUDE_DIR = include
 SRC_DIR = src
 CLASS_SUBDIR = class
-BIN_DIR = bin
-MAIN = main
-OBJ_DIR = obj
+
+BUILD_DIR = build
+BIN_DIR = $(BUILD_DIR)/bin
+OBJ_DIR = $(BUILD_DIR)/obj
+DEP_DIR = $(BUILD_DIR)/depend
+
+# dircetory for program's output files:
 OUT_DIR = out
+
+# name of main program:
+MAIN = main
+MAIN_EXE = $(BIN_DIR)/$(MAIN)# output path for main program
 
 ## Compiler options ##
 CXX = g++
 CXXFLAGS = -Wall -I $(INCLUDE_DIR) -std=c++11 -O2
 
+
+### Auto-detected files and paths ###
+
 ## Directory search paths
-vpath %.h $(INCLUDE_DIR)
-vpath %.h $(INCLUDE_DIR)/$(CLASS_SUBDIR)
-vpath %.cc $(SRC_DIR)
-vpath %.cc $(SRC_DIR)/$(CLASS_SUBDIR)
+vpath %.h $(shell find $(INCLUDE_DIR) -type d)
+vpath %.cc $(shell find $(SRC_DIR) -type d)
 
 ## Auto-detected names of header/source pairs (assuming same name): ##
-module_sources = $(wildcard $(SRC_DIR)/*.cc $(SRC_DIR)/$(CLASS_SUBDIR)/*.cc)
-module_headers = $(patsubst $(SRC_DIR)/%.cc,$(INCLUDE_DIR)%.h, $(module_sources))
-module_objects = $(patsubst $(SRC_DIR)/%.cc,$(OBJ_DIR)/%.o, $(module_sources))
-
-all_headers = $(wildcard $(INCLUDE_DIR)/*.h $(INCLUDE_DIR)/$(CLASS_SUBDIR)/*.h)
+sources = $(shell find $(SRC_DIR) -type f -name '*.cc')
+objects = $(patsubst %.cc,$(OBJ_DIR)/%.o, $(notdir $(sources)))
+depends = $(patsubst $(OBJ_DIR)/%.o,$(DEP_DIR)/%.d,$(objects))
+# ^^^ dependency files for automatic Makefile rule prerequisites
 
 
 ### Rules ###
 
-.PHONY: all clean clean_out run test
+.PHONY: all compile run clean clean_build clean_out
 
-all: $(BIN_DIR)/$(MAIN)
+all: $(MAIN_EXE)
 
-clean: clean_out
-	rm -r -f $(BIN_DIR) $(OBJ_DIR)
-
-clean_out:
-	rm -f $(OUT_DIR)/*
+compile: $(objects)
 
 run: all
 	@printf "\e[1mExecuting main program... \n\n\e[0m"
-	@bin/main
+	@$(MAIN_EXE)
 
-test:
-	$(info [$(VPATH)])
+clean: clean_build clean_out
 
+clean_build:
+	rm -rf ./$(BUILD_DIR)
+
+clean_out:
+	rm -rf ./$(OUT_DIR)
 
 
 ## Non-phony ##
 
+-include $(depends)  # include dependecy relationships
+
 # This rule links all object files together and outputs the main executable.
-$(BIN_DIR)/$(MAIN): $(module_objects) | $(BIN_DIR)
+$(MAIN_EXE): $(objects) | $(BIN_DIR)
 	$(CXX) $^ -o $@ $(CXXFLAGS)
 
 # This rule compiles source files into their corresponding object file.
-$(OBJ_DIR)/%.o: %.cc $(all_headers) | $(OBJ_DIR) $(OBJ_DIR)/$(CLASS_SUBDIR)
-	$(CXX) -c $< -o $@ $(CXXFLAGS)
+# As a side effect of compilation we generate a dependency file (with the `-MMD -MF` flags)
+$(OBJ_DIR)/%.o: %.cc | $(OBJ_DIR) $(DEP_DIR)
+	$(CXX) -c $< -o $@ $(CXXFLAGS) -MMD -MF $(patsubst $(OBJ_DIR)/%.o,$(DEP_DIR)/%.d,$@)
 
 
-# Create binary file directory if it doesn't exist
+# Create build directories if nonexistent:
+
 $(BIN_DIR):
 	mkdir -p $(BIN_DIR)
 
-# Create object file directory if it doesn't exist
 $(OBJ_DIR):
 	mkdir -p $(OBJ_DIR)
 
-# Create class subdirectory in `objects` directory
-$(OBJ_DIR)/$(CLASS_SUBDIR): $(OBJ_DIR)
-	mkdir -p $(OBJ_DIR)/$(CLASS_SUBDIR)
+$(DEP_DIR):
+	mkdir -p $(DEP_DIR)
