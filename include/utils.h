@@ -5,6 +5,7 @@
 #include <iostream>
 #include <sstream>
 #include <string>
+#include <numeric>
 #include "errors.h"
 
 
@@ -69,6 +70,13 @@ template<typename T, typename ... Types>
 void getArgs(istream &argStream, T &first, Types &... slots) {
     getArgs(argStream, first);
     getArgs(argStream, slots...);
+}
+
+
+// Average of a vector whose type supports operator+ and operator/
+template<typename ArithmeticType>
+ArithmeticType average(const vector<ArithmeticType> &vec) {
+    return accumulate(vec.begin(), vec.end(), ArithmeticType{})/vec.size();
 }
 
 
