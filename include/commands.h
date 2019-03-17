@@ -1,5 +1,5 @@
-#ifndef CONVEXPOLYGONSS_COMMANDS_H
-#define CONVEXPOLYGONSS_COMMANDS_H
+#ifndef CONVEXPOLYGONS_COMMANDS_H
+#define CONVEXPOLYGONS_COMMANDS_H
 
 #include <string>
 #include <map>
@@ -9,7 +9,7 @@
 typedef map<string, ConvexPolygon> PolygonMap;
 
 
-// Names of all avaliable command keywords
+// Names of all available command keywords
 namespace CMD {
     const string
             POLYGON = "polygon",
@@ -23,6 +23,7 @@ namespace CMD {
             UNION = "union",
             INSIDE = "inside",
             BBOX = "bbox",
+            LIST = "list",
             SAVE = "save",
             LOAD = "load",
             DRAW = "draw";
@@ -43,6 +44,9 @@ void readAndSavePolygon(istream &is, PolygonMap &polygons);
 // Print polygon to an output stream in plain format
 void printPolygon(const string &id, const ConvexPolygon &pol, ostream &os = cout);
 
+// Print a list of defined polygon identifiers
+void list(const PolygonMap &polygons);
+
 // Save a list of polygons in a text file
 void save(const string &file, const vector<string> &polygonIDs, const PolygonMap &polygons);
 
@@ -51,4 +55,4 @@ void load(const string &file, PolygonMap &polygons);
 
 
 
-#endif //CONVEXPOLYGONSS_COMMANDS_H
+#endif //CONVEXPOLYGONS_COMMANDS_H

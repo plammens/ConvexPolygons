@@ -5,7 +5,7 @@
 #include "utils.h"
 
 
-void runPolygonAssignment(const string &keyword, istream &argStream, PolygonMap &polygons) {
+void runPolygonManagement(const string &keyword, istream &argStream, PolygonMap &polygons) {
     assert(keyword == CMD::POLYGON);  // TODO: remove assert
     readAndSavePolygon(argStream, polygons);
     printOk();
@@ -53,10 +53,18 @@ void runIOCommand(const string &keyword, istream &argStream, PolygonMap &polygon
 }
 
 
+void runNullaryCommand(const string &keyword, istream &argStream, PolygonMap &polygons) {
+    if (keyword == CMD::LIST) list(polygons);
+    else assert(false); // Shouldn't get here
+
+    if (not (argStream >> ws).eof()) throw UnusedArgument(keyword + " takes no arguments");
+}
+
+
 // -------------------
 
 CommandHandler getCommandHandler(const string &keyword) {
-    auto it = commandHandler.find(keyword);
-    if (it == commandHandler.end()) throw UnrecognizedCommand(keyword);
+    auto it = cmdHandlerMap.find(keyword);
+    if (it == cmdHandlerMap.end()) throw UnknownCommand(keyword);
     return it->second;
 }

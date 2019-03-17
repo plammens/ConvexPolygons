@@ -1,5 +1,5 @@
-#ifndef CONVEXPOLYGONSS_RGBCOLOR_H
-#define CONVEXPOLYGONSS_RGBCOLOR_H
+#ifndef CONVEXPOLYGONS_RGBCOLOR_H
+#define CONVEXPOLYGONS_RGBCOLOR_H
 
 #include <initializer_list>
 #include <cassert>
@@ -23,4 +23,4 @@ public:
 };
 
 
-#endif //CONVEXPOLYGONSS_RGBCOLOR_H
+#endif //CONVEXPOLYGONS_RGBCOLOR_H

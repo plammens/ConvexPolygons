@@ -19,12 +19,14 @@ ConvexPolygon &getPolygon(const string &id, PolygonMap &polygons) {
     return const_cast<ConvexPolygon &>(getPolygon(id, const_cast<const PolygonMap &>(polygons)));
 }
 
+
 void readAndSavePolygon(istream &is, PolygonMap &polygons) {
     string id;
     getArgs(is, id);
     Points points = readVector<Point>(is);
     polygons[id] = ConvexPolygon(points);
 }
+
 
 void save(const string &file, const vector<string> &polygonIDs, const PolygonMap &polygons) {
     ofstream fileStream;
@@ -63,4 +65,13 @@ void printPolygon(const string &id, const ConvexPolygon &pol, ostream &os) {
     for (const Point &P : pol.getVertices())
         os << ' ' << P;
     os << endl;
+}
+
+
+void list(const PolygonMap &polygons) {
+    auto it = polygons.begin();
+    if (it != polygons.end()) cout << it->first;
+    for (++it; it != polygons.end(); ++it)
+        cout << ' ' << it->first;
+    cout << endl;
 }

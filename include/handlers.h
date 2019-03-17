@@ -1,5 +1,5 @@
-#ifndef CONVEXPOLYGONSS_HANDLERS_H
-#define CONVEXPOLYGONSS_HANDLERS_H
+#ifndef CONVEXPOLYGONS_HANDLERS_H
+#define CONVEXPOLYGONS_HANDLERS_H
 
 #include <functional>
 #include <cassert>
@@ -16,7 +16,7 @@ typedef function<void(const string &, istream &, PolygonMap &)> CommandHandler;
 // non-const version
 
 // Subroutine to handle creation/assignment of a single polygon
-void runPolygonAssignment(const string &keyword, istream &argStream, PolygonMap &polygons);
+void runPolygonManagement(const string &keyword, istream &argStream, PolygonMap &polygons);
 
 // Subroutine to handle commands involving printing info about a single polygon
 void runPolygonMethod(const string &keyword, istream &argStream, PolygonMap &polygons);
@@ -27,6 +27,9 @@ void runOperationCommand(const string &keyword, istream &argStream, PolygonMap &
 // Subroutine to handle file-related commands
 void runIOCommand(const string &keyword, istream &argStream, PolygonMap &polygons);
 
+// Run commands that take no arguments
+void runNullaryCommand(const string &keyword, istream &argStream, PolygonMap &polygons);
+
 
 inline
 void printOk() {
@@ -36,8 +39,14 @@ void printOk() {
 
 inline
 void printError(const string &error) {
-    // \e[31m is the ANSI escape sequence for red text
+    // \e[31;1m is the ANSI escape sequence for bright red text
     cout << "\e[31;1m" << "error: " << error << "\e[0m" << endl;
+}
+
+inline
+void printWarning(const string &warning) {
+    // \e[33m is the ANSI escape sequence for yellow text
+    cout << "\e[33m" << "warning: " << warning << "\e[0m" << endl;
 }
 
 
@@ -45,8 +54,8 @@ void printError(const string &error) {
 
 
 // Maps each command keyword to its corresponding command handler
-const map<string, CommandHandler> commandHandler = {
-        {CMD::POLYGON,      runPolygonAssignment},
+const map<string, CommandHandler> cmdHandlerMap = {
+        {CMD::POLYGON,      runPolygonManagement},
         {CMD::PRINT,        runPolygonMethod},
         {CMD::AREA,         runPolygonMethod},
         {CMD::PERIMETER,    runPolygonMethod},
@@ -57,6 +66,7 @@ const map<string, CommandHandler> commandHandler = {
         {CMD::UNION,        runOperationCommand},
         {CMD::INSIDE,       runOperationCommand},
         {CMD::BBOX,         runOperationCommand},
+        {CMD::LIST,         runNullaryCommand},
         {CMD::SAVE,         runIOCommand},
         {CMD::LOAD,         runIOCommand},
         {CMD::DRAW,         runIOCommand}
@@ -66,4 +76,4 @@ const map<string, CommandHandler> commandHandler = {
 CommandHandler getCommandHandler(const string &keyword);
 
 
-#endif //CONVEXPOLYGONSS_HANDLERS_H
+#endif //CONVEXPOLYGONS_HANDLERS_H

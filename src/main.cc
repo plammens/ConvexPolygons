@@ -17,12 +17,14 @@ void parseCommand(const string &command, PolygonMap &polygons) {
         istringstream iss(command);
         string keyword;
         iss >> keyword;
-        // Get appropriate handler: (may throw `UnrecognizedCommand`)
+        // Get appropriate handler: (may throw `UnknownCommand`)
         CommandHandler handler = getCommandHandler(keyword);
         handler(keyword, iss, polygons);
 
     } catch (Error &error) {
-        printError(error.message());
+        printError(error.what());
+    } catch (Warning &warning) {
+        printWarning(warning.what());
     }
 }
 
