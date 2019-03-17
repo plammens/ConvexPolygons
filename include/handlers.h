@@ -16,19 +16,19 @@ typedef function<void(const string &, istream &, PolygonMap &)> CommandHandler;
 // non-const version
 
 // Subroutine to handle creation/assignment of a single polygon
-void runPolygonManagement(const string &keyword, istream &argStream, PolygonMap &polygons);
+void handlePolygonManagement(const string &keyword, istream &argStream, PolygonMap &polygons);
 
 // Subroutine to handle commands involving printing info about a single polygon
-void runPolygonMethod(const string &keyword, istream &argStream, PolygonMap &polygons);
+void handlePolygonMethod(const string &keyword, istream &argStream, PolygonMap &polygons);
 
 // Subroutine to handle operations with polygons
-void runOperationCommand(const string &keyword, istream &argStream, PolygonMap &polygons);
+void handlePolygonOperation(const string &keyword, istream &argStream, PolygonMap &polygons);
 
 // Subroutine to handle file-related commands
-void runIOCommand(const string &keyword, istream &argStream, PolygonMap &polygons);
+void handleIOCommand(const string &keyword, istream &argStream, PolygonMap &polygons);
 
 // Run commands that take no arguments
-void runNullaryCommand(const string &keyword, istream &argStream, PolygonMap &polygons);
+void handleNullaryCommand(const string &keyword, istream &argStream, PolygonMap &polygons);
 
 
 inline
@@ -55,21 +55,21 @@ void printWarning(const string &warning) {
 
 // Maps each command keyword to its corresponding command handler
 const map<string, CommandHandler> cmdHandlerMap = {
-        {CMD::POLYGON,      runPolygonManagement},
-        {CMD::PRINT,        runPolygonMethod},
-        {CMD::AREA,         runPolygonMethod},
-        {CMD::PERIMETER,    runPolygonMethod},
-        {CMD::VERTICES,     runPolygonMethod},
-        {CMD::CENTROID,     runPolygonMethod},
-        {CMD::SETCOL,       runPolygonMethod},
-        {CMD::INTERSECTION, runOperationCommand},
-        {CMD::UNION,        runOperationCommand},
-        {CMD::INSIDE,       runOperationCommand},
-        {CMD::BBOX,         runOperationCommand},
-        {CMD::LIST,         runNullaryCommand},
-        {CMD::SAVE,         runIOCommand},
-        {CMD::LOAD,         runIOCommand},
-        {CMD::DRAW,         runIOCommand}
+        {CMD::POLYGON,      handlePolygonManagement},
+        {CMD::PRINT,        handlePolygonMethod},
+        {CMD::AREA,         handlePolygonMethod},
+        {CMD::PERIMETER,    handlePolygonMethod},
+        {CMD::VERTICES,     handlePolygonMethod},
+        {CMD::CENTROID,     handlePolygonMethod},
+        {CMD::SETCOL,       handlePolygonMethod},
+        {CMD::INTERSECTION, handlePolygonOperation},
+        {CMD::UNION,        handlePolygonOperation},
+        {CMD::INSIDE,       handlePolygonOperation},
+        {CMD::BBOX,         handlePolygonOperation},
+        {CMD::LIST,         handleNullaryCommand},
+        {CMD::SAVE,         handleIOCommand},
+        {CMD::LOAD,         handleIOCommand},
+        {CMD::DRAW,         handleIOCommand}
 };
 
 // Gets the command handler associated to the command `keyword`

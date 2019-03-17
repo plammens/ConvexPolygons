@@ -5,19 +5,19 @@
 #include "utils.h"
 
 
-void runPolygonManagement(const string &keyword, istream &argStream, PolygonMap &polygons) {
+void handlePolygonManagement(const string &keyword, istream &argStream, PolygonMap &polygons) {
     assert(keyword == CMD::POLYGON);  // TODO: remove assert
     readAndSavePolygon(argStream, polygons);
     printOk();
 }
 
 
-void runPolygonMethod(const string &keyword, istream &argStream, PolygonMap &polygons) {
+void handlePolygonMethod(const string &keyword, istream &argStream, PolygonMap &polygons) {
     string id;
     getArgs(argStream, id);
     ConvexPolygon &pol = getPolygon(id, polygons);  // throws `UndefinedID` if nonexistent
 
-         if (keyword == CMD::PRINT) printPolygon(id, pol);
+    if      (keyword == CMD::PRINT) printPolygon(id, pol);
     else if (keyword == CMD::AREA) cout << pol.area() << endl;
     else if (keyword == CMD::PERIMETER) cout << pol.perimeter() << endl;
     else if (keyword == CMD::VERTICES) cout << pol.vertexCount() << endl;
@@ -32,32 +32,32 @@ void runPolygonMethod(const string &keyword, istream &argStream, PolygonMap &pol
 }
 
 
-void runOperationCommand(const string &keyword, istream &argStream, PolygonMap &polygons) {
+void handlePolygonOperation(const string &keyword, istream &argStream, PolygonMap &polygons) {
     // TODO: operation commands
 }
 
 
-void runIOCommand(const string &keyword, istream &argStream, PolygonMap &polygons) {
+void handleIOCommand(const string &keyword, istream &argStream, PolygonMap &polygons) {
     string file;
     argStream >> file;
     if (file.empty()) throw SyntaxError("no file specified");
     file = OUT_DIR + file;  // prefix with output directory
     vector<string> polygonIDs = readVector<string>(argStream);
 
-    if (keyword == CMD::SAVE) save(file, polygonIDs, polygons);
+    if      (keyword == CMD::SAVE) save(file, polygonIDs, polygons);
     else if (keyword == CMD::LOAD) load(file, polygons);
-    else if (keyword == CMD::DRAW) {}
+    else if (keyword == CMD::DRAW);
     else assert(false); // Shouldn't get here
 
     printOk();
 }
 
 
-void runNullaryCommand(const string &keyword, istream &argStream, PolygonMap &polygons) {
+void handleNullaryCommand(const string &keyword, istream &argStream, PolygonMap &polygons) {
     if (keyword == CMD::LIST) list(polygons);
     else assert(false); // Shouldn't get here
 
-    if (not (argStream >> ws).eof()) throw UnusedArgument(keyword + " takes no arguments");
+    if (not (argStream >> ws).eof()) throw UnusedArgument(format("`%` takes no arguments", keyword));
 }
 
 
