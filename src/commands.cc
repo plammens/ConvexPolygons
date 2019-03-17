@@ -69,9 +69,11 @@ void printPolygon(const string &id, const ConvexPolygon &pol, ostream &os) {
 
 
 void list(const PolygonMap &polygons) {
-    auto it = polygons.begin();
-    if (it != polygons.end()) cout << it->first;
-    for (++it; it != polygons.end(); ++it)
-        cout << ' ' << it->first;
+    if (not polygons.empty()) {
+        auto it = polygons.begin();
+        cout << it->first;
+        for (++it; it != polygons.end(); ++it)
+            cout << ' ' << it->first;
+    }
     cout << endl;
 }
