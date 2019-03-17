@@ -1,9 +1,5 @@
-//
-// Created by paolo on 3/14/19.
-//
-
-#ifndef CONVEXPOLYGONSS_ERRORS_H
-#define CONVEXPOLYGONSS_ERRORS_H
+#ifndef CONVEXPOLYGONS_ERRORS_H
+#define CONVEXPOLYGONS_ERRORS_H
 
 #include <exception>
 #include <sstream>
@@ -11,78 +7,75 @@
 
 using namespace std;
 
-class Error : public exception {
+
+class BaseException : public exception {
 protected:
-    string spec;
+    string message;
 
-public:
-    Error(const char *spec = "") : spec(spec) {}
-    Error(const string &spec = "") : spec(spec) {}
-
-    const string message() const {
-        ostringstream oss(baseMessage(), ios::ate);
-        if (not spec.empty()) oss << " (" << spec << ')';
-        return oss.str();
+    BaseException() = default;
+    BaseException(const string &baseMessage, const string &specific) {
+        ostringstream oss(baseMessage, ios::ate);
+        if (not specific.empty()) oss << " (" << specific << ')';
+        message = oss.str();
     }
 
-    virtual
-    const char *baseMessage() const {
-        return "base error";
-    };
+public:
+    const char *what() const noexcept override {
+        return message.c_str();
+    }
 };
 
+// ---------------- Errors -----------------------
 
-class UnrecognizedCommand : public Error {
+class Error : public virtual BaseException {};
+
+
+class UnknownCommand : public Error {
 public:
-    UnrecognizedCommand(const string &spec) : Error(spec) {}
-    UnrecognizedCommand(const char *spec) : Error(spec) {}
-
-    const char *baseMessage() const override {
-        return "unrecognized command";
-    }
+    static constexpr const char *base = "unrecognized command";
+    UnknownCommand(const string &specific) : BaseException(base, specific) {}
 };
 
 
 class SyntaxError : public Error {
 public:
-    SyntaxError(const string &spec) : Error(spec) {}
-    SyntaxError(const char *spec) : Error(spec) {}
-
-    const char *baseMessage() const override {
-        return "wrong syntax";
-    }
+    static constexpr const char *base = "invalid command syntax";
+    SyntaxError(const string &specific) : BaseException(base, specific) {}
 };
+
 
 class ValueError : public Error {
 public:
-    ValueError(const string &spec) : Error(spec) {}
-    ValueError(const char *spec) : Error(spec) {}
-
-    const char *baseMessage() const override {
-        return "invalid argument value";
-    }
+    static constexpr const char *base = "invalid value";
+    ValueError(const string &specific) : BaseException(base, specific) {}
 };
 
 
 class UndefinedID : public Error {
 public:
-    UndefinedID(const string &spec) : Error(spec) {}
-    UndefinedID(const char *spec) : Error(spec) {}
-
-    const char *baseMessage() const override {
-        return "undefined ID";
-    }
+    static constexpr const char *base = "undefined ID";
+    UndefinedID(const string &specific) : BaseException(base, specific) {}
 };
 
 
 class IOError : public Error {
 public:
-    IOError(const string &spec) : Error(spec) {}
-    IOError(const char *spec) : Error(spec) {}
-
-    const char *baseMessage() const override {
-        return "unable to access file";
-    }
+    static constexpr const char *base = "unrecognized command";
+    IOError(const string &specific) : BaseException(base, specific) {}
 };
 
-#endif //CONVEXPOLYGONSS_ERRORS_H
+
+// -------------------- Warnings ----------------------
+
+
+class Warning : public virtual BaseException {};
+
+
+class UnusedArgument : public Warning {
+public:
+    static constexpr const char *base = "unused argument(s)";
+    UnusedArgument(const string &specific) : BaseException(base, specific) {}
+};
+
+
+#endif //CONVEXPOLYGONS_ERRORS_H
