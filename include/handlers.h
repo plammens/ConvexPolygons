@@ -16,7 +16,7 @@ typedef function<void(const string &, istream &, PolygonMap &)> CommandHandler;
 // non-const version
 
 // Subroutine to handle creation/assignment of a single polygon
-void handlePolygonManagement(const string &keyword, istream &argStream, PolygonMap &polygons);
+void handleIDManagement(const string &keyword, istream &argStream, PolygonMap &polygons);
 
 // Subroutine to handle commands involving printing info about a single polygon
 void handlePolygonMethod(const string &keyword, istream &argStream, PolygonMap &polygons);
@@ -55,7 +55,8 @@ void printWarning(const string &warning) {
 
 // Maps each command keyword to its corresponding command handler
 const map<string, CommandHandler> cmdHandlerMap = {
-        {CMD::POLYGON,      handlePolygonManagement},
+        {CMD::POLYGON,      handleIDManagement},
+        {CMD::DELETE,       handleIDManagement},
         {CMD::PRINT,        handlePolygonMethod},
         {CMD::AREA,         handlePolygonMethod},
         {CMD::PERIMETER,    handlePolygonMethod},

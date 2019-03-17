@@ -13,6 +13,7 @@ typedef map<string, ConvexPolygon> PolygonMap;
 namespace CMD {
     const string
             POLYGON = "polygon",
+            DELETE = "delete",
             PRINT = "print",
             AREA = "area",
             PERIMETER = "perimeter",
@@ -39,7 +40,7 @@ const ConvexPolygon &getPolygon(const string &id, const PolygonMap &polygons);
 ConvexPolygon &getPolygon(const string &id, PolygonMap &polygons);
 
 // Reads a sequence of points from `is` and saves a new polygon from it in `polygons`
-void readAndSavePolygon(istream &is, PolygonMap &polygons);
+void readAndSavePolygon(istream &is, PolygonMap &polygons, const string &id = "");
 
 // Print polygon to an output stream in plain format
 void printPolygon(const string &id, const ConvexPolygon &pol, ostream &os = cout);

@@ -5,9 +5,14 @@
 #include "utils.h"
 
 
-void handlePolygonManagement(const string &keyword, istream &argStream, PolygonMap &polygons) {
-    assert(keyword == CMD::POLYGON);  // TODO: remove assert
-    readAndSavePolygon(argStream, polygons);
+void handleIDManagement(const string &keyword, istream &argStream, PolygonMap &polygons) {
+    string id;
+    getArgs(argStream, id);
+
+    if      (keyword == CMD::POLYGON) readAndSavePolygon(argStream, polygons, id);
+    else if (keyword == CMD::DELETE) polygons.erase(id);
+    else assert(false);
+
     printOk();
 }
 

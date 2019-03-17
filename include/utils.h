@@ -62,6 +62,8 @@ string format(const string &pattern, Types ... args) {
     return oss.str();
 }
 
+// TODO: use boost?
+
 
 template<typename T>
 void getArgs(istream &argStream, T &first) {
