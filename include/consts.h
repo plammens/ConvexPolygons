@@ -38,7 +38,7 @@ namespace IO {
 namespace IMG {
     constexpr int SIZE = 500;
     constexpr double BACKGROUND = 1.0;  // background color
-    constexpr double POL_OPACITY = 0.7;  // polygon opacity
+    constexpr double POL_OPACITY = 1;  // polygon opacity
     constexpr int PADDING = 2;  // padding in pixels
     constexpr double DRAW_SIZE = SIZE - 2*PADDING;
 }
