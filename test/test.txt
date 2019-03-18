@@ -1,0 +1,4 @@
+load db.txt
+setcol p1 1 0 0
+setcol p2 0 0 1
+draw test.png p1 p2
