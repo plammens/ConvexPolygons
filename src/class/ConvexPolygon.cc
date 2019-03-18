@@ -9,9 +9,10 @@
 using namespace std;
 
 
-// Constructs a convex polygon from a given list of points with a Graham scan
-ConvexPolygon::ConvexPolygon(Points &points) {
-    if (points.empty()) return;
+Points ConvexPolygon::ConvexHull(Points &points) {
+    assert(not points.empty());
+
+    Points vertices;
 
     // Get point with lowest y coordinate:
     const Point P0 = *min_element(points.begin(), points.end(), PointComp::yCoord);
@@ -22,11 +23,21 @@ ConvexPolygon::ConvexPolygon(Points &points) {
     if (points.size() > 1 and points[1] != P0) vertices.push_back(points[1]);  // avoid duplicate
 
     for (auto it = points.begin() + 2; it < points.end(); ++it) {
-        const auto last = vertices.end();  // alias
-        while (vertices.size() >= 2 and not isClockwiseTurn(last[-2], last[-1], *it))
+        const auto hullEnd = vertices.end();  // alias
+        while (vertices.size() >= 2 and not isClockwiseTurn(hullEnd[-2], hullEnd[-1], *it))
             vertices.pop_back();
         vertices.push_back(*it);
     }
+
+    return vertices;
+}
+
+
+// Constructs a convex polygon from a given list of points with a Graham scan
+ConvexPolygon::ConvexPolygon(Points &points) {
+    if (points.empty()) return;
+    vertices = ConvexHull(points);
+    vertices.push_back(vertices.front());  // cyclic representation
 }
 
 
@@ -38,11 +49,11 @@ unsigned long ConvexPolygon::vertexCount() const {
 
 // Returns the area of the polygon
 double ConvexPolygon::area() const {
-    // We use a lambda to calculate the are of the polygon with the shoelace formula
-    double sum = cyclicSum(vertices,
-                           [](const Point &P, const Point &Q) {
-                               return (Q.x - P.x)*(Q.y + P.y);
-                           });
+    // We use the shoelace formula for calculating the area
+    double sum = 0;
+    const auto end = vertices.end() - 1;
+    for (auto it = vertices.begin(); it < end; ++it)
+        sum += (it[1].x - it[0].x)*(it[1].y + it[0].y);
     return abs(sum/2);
 }
 
@@ -50,18 +61,17 @@ double ConvexPolygon::area() const {
 // Returns perimeter of polygon
 double ConvexPolygon::perimeter() const {
     // Sum of euclidean distance between pairs of adjacent points
-    return cyclicSum(vertices,
-            // This lambda returns euclidean distance
-                     [](const Point &P, const Point &Q) {
-                         return distance(P, Q);
-                     });
+    double sum = 0;
+    const auto end = vertices.end() - 1;
+    for (auto it = vertices.begin(); it < end; ++it)
+        sum += distance(it[0], it[1]);
+    return sum;
 }
 
 
 Point ConvexPolygon::centroid() const {
     return barycenter(vertices);
 }
-
 
 ConvexPolygon ConvexPolygon::boundingBox() const {
     if (vertices.empty()) throw ValueError("bounding box undefined for 0-gon");
@@ -76,6 +86,7 @@ ConvexPolygon ConvexPolygon::boundingBox() const {
     bBox.vertices = {SW, NW, NE, SE};
     return bBox;
 }
+
 
 // ---------------- Getters and setters ----------------
 

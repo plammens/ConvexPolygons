@@ -60,9 +60,12 @@ void load(const string &file, PolygonMap &polygons) {
 
 
 void printPolygon(const string &id, const ConvexPolygon &pol, ostream &os) {
+    const Points &vertices = pol.getVertices();
+    const auto end = vertices.end() - 1;
+
     os << id;
-    for (const Point &P : pol.getVertices())
-        os << ' ' << P;
+    for (auto it = vertices.begin(); it < end; ++it)
+        os << ' ' << *it;
     os << endl;
 }
 

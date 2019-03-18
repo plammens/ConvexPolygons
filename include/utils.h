@@ -23,20 +23,6 @@ vector<T> readVector(istream &is) {
     return vec;
 }
 
-// Returns the sum of binaryOp(x, y) for every consecutive pair x, y in vec
-template<typename T, class BinaryOp>
-double cyclicSum(const vector<T> &vec, BinaryOp binaryOp) {
-    double sum = 0;
-
-    for (auto it = vec.begin(); it < vec.end() - 1; ++it)
-        sum += binaryOp(it[0], it[1]);
-
-    // Complete cycle:
-    const T &first = vec.front(), &last = vec.back();
-    sum += binaryOp(last, first);
-
-    return sum;
-}
 
 // Base case
 void format(string::const_iterator &it, const string::const_iterator &end, ostream &os);

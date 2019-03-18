@@ -24,13 +24,14 @@ void plotPolygon(pngwriter &png, const ConvexPolygon &pol, const ScaleHelper &sc
 
     const Points &vertices = pol.getVertices();
     const RGBColor &color = pol.getColor();
-    const Point &O = vertices.front();  // O stands for origin
+    const Point &O = vertices.front();  // origin from which to draw triangles
+    const int x0 = scale(O.x), y0 = scale(O.y);  // scaled origin coordinates
 
     // Plot the polygon as a partition of triangles:
     const auto end = vertices.end() - 1;
-    for (auto it = vertices.begin() + 1; it < end; ++it) {
+    for (auto it = vertices.begin(); it < end; ++it) {
         const Point &P = it[0], &Q = it[1];  // Just some aliasing
-        png.filledtriangle_blend(scale(O.x), scale(O.y), scale(P.x), scale(P.y), scale(Q.x), scale(Q.y),
+        png.filledtriangle_blend(x0, y0, scale(P.x), scale(P.y), scale(Q.x), scale(Q.y),
                                  IMG::POL_OPACITY, color.R(), color.G(), color.B());
     }
 }

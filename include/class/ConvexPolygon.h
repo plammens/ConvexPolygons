@@ -16,6 +16,9 @@ private:
     Points vertices;
     RGBColor color;
 
+    static
+    Points ConvexHull(Points &points);
+
 public:
     ConvexPolygon() = default;
     ConvexPolygon(Points &points);
