@@ -31,7 +31,9 @@ namespace CMD {
             DRAW = "draw";
 }
 
-const string OUT_DIR = "out/";
+namespace IO {
+    const string OUT_DIR = "out/";
+}
 
 namespace IMG {
     constexpr int SIZE = 500;

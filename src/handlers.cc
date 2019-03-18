@@ -56,7 +56,7 @@ void handleIOCommand(const string &keyword, istream &argStream, PolygonMap &poly
     string file;
     argStream >> file;
     if (file.empty()) throw SyntaxError("no file specified");
-    file = OUT_DIR + file;  // prefix with output directory
+    prefixPath(file, IO::OUT_DIR);  // prefix with output directory
     vector<string> polygonIDs = readVector<string>(argStream);
 
     if      (keyword == CMD::SAVE) save(file, polygonIDs, polygons);

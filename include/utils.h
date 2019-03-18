@@ -77,4 +77,8 @@ ValueT<InputIt> average(InputIt first, InputIt last) {
 }
 
 
+void prefixPath(string &filePath, const string &prefixPath);
+
+void checkDirectory(const string &dir);
+
 #endif //CONVEXPOLYGONS_UTILS_H
