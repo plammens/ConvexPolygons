@@ -1,4 +1,4 @@
-### Global environment variables ###
+### Global constants ###
 
 ## Directory names (for source, binaries, headers, objects...) ##
 

@@ -16,5 +16,5 @@ void checkDirectory(const string &dir) {
 
 void prefixPath(string &filePath, const string &prefixPath) {
     checkDirectory(prefixPath);
-    filePath.insert(0, (prefixPath.back() == '/' ? prefixPath : prefixPath + '/'));
+    filePath.insert(0, prefixPath);
 }
