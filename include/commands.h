@@ -1,39 +1,8 @@
 #ifndef CONVEXPOLYGONS_COMMANDS_H
 #define CONVEXPOLYGONS_COMMANDS_H
 
-#include <string>
-#include <map>
-#include "class/ConvexPolygon.h"
+#include "consts.h"
 
-
-typedef map<string, ConvexPolygon> PolygonMap;
-
-
-// Names of all available command keywords
-namespace CMD {
-    const string
-            POLYGON = "polygon",
-            DELETE = "delete",
-            PRINT = "print",
-            AREA = "area",
-            PERIMETER = "perimeter",
-            VERTICES = "vertices",
-            CENTROID = "centroid",
-            SETCOL = "setcol",
-            INTERSECTION = "intersection",
-            UNION = "union",
-            INSIDE = "inside",
-            BBOX = "bbox",
-            LIST = "list",
-            SAVE = "save",
-            LOAD = "load",
-            DRAW = "draw";
-}
-
-const string OUT_DIR = "out/";
-
-
-// ---------------------------------------
 
 // Gets polygon with ID `id` in `polygons`; throws `UndefinedID` if nonexistent
 const ConvexPolygon &getPolygon(const string &id, const PolygonMap &polygons);
@@ -53,7 +22,6 @@ void save(const string &file, const vector<string> &polygonIDs, const PolygonMap
 
 // Load polygons from text file
 void load(const string &file, PolygonMap &polygons);
-
 
 
 #endif //CONVEXPOLYGONS_COMMANDS_H
