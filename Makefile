@@ -43,7 +43,7 @@ depends = $(patsubst $(OBJ_DIR)/%.o,$(DEP_DIR)/%.d,$(objects))
 
 ### Rules ###
 
-.PHONY: all compile run clean clean_build clean_out
+.PHONY: all compile run clean clean_build clean_out test
 
 all: $(MAIN_EXE)
 
@@ -60,6 +60,9 @@ clean_build:
 
 clean_out:
 	rm -rf ./$(OUT_DIR)
+
+test: all
+	$(MAIN_EXE) < test/test.txt
 
 
 ## Non-phony ##
