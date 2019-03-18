@@ -3,37 +3,40 @@
 #include <pngwriter.h>
 #include <class/ConvexPolygon.h>
 #include <commands.h>
-#include <utils.h>
-#include "draw.h"
 
 
-void draw(const basic_string<char> &file, const vector<basic_string<char>> &polygonIDs, const map<string, ConvexPolygon> &polygons) {
-    pngwriter png(500, 500, 1.0, file.c_str());
-    png.circle(250, 250, 200, 1.0, 0.0, 0.0);
+void draw(const basic_string<char> &file, const vector<basic_string<char>> &polygonIDs,
+          const map<string, ConvexPolygon> &polygons) {
 
-    for (const basic_string<char> &id : polygonIDs) {
-        const ConvexPolygon &pol = getPolygon(id, polygons);
-        if (not pol.vertexCount()) continue;
+    pngwriter png(IMG::WIDTH, IMG::HEIGHT, IMG::BACKGROUND, file.c_str());
 
-        vector<Point> vertices = pol.getVertices();
-        vertices.push_back(vertices.front());
-        vector<double> pointSequence = flatten(vertices);
-
-        RGBColor color = pol.getColor();
-
-        png.polygon(reinterpret_cast<int *>(pointSequence.data()), vertices.size(),
-                    color.R(), color.G(), color.B());
-    }
+    for (const basic_string<char> &id : polygonIDs)
+        plotPolygon(getPolygon(id, polygons), png);
 
     png.close();
 }
 
-vector<double> flatten(const Points &points) {
-    vector<double> flattened(2*points.size());
+vector<int> flattenAndRescale(const Points &points) {
+    vector<int> transformedVec(2*points.size());
     unsigned i = 0;
     for (const Point &P : points) {
-        flattened[i++] = P.x;
-        flattened[i++] = P.y;
+        transformedVec[i++] = int(P.x);
+        transformedVec[i++] = int(P.y);
     }
-    return flattened;
+    return transformedVec;
+}
+
+void plotPolygon(const ConvexPolygon &pol, pngwriter &png) {
+    if (not pol.vertexCount()) return;
+
+    const Points &vertices = pol.getVertices();
+    const Point &O = vertices.front();
+    const RGBColor &color = pol.getColor();
+
+    const auto end = vertices.end() - 1;
+    for (auto it = vertices.begin() + 1; it < end; ++it) {
+        const Point &P = it[0], &Q = it[1];
+        png.filledtriangle_blend(O.x, O.y, P.x, P.y, Q.x, Q.y,
+                                 IMG::POL_OPACITY, color.R(), color.G(), color.B());
+    }
 }

@@ -5,11 +5,14 @@
 INCLUDE_DIR = include
 SRC_DIR = src
 CLASS_SUBDIR = class
+LIB_ROOT_DIR = libs
 
 BUILD_DIR = build
 BIN_DIR = $(BUILD_DIR)/bin
 OBJ_DIR = $(BUILD_DIR)/obj
 DEP_DIR = $(BUILD_DIR)/depend
+LIB_INCLUDE_DIR = $(LIB_ROOT_DIR)/include
+LIB_FILE_DIR = $(LIB_ROOT_DIR)/lib
 
 # dircetory for program's output files:
 OUT_DIR = out
@@ -20,7 +23,9 @@ MAIN_EXE = $(BIN_DIR)/$(MAIN)# output path for main program
 
 ## Compiler options ##
 CXX = g++
-CXXFLAGS = -Wall -I $(INCLUDE_DIR) -std=c++11 -O2
+CXXFLAGS =  -I $(INCLUDE_DIR) -I $(LIB_INCLUDE_DIR) \
+			-L $(LIB_FILE_DIR) -l PNGwriter -l png -D NO_FREETYPE\
+			-Wall -std=c++11 -O2
 
 
 ### Auto-detected files and paths ###
@@ -72,7 +77,6 @@ $(OBJ_DIR)/%.o: %.cc | $(OBJ_DIR) $(DEP_DIR)
 
 
 # Create build directories if nonexistent:
-
 $(BIN_DIR):
 	mkdir -p $(BIN_DIR)
 
