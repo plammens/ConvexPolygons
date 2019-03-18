@@ -27,10 +27,12 @@ public:
     ConvexPolygon boundingBox() const;
 
     const Points &getVertices() const;
-    Points cyclicVertices() const;
     const RGBColor &getColor() const;
     void setColor(double r, double g, double b);
 };
+
+
+ConvexPolygon boundingBox(const vector<ConvexPolygon> &polygons);
 
 
 #endif //CONVEXPOLYGONS_CONVEXPOLYGONS_H

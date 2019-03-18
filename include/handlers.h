@@ -22,7 +22,7 @@ void handleIDManagement(const string &keyword, istream &argStream, PolygonMap &p
 void handlePolygonMethod(const string &keyword, istream &argStream, PolygonMap &polygons);
 
 // Subroutine to handle operations with polygons
-void handlePolygonOperation(const string &keyword, istream &argStream, PolygonMap &polygons);
+void handlePolygonOperation(const string &keyword, istream &argStream, PolygonMap &polygonMap);
 
 // Subroutine to handle file-related commands
 void handleIOCommand(const string &keyword, istream &argStream, PolygonMap &polygons);
