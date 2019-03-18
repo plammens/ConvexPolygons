@@ -43,7 +43,8 @@ ConvexPolygon::ConvexPolygon(Points &points) {
 
 // Returns the number of vertices in the polygon
 unsigned long ConvexPolygon::vertexCount() const {
-    return vertices.size();
+    if (vertices.empty()) return 0;
+    return vertices.size() - 1;
 }
 
 
