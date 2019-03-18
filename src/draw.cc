@@ -44,6 +44,6 @@ ScaleHelper::ScaleHelper(const vector<string> &polIDs, const PolygonMap &polygon
 
 
 int ScaleHelper::operator()(double coord) const {
-    return int(IMG::SIZE*(coord - minCoord)/totalLength);
+    return int(IMG::PADDING + IMG::DRAW_SIZE*(coord - minCoord)/totalLength);
 }
 
