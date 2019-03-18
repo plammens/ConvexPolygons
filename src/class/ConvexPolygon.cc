@@ -22,7 +22,8 @@ ConvexPolygon::ConvexPolygon(Points &points) {
     if (points.size() > 1 and points[1] != P0) vertices.push_back(points[1]);  // avoid duplicate
 
     for (auto it = points.begin() + 2; it < points.end(); ++it) {
-        while (vertices.size() >= 2 and not isClockwiseTurn(vertices.end()[-2], vertices.end()[-1], *it))
+        const auto last = vertices.end();  // alias
+        while (vertices.size() >= 2 and not isClockwiseTurn(last[-2], last[-1], *it))
             vertices.pop_back();
         vertices.push_back(*it);
     }
@@ -49,7 +50,7 @@ double ConvexPolygon::area() const {
 double ConvexPolygon::perimeter() const {
     // Sum of euclidean distance between pairs of adjacent points
     return cyclicSum(vertices,
-                     // This lambda returns euclidean distance
+            // This lambda returns euclidean distance
                      [](const Point &P, const Point &Q) {
                          return distance(P, Q);
                      });
@@ -72,4 +73,16 @@ Points ConvexPolygon::cyclicVertices() const {
     Points cyclicVertices = vertices;
     if (not vertices.empty()) cyclicVertices.push_back(vertices.front());
     return cyclicVertices;
+}
+
+ConvexPolygon ConvexPolygon::boundingBox() const {
+    // SW: south-west; NE: north-east; etc.
+    Point SW = accumulate(vertices.begin(), vertices.end(), vertices.front(), bottomLeft);
+    Point NE = accumulate(vertices.begin(), vertices.end(), vertices.front(), upperRight);
+    Point NW = {SW.x, NE.y};
+    Point SE = {NE.x, SW.y};
+
+    ConvexPolygon bBox;
+    bBox.vertices = {SW, NW, NE, SE};
+    return bBox;
 }

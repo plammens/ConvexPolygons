@@ -24,6 +24,7 @@ public:
     double area() const;
     double perimeter() const;
     Point centroid() const;
+    ConvexPolygon boundingBox() const;
 
     const Points &getVertices() const;
     Points cyclicVertices() const;
