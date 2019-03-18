@@ -49,7 +49,7 @@ double ConvexPolygon::area() const {
 double ConvexPolygon::perimeter() const {
     // Sum of euclidean distance between pairs of adjacent points
     return cyclicSum(vertices,
-            // This lambda returns euclidean distance
+                     // This lambda returns euclidean distance
                      [](const Point &P, const Point &Q) {
                          return distance(P, Q);
                      });
@@ -67,3 +67,9 @@ const Points &ConvexPolygon::getVertices() const { return vertices; }
 const RGBColor &ConvexPolygon::getColor() const { return color; }
 
 void ConvexPolygon::setColor(double r, double g, double b) { color = {r, g, b}; }
+
+Points ConvexPolygon::cyclicVertices() const {
+    Points cyclicVertices = vertices;
+    if (not vertices.empty()) cyclicVertices.push_back(vertices.front());
+    return cyclicVertices;
+}

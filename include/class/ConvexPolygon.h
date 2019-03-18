@@ -26,6 +26,7 @@ public:
     Point centroid() const;
 
     const Points &getVertices() const;
+    Points cyclicVertices() const;
     const RGBColor &getColor() const;
     void setColor(double r, double g, double b);
 };
