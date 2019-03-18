@@ -34,8 +34,7 @@ namespace CMD {
 const string OUT_DIR = "out/";
 
 namespace IMG {
-    constexpr int HEIGHT = 500;
-    constexpr int WIDTH = 500;
+    constexpr int SIZE = 500;
     constexpr double BACKGROUND = 1.0;  // background color
     constexpr double POL_OPACITY = 0.7;  // polygon opacity
 }
