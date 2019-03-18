@@ -12,7 +12,7 @@
 typedef map<string, ConvexPolygon> PolygonMap;
 
 namespace CMD {
-    const string
+    constexpr auto
             POLYGON = "polygon",
             DELETE = "delete",
             PRINT = "print",
