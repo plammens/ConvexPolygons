@@ -76,3 +76,22 @@ void list(const PolygonMap &polygons) {
     }
     cout << endl;
 }
+
+
+ConvexPolygon boundingBox(const vector<string> &polIDs, const PolygonMap &polygons) {
+    if (polIDs.empty()) throw ValueError("bounding box undefined for empty set");
+
+    Point SW = {INFINITY, INFINITY};
+    Point NE = {-INFINITY, -INFINITY};
+    for (const string &id : polIDs) {
+        const ConvexPolygon &pol = getPolygon(id, polygons);
+        SW = bottomLeft(SW, pol.boundingBox().getVertices()[0]);  // TODO: subclass?
+        NE = upperRight(NE, pol.boundingBox().getVertices()[2]);
+    }
+
+    Point NW = {SW.x, NE.y};
+    Point SE = {NE.x, SW.y};
+
+    Points boxVertices = {SW, NW, NE, SE};
+    return ConvexPolygon(boxVertices);
+}

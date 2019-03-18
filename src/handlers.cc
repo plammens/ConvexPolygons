@@ -37,16 +37,12 @@ void handlePolygonMethod(const string &keyword, istream &argStream, PolygonMap &
 }
 
 
-void handlePolygonOperation(const string &keyword, istream &argStream, PolygonMap &polygonMap) {
+void handlePolygonOperation(const string &keyword, istream &argStream, PolygonMap &polygons) {
     string firstID;
     getArgs(argStream, firstID);
-
     vector<string> polIDs = readVector<string>(argStream);
-    vector<ConvexPolygon> polygons(polIDs.size());
-    unsigned i = 0;  // TODO: elide copy
-    for (const string &id : polIDs) polygons[i++] = getPolygon(id, polygonMap);
 
-    if      (keyword == CMD::BBOX) polygonMap[firstID] = boundingBox(polygons);
+    if      (keyword == CMD::BBOX) polygons[firstID] = boundingBox(polIDs, polygons);
     else if (keyword == CMD::INTERSECTION);
     else if (keyword == CMD::UNION);
     else if (keyword == CMD::INSIDE);

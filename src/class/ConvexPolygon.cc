@@ -1,7 +1,6 @@
 #include <algorithm>
 #include <iostream>
 #include <class/ConvexPolygon.h>
-#include <cmath>
 
 
 #include "utils.h"
@@ -90,19 +89,3 @@ const RGBColor &ConvexPolygon::getColor() const { return color; }
 void ConvexPolygon::setColor(double r, double g, double b) { color = {r, g, b}; }
 
 
-ConvexPolygon boundingBox(const vector<ConvexPolygon> &polygons) {
-    if (polygons.empty()) throw ValueError("bounding box undefined for empty set");
-
-    Point SW = {INFINITY, INFINITY};
-    Point NE = {-INFINITY, -INFINITY};
-    for (const ConvexPolygon &pol : polygons) {
-        SW = bottomLeft(SW, pol.boundingBox().getVertices()[0]);  // TODO: subclass?
-        NE = upperRight(NE, pol.boundingBox().getVertices()[2]);
-    }
-
-    Point NW = {SW.x, NE.y};
-    Point SE = {NE.x, SW.y};
-
-    Points boxVertices = {SW, NW, NE, SE};
-    return ConvexPolygon(boxVertices);
-}

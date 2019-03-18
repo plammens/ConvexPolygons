@@ -32,7 +32,4 @@ public:
 };
 
 
-ConvexPolygon boundingBox(const vector<ConvexPolygon> &polygons);
-
-
 #endif //CONVEXPOLYGONS_CONVEXPOLYGONS_H
