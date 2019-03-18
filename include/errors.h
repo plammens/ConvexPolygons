@@ -60,7 +60,7 @@ public:
 
 class IOError : public Error {
 public:
-    static constexpr const char *base = "unrecognized command";
+    static constexpr const char *base = "unable to access file";
     IOError(const string &specific) : BaseException(base, specific) {}
 };
 
