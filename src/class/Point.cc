@@ -1,3 +1,4 @@
+
 #include "class/Point.h"
 #include "utils.h"
 
@@ -49,20 +50,17 @@ namespace PointComp {
 
 }
 
-// Extraction operation from an input stream into a point
-istream &operator>>(istream &is, Point &P) {
-    return (is >> P.x >> P.y);
-}
-
-ostream &operator<<(ostream &os, const Point &P) {
-    os.setf(ios::fixed);
-    os.precision(3);
-    return os << P.x << ' ' << P.y;
-}
-
 // Euclidean distance
 double distance(const Point &A, const Point &B) {
     return (A - B).norm();
+}
+
+Point bottomLeft(const Point &A, const Point &B) {
+    return {min(A.x, B.x), min(A.y, B.y)};
+}
+
+Point upperRight(const Point &A, const Point &B) {
+    return {max(A.x, B.x), max(A.y, B.y)};
 }
 
 Point operator+(const Point &A, const Vector2D &u) {
@@ -79,4 +77,15 @@ Point barycenter(const Points &points) {
                                                 return u + (const Vector2D &)(P);
                                             });
     return Point{0, 0} + averageVec;
+}
+
+// Extraction operation from an input stream into a point
+istream &operator>>(istream &is, Point &P) {
+    return (is >> P.x >> P.y);
+}
+
+ostream &operator<<(ostream &os, const Point &P) {
+    os.setf(ios::fixed);
+    os.precision(3);
+    return os << P.x << ' ' << P.y;
 }

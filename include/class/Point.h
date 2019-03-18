@@ -43,6 +43,10 @@ namespace PointComp {
     };
 }
 
+
+Point bottomLeft(const Point &A, const Point &B);
+Point upperRight(const Point &A, const Point &B);
+
 // Returns whether the vector AC lies clockwise with respect to AB
 bool isClockwiseTurn(const Point &A, const Point &B, const Point &C);
 
