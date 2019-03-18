@@ -25,3 +25,5 @@ void load(const string &file, PolygonMap &polygons);
 
 
 #endif //CONVEXPOLYGONS_COMMANDS_H
+
+#include "draw.h"  // Extend with draw header

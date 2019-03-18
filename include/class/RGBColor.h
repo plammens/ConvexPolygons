@@ -20,6 +20,10 @@ private:
 public:
     RGBColor(double r = 0, double g = 0, double b = 0);
     RGBColor &operator=(const initializer_list<double> &initList);
+
+    double R() const { return r; }
+    double G() const { return g; }
+    double B() const { return b; }
 };
 
 

@@ -51,7 +51,7 @@ void handleIOCommand(const string &keyword, istream &argStream, PolygonMap &poly
 
     if      (keyword == CMD::SAVE) save(file, polygonIDs, polygons);
     else if (keyword == CMD::LOAD) load(file, polygons);
-    else if (keyword == CMD::DRAW);
+    else if (keyword == CMD::DRAW) draw(file, polygonIDs, polygons);
     else assert(false); // Shouldn't get here
 
     printOk();
