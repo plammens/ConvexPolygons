@@ -23,8 +23,9 @@ private:
 public:
     ConvexPolygon() = default;
     ConvexPolygon(Points &points);
-    unsigned long vertexCount() const;
 
+    unsigned long vertexCount() const;
+    bool empty() const;
     double area() const;
     double perimeter() const;
     Point centroid() const;
