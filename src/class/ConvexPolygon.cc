@@ -15,7 +15,9 @@ Points ConvexPolygon::ConvexHull(Points &points) {
     Points vertices;
 
     // Get point with lowest y coordinate:
-    const Point &P0 = *min_element(points.begin(), points.end(), PointComp::yCoord);
+    const Point P0 = *min_element(points.begin(), points.end(), PointComp::yCoord);
+    vertices.push_back(P0);
+
     // Sort the points in decreasing order of the angle they form with x-axis (relative to P0):
     sort(points.begin(), points.end(), PointComp::xAngle(P0, true));
 
