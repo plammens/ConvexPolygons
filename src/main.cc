@@ -21,6 +21,7 @@ void parseCommand(const string &command, PolygonMap &polygons) {
         // Get appropriate handler: (may throw `UnknownCommand`)
         CommandHandler handler = getCommandHandler(keyword);
         handler(keyword, iss, polygons);
+        if (not (iss >> ws).eof()) throw UnusedArgument("");  // check unused arguments
 
     } catch (Error &error) {
         printError(error.what());

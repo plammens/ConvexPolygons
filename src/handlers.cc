@@ -71,8 +71,6 @@ void handleIOCommand(const string &keyword, istream &argStream, PolygonMap &poly
 void handleNullaryCommand(const string &keyword, istream &argStream, PolygonMap &polygons) {
     if (keyword == CMD::LIST) list(polygons);
     else assert(false); // Shouldn't get here
-
-    if (not (argStream >> ws).eof()) throw UnusedArgument(format("`%` takes no arguments", keyword));
 }
 
 
