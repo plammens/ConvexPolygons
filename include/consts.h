@@ -3,13 +3,11 @@
 #ifndef CONVEXPOLYGONS_CONSTS_H
 #define CONVEXPOLYGONS_CONSTS_H
 
-#include <string>
-#include <map>
-#include <vector>
-#include "class/ConvexPolygon.h"
+#include <boost/range/any_range.hpp>
 
 
-typedef map<string, ConvexPolygon> PolygonMap;
+template <typename T>
+using Range = boost::any_range<T, boost::random_access_traversal_tag>;
 
 namespace CMD {
     constexpr auto
@@ -32,7 +30,7 @@ namespace CMD {
 }
 
 namespace IO {
-    const string OUT_DIR = "out/";
+    constexpr auto OUT_DIR = "out/";
 }
 
 namespace IMG {  // some image constants

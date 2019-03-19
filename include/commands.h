@@ -1,12 +1,20 @@
 #ifndef CONVEXPOLYGONS_COMMANDS_H
 #define CONVEXPOLYGONS_COMMANDS_H
 
+#include <map>
 #include "consts.h"
+#include "class/ConvexPolygon.h"
+
+using namespace std;
+
+typedef map<string, ConvexPolygon> PolygonMap;
 
 
 // Gets polygon with ID `id` in `polygons`; throws `UndefinedID` if nonexistent
 const ConvexPolygon &getPolygon(const string &id, const PolygonMap &polygons);
 ConvexPolygon &getPolygon(const string &id, PolygonMap &polygons);
+
+Range<ConvexPolygon> toPolygons(const vector<string> &polygonIDs, const PolygonMap &polygons);
 
 // Reads a sequence of points from `is` and saves a new polygon from it in `polygons`
 void readAndSavePolygon(istream &is, PolygonMap &polygons, const string &id = "");

@@ -1,5 +1,7 @@
 #include <iostream>
 #include <fstream>
+#include <commands.h>
+#include <boost/range/adaptors.hpp>
 
 #include "commands.h"
 #include "handlers.h"
@@ -97,4 +99,15 @@ ConvexPolygon boundingBox(const vector<string> &polIDs, const PolygonMap &polygo
 
     Points boxVertices = {SW, NW, NE, SE};
     return ConvexPolygon(boxVertices);
+}
+
+
+Range<ConvexPolygon> toPolygons(const vector<string> &polygonIDs, const PolygonMap &polygons) {
+    // This unary lambda "gets" a polygon from the map given its ID
+    function<const ConvexPolygon &(const string &id)> getter =
+            [&polygons](const string &id) {
+                return getPolygon(id, polygons);
+            };
+    // (Lazily) apply the lambda to each ID:
+    return boost::adaptors::transform(polygonIDs, getter);
 }
