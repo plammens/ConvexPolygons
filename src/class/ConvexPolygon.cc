@@ -12,27 +12,25 @@ using namespace std;
 Points ConvexPolygon::ConvexHull(Points &points) {
     assert(not points.empty());
 
-    Points vertices;
+    Points hull;
+    const auto begin = points.begin(), end = points.end();  // aliasing
 
     // Get point with lowest y coordinate:
-    const Point P0 = *min_element(points.begin(), points.end(), PointComp::yCoord);
-    vertices.push_back(P0);
+    const Point P0 = *min_element(begin, end, PointComp::yCoord);
+    hull.push_back(P0);
 
     // Sort the points in decreasing order of the angle they form with x-axis (relative to P0):
-    sort(points.begin(), points.end(), PointComp::xAngle(P0, true));
+    sort(begin, end, PointComp::xAngle(P0, true));
+    if (points.size() > 1 and points[1] != P0) hull.push_back(points[1]);  // avoid duplicate
 
-    vertices.push_back(P0);
-    if (points.size() > 1 and points[1] != P0) vertices.push_back(points[1]);  // avoid duplicate
-
-    for (auto it = points.begin() + 2; it < points.end(); ++it) {
-        const auto hullEnd = vertices.end();  // alias
-        while (vertices.size() >= 2 and not isClockwiseTurn(hullEnd[-2], hullEnd[-1], *it))
-            vertices.pop_back();
-        vertices.push_back(*it);
+    for (auto it = begin + 2; it < end; ++it) {
+        while (hull.size() >= 2 and not isClockwiseTurn(hull.end()[-2], hull.end()[-1], *it))
+            hull.pop_back();
+        hull.push_back(*it);
     }
 
-    vertices.push_back(P0);  // Complete cycle
-    return vertices;
+    hull.push_back(P0);  // Complete cycle
+    return hull;
 }
 
 
@@ -94,21 +92,6 @@ ConvexPolygon ConvexPolygon::boundingBox() const {
 ConvexPolygon &ConvexPolygon::convexUnion(const ConvexPolygon &other) {
     vertices.reserve(vertices.size() + other.vertices.size());
     vertices.insert(vertices.end(), other.vertices.begin(), other.vertices.end());
-    vertices = ConvexHull(vertices);
-    return *this;
-}
-
-
-ConvexPolygon &ConvexPolygon::convexUnion(const vector<ConvexPolygon> &others) {
-    // Calculate size to reserve
-    unsigned long size = vertices.size();
-    for (const ConvexPolygon &pol : others) size += pol.vertices.size();
-    vertices.reserve(size);  // reserve beforehand for efficiency
-
-    // Copy contents
-    for (const ConvexPolygon &pol : others)
-        vertices.insert(vertices.end(), pol.vertices.begin(), pol.vertices.end());
-
     vertices = ConvexHull(vertices);
     return *this;
 }

@@ -6,6 +6,7 @@
 
 #include "class/Point.h"
 #include "class/RGBColor.h"
+#include "consts.h"
 
 
 using namespace std;
@@ -30,7 +31,6 @@ public:
     ConvexPolygon boundingBox() const;
 
     ConvexPolygon &convexUnion(const ConvexPolygon &);
-    ConvexPolygon &convexUnion(const vector<ConvexPolygon> &);
 
     const Points &getVertices() const;
     const RGBColor &getColor() const;
