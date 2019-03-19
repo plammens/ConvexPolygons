@@ -45,7 +45,7 @@ depends = $(patsubst $(OBJ_DIR)/%.o,$(DEP_DIR)/%.d,$(objects))
 
 .PHONY: all compile run clean clean_build clean_out test libs
 
-all: $(MAIN_EXE)
+all: libs $(MAIN_EXE)
 
 compile: $(objects)
 

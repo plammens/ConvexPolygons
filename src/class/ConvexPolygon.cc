@@ -29,6 +29,7 @@ Points ConvexPolygon::ConvexHull(Points &points) {
         vertices.push_back(*it);
     }
 
+    vertices.push_back(P0);  // Complete cycle
     return vertices;
 }
 
@@ -37,7 +38,6 @@ Points ConvexPolygon::ConvexHull(Points &points) {
 ConvexPolygon::ConvexPolygon(Points &points) {
     if (points.empty()) return;
     vertices = ConvexHull(points);
-    vertices.push_back(vertices.front());  // cyclic representation
 }
 
 
@@ -89,6 +89,34 @@ ConvexPolygon ConvexPolygon::boundingBox() const {
 }
 
 
+ConvexPolygon &ConvexPolygon::convexUnion(const ConvexPolygon &other) {
+    vertices.reserve(vertices.size() + other.vertices.size());
+    vertices.insert(vertices.end(), other.vertices.begin(), other.vertices.end());
+    vertices = ConvexHull(vertices);
+    return *this;
+}
+
+
+ConvexPolygon &ConvexPolygon::convexUnion(const vector<ConvexPolygon> &others) {
+    // Calculate size to reserve
+    unsigned long size = vertices.size();
+    for (const ConvexPolygon &pol : others) size += pol.vertices.size();
+    vertices.reserve(size);  // reserve beforehand for efficiency
+
+    // Copy contents
+    for (const ConvexPolygon &pol : others)
+        vertices.insert(vertices.end(), pol.vertices.begin(), pol.vertices.end());
+
+    vertices = ConvexHull(vertices);
+    return *this;
+}
+
+
+ConvexPolygon &operator|(ConvexPolygon &polA, const ConvexPolygon &polB) {
+    return polA.convexUnion(polB);
+}
+
+
 // ---------------- Getters and setters ----------------
 
 
@@ -99,5 +127,3 @@ const RGBColor &ConvexPolygon::getColor() const { return color; }
 
 
 void ConvexPolygon::setColor(double r, double g, double b) { color = {r, g, b}; }
-
-

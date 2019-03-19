@@ -29,10 +29,16 @@ public:
     Point centroid() const;
     ConvexPolygon boundingBox() const;
 
+    ConvexPolygon &convexUnion(const ConvexPolygon &);
+    ConvexPolygon &convexUnion(const vector<ConvexPolygon> &);
+
     const Points &getVertices() const;
     const RGBColor &getColor() const;
     void setColor(double r, double g, double b);
 };
+
+
+ConvexPolygon &operator|(ConvexPolygon &, const ConvexPolygon &);
 
 
 #endif //CONVEXPOLYGONS_CONVEXPOLYGONS_H
