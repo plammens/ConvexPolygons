@@ -13,7 +13,7 @@ protected:
     string message;
 
     BaseException() = default;
-    BaseException(const string &baseMessage, const string &specific) {
+    BaseException(const string &baseMessage, const string &specific = "") {
         ostringstream oss(baseMessage, ios::ate);
         if (not specific.empty()) oss << " (" << specific << ')';
         message = oss.str();
@@ -33,35 +33,35 @@ class Error : public virtual BaseException {};
 class UnknownCommand : public Error {
 public:
     static constexpr const char *base = "unrecognized command";
-    UnknownCommand(const string &specific) : BaseException(base, specific) {}
+    UnknownCommand(const string &specific = "") : BaseException(base, specific) {}
 };
 
 
 class SyntaxError : public Error {
 public:
     static constexpr const char *base = "invalid command syntax";
-    SyntaxError(const string &specific) : BaseException(base, specific) {}
+    SyntaxError(const string &specific = "") : BaseException(base, specific) {}
 };
 
 
 class ValueError : public Error {
 public:
     static constexpr const char *base = "invalid value";
-    ValueError(const string &specific) : BaseException(base, specific) {}
+    ValueError(const string &specific = "") : BaseException(base, specific) {}
 };
 
 
 class UndefinedID : public Error {
 public:
     static constexpr const char *base = "undefined ID";
-    UndefinedID(const string &specific) : BaseException(base, specific) {}
+    UndefinedID(const string &specific = "") : BaseException(base, specific) {}
 };
 
 
 class IOError : public Error {
 public:
     static constexpr const char *base = "unable to access file";
-    IOError(const string &specific) : BaseException(base, specific) {}
+    IOError(const string &specific = "") : BaseException(base, specific) {}
 };
 
 
@@ -74,7 +74,7 @@ class Warning : public virtual BaseException {};
 class UnusedArgument : public Warning {
 public:
     static constexpr const char *base = "unused argument(s)";
-    UnusedArgument(const string &specific) : BaseException(base, specific) {}
+    UnusedArgument(const string &specific = "") : BaseException(base, specific) {}
 };
 
 
