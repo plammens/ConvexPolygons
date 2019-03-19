@@ -43,7 +43,7 @@ depends = $(patsubst $(OBJ_DIR)/%.o,$(DEP_DIR)/%.d,$(objects))
 
 ### Rules ###
 
-.PHONY: all compile run clean clean_build clean_out test
+.PHONY: all compile run clean clean_build clean_out test libs
 
 all: $(MAIN_EXE)
 
@@ -63,6 +63,8 @@ clean_out:
 
 test: all
 	$(MAIN_EXE) < test/test.txt
+
+libs: $(LIB_FILE_DIR)/libPNGwriter.a
 
 
 ## Non-phony ##
@@ -88,3 +90,9 @@ $(OBJ_DIR):
 
 $(DEP_DIR):
 	mkdir -p $(DEP_DIR)
+
+
+$(LIB_FILE_DIR)/libPNGwriter.a:
+	cmake $(LIB_ROOT_DIR)/pngwriter/CMakeLists.txt -DPNGwriter_USE_FREETYPE=OFF -DCMAKE_INSTALL_PREFIX=$(LIB_ROOT_DIR)
+	make -C $(LIB_ROOT_DIR)/pngwriter
+	make -C $(LIB_ROOT_DIR)/pngwriter install

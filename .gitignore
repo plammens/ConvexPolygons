@@ -23,6 +23,7 @@
 *.smod
 
 # Compiled Static libraries
+*.a
 *.lai
 *.la
 *.lib
@@ -35,3 +36,4 @@
 README.html
 build/
 out/
+libs/pngwriter/
