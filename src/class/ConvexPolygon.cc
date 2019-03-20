@@ -92,8 +92,7 @@ ConvexPolygon ConvexPolygon::boundingBox() const {
 
 
 ConvexPolygon &ConvexPolygon::convexUnion(const ConvexPolygon &other) {
-    vertices.reserve(vertices.size() + other.vertices.size());
-    vertices.insert(vertices.end(), other.vertices.begin(), other.vertices.end());
+    extend(vertices, other.getVertices());
     vertices = ConvexHull(vertices);
     return *this;
 }

@@ -11,31 +11,29 @@
 
 using namespace std;
 
-template<typename Iter>
-using ValueT = typename iterator_traits<Iter>::value_type;
-
 
 template<typename T>
 vector<T> readVector(istream &is) {
     vector<T> vec;
     T elem;
-    while (is >> elem) vec.push_back(elem);
+    while (is >> elem)
+        vec.push_back(elem);
     return vec;
 }
 
 
 // Base case
-void format(string::const_iterator &it, const string::const_iterator &end, ostream &os);
+void _format(string::const_iterator &it, const string::const_iterator &end, ostream &os);
 
 // Recursive variadic template
 template<typename T, typename ... Types>
-void format(string::const_iterator &it, const string::const_iterator &end,
+void _format(string::const_iterator &it, const string::const_iterator &end,
             ostream &os, T first, Types ... args) {
 
     for (; it < end and *it != '%'; ++it) os << *it;
     if (it < end) {
         os << first;
-        format(++it, end, os, args...);
+        _format(++it, end, os, args...);
     }
 }
 
@@ -44,7 +42,7 @@ template<typename ... Types>
 string format(const string &pattern, Types ... args) {
     ostringstream oss;
     auto it = pattern.cbegin(), end = pattern.cend();
-    format(it, end, oss, args...);
+    _format(it, end, oss, args...);
     return oss.str();
 }
 
@@ -65,20 +63,40 @@ void getArgs(istream &argStream, T &first, Types &... slots) {
 }
 
 
-// Average of a vector whose type supports operator+ and operator/
-template<typename R, class InputIt, class BinaryOp>
-R average(InputIt first, InputIt last, BinaryOp op) {
-    return accumulate(first, last, R{}, op)/distance(first, last);
-}
-
-template<class InputIt>
-ValueT<InputIt> average(InputIt first, InputIt last) {
-    return average(first, last, plus<ValueT<InputIt>>());
-}
-
-
 void prefixPath(string &filePath, const string &prefixPath);
 
 void checkDirectory(const string &dir);
+
+
+// ---------- extend ----------
+
+template<typename T>
+unsigned long _size(const vector<T> &vec) {
+    return vec.size();
+}
+
+template<typename T, typename ... Types>
+unsigned long _size(const vector<T> &vec, const Types & ... others) {
+    return vec.size() + _size(others...);
+}
+
+
+template<typename T>
+void _extend(vector<T> &destination, const vector<T> &origin) {
+    destination.reserve(destination.size() + origin.size());
+}
+
+template<typename T, typename ... Types>
+void _extend(vector<T> &destination, const vector<T> &first, const Types & ... others) {
+    destination.insert(destination.end(), first.begin(), first.end());
+    _extend(destination, others...);
+}
+
+template<typename T, typename ... Types>
+void extend(vector<T> &destination, const vector<T> &first, const Types & ... others) {
+    destination.reserve(_size(first, others...));
+    _extend(destination, first, others...);
+}
+
 
 #endif //CONVEXPOLYGONS_UTILS_H
