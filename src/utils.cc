@@ -1,16 +1,13 @@
 
 #include <utils.h>
+#include <boost/format.hpp>
 
 
 using namespace std;
 
-void _format(string::const_iterator &it, const string::const_iterator &end, ostream &os) {
-    for (; it < end; ++it) os << *it;
-}
-
 
 void checkDirectory(const string &dir) {
-    system(format("mkdir -p %", dir).c_str());
+    system((boost::format("mkdir -p %s") % dir).str().c_str());
 }
 
 

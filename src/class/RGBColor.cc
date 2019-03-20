@@ -3,6 +3,7 @@
 //
 
 #include <class/RGBColor.h>
+#include <boost/format.hpp>
 
 #include "class/RGBColor.h"
 #include "errors.h"
@@ -32,5 +33,5 @@ bool RGBColor::checkRange(double val) {
 
 void RGBColor::checkRange(double r, double g, double b) {
     if (not(checkRange(r) and checkRange(b) and checkRange(g)))
-        throw ValueError(format("{%, %, %} is not a color", r, g, b));
+        throw ValueError((boost::format("{%f.3, %f.3, %f.3} is not a color") % r % g % b).str());
 }

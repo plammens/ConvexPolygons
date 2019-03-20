@@ -4,7 +4,6 @@
 #include <vector>
 #include <iostream>
 #include <sstream>
-#include <string>
 #include <numeric>
 #include "errors.h"
 
@@ -20,33 +19,6 @@ vector<T> readVector(istream &is) {
         vec.push_back(elem);
     return vec;
 }
-
-
-// Base case
-void _format(string::const_iterator &it, const string::const_iterator &end, ostream &os);
-
-// Recursive variadic template
-template<typename T, typename ... Types>
-void _format(string::const_iterator &it, const string::const_iterator &end,
-            ostream &os, T first, Types ... args) {
-
-    for (; it < end and *it != '%'; ++it) os << *it;
-    if (it < end) {
-        os << first;
-        _format(++it, end, os, args...);
-    }
-}
-
-// User interface
-template<typename ... Types>
-string format(const string &pattern, Types ... args) {
-    ostringstream oss;
-    auto it = pattern.cbegin(), end = pattern.cend();
-    _format(it, end, oss, args...);
-    return oss.str();
-}
-
-// TODO: use boost?
 
 
 template<typename T>
