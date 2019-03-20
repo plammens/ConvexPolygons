@@ -6,10 +6,20 @@
 #include <sstream>
 #include <numeric>
 #include "errors.h"
+#include "consts.h"
 
 
 using namespace std;
 
+// ------------- numeric ----------
+
+inline
+bool numericEquals(double a, double b) {
+    return abs(a - b) < NUM::EPSILON;
+}
+
+
+// --------- input reading utils ------------
 
 template<typename T>
 vector<T> readVector(istream &is) {
@@ -34,10 +44,21 @@ void getArgs(istream &argStream, T &first, Types &... slots) {
     getArgs(argStream, slots...);
 }
 
+// ----------- File IO utils ----------
 
-void prefixPath(string &filePath, const string &prefixPath);
 
-int checkDirectory(const string &dir);
+inline
+int checkDirectory(const string &dir) {
+    return system(("mkdir -p " + dir).c_str());
+}
+
+
+inline
+void prefixPath(string &filePath, const string &prefixPath) {
+    if (checkDirectory(prefixPath) != 0) throw IOError("directory " + prefixPath);
+    filePath.insert(0, prefixPath);
+}
+
 
 
 // ---------- extend ----------
@@ -47,29 +68,30 @@ unsigned long _size(const vector<T> &vec) {
     return vec.size();
 }
 
+
 template<typename T, typename ... Types>
-unsigned long _size(const vector<T> &vec, const Types & ... others) {
+unsigned long _size(const vector<T> &vec, const Types &... others) {
     return vec.size() + _size(others...);
 }
 
 
 template<typename T, typename ... Types>
-void extend(vector<T> &destination, const Types & ... vectors) {
+void extend(vector<T> &destination, const Types &... vectors) {
     destination.reserve(_size(vectors...));
     _extend(destination, vectors...);
 }
+
 
 template<typename T>
 void _extend(vector<T> &destination) {
 }
 
+
 template<typename T, typename ... Types>
-void _extend(vector<T> &destination, const vector<T> &first, const Types & ... others) {
+void _extend(vector<T> &destination, const vector<T> &first, const Types &... others) {
     destination.insert(destination.end(), first.begin(), first.end());
     _extend(destination, others...);
 }
-
-bool numericEquals(const double a, const double b);
 
 
 #endif //CONVEXPOLYGONS_UTILS_H
