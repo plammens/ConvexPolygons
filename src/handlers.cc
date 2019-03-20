@@ -49,7 +49,10 @@ void handleBinaryOperation(const string &keyword, istream &argStream, PolygonMap
     const ConvexPolygon &p2 = getPolygon(id2, polygons);
     const ConvexPolygon &p3 = getPolygon(id3.empty() ? id1 : id3, polygons);
 
-    if      (keyword == CMD::INSIDE) cout << (isInside(p1, p2) ? "yes" : "no") << endl;
+    if      (keyword == CMD::INSIDE) {
+        cout << (isInside(p1, p2) ? "yes" : "no") << endl;
+        return;
+    }
     else if (keyword == CMD::UNION) p1 = convexUnion(p2, p3);
     else if (keyword == CMD::INTERSECTION) p1 = intersection(p2, p3);
     else assert(false);

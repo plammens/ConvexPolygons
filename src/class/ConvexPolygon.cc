@@ -87,27 +87,33 @@ ConvexPolygon ConvexPolygon::boundingBox() const {
     return bBox;
 }
 
-bool isInside(const ConvexPolygon &pol1, const ConvexPolygon &pol2) {
-    const Points &vertices1 = pol1.getVertices(), &vertices2 = pol2.getVertices();
-    unsigned long n = vertices1.size(), m = vertices2.size();
+bool isInside(const Point &P, const ConvexPolygon &pol) {
+    if (pol.empty()) return false;
 
-    // We pick a method or another, depending on whether `m < log(n)`, since
-    // the brute force method is O(n*m), while the other is O(n*log(n))
-    if (unsigned(2 << m) < n) {  // O(n*m)
-        for (const Point &P : vertices1)  // "brute force"
-            if (not isInside(P, pol2)) return false;
-        return true;
-    } else  // O(n*log(n))
-        return vertices2 == convexUnion(pol1, pol2).getVertices();
+    const Points &vertices = pol.getVertices();
+    const Point &P0 = vertices[0];
+
+    // Special cases:
+    if (pol.vertexCount() == 1) return P == P0;
+    if (pol.vertexCount() == 2) return isInSegment(P, {P0, vertices[1]});
+
+    // Binary search
+    unsigned long left = 1, right = pol.vertexCount() - 1;
+    while (right - left > 1) {
+        unsigned long mid = (left + right)/2;
+        if (isClockwiseTurn(P0, vertices[mid], P)) left = mid;
+        else if (isCounterClockwiseTurn(P0, vertices[mid], P)) right = mid;
+        else return isInSegment(P, {P0, vertices[mid]});
+    }
+
+    return isInSegment(P, {P0, vertices[left]});
 }
 
 
-bool isInside(const Point &P, const ConvexPolygon &pol) {
-    const Points &vertices = pol.getVertices();
-    const auto end = vertices.end() - 1;
-    for (auto it = vertices.begin(); it < end; ++it)
-        if (isCounterClockwiseTurn(it[0], it[1], P))
-            return false;
+bool isInside(const ConvexPolygon &pol1, const ConvexPolygon &pol2) {
+    const Points &vertices1 = pol1.getVertices();
+    for (const Point &P : vertices1)
+        if (not isInside(P, pol2)) return false;
     return true;
 }
 

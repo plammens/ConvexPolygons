@@ -26,12 +26,12 @@ public:
     ConvexPolygon(Points &points);
 
     unsigned long vertexCount() const;
-    bool empty() const;
     double area() const;
     double perimeter() const;
     Point centroid() const;
     ConvexPolygon boundingBox() const;
 
+    bool empty() const { return vertices.empty(); }
     const Points &getVertices() const { return vertices; }
     const RGBColor &getColor() const { return color; }
     void setColor(double r, double g, double b) { color = {r, g, b}; }
