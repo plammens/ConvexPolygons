@@ -11,9 +11,10 @@ void handleIDManagement(const string &keyword, istream &argStream, PolygonMap &p
     string id;
     getArgs(argStream, id);
 
-    if      (keyword == CMD::POLYGON) readAndSavePolygon(argStream, polygons, id);
+    if (keyword == CMD::POLYGON) readAndSavePolygon(argStream, polygons, id);
     else if (keyword == CMD::DELETE) polygons.erase(id);
-    else assert(false);
+    else
+        assert(false);
 
     printOk();
 }
@@ -24,7 +25,7 @@ void handlePolygonMethod(const string &keyword, istream &argStream, PolygonMap &
     getArgs(argStream, id);
     ConvexPolygon &pol = getPolygon(id, polygons);  // throws `UndefinedID` if nonexistent
 
-    if      (keyword == CMD::PRINT) printPolygon(id, pol);
+    if (keyword == CMD::PRINT) printPolygon(id, pol);
     else if (keyword == CMD::AREA) cout << pol.area() << endl;
     else if (keyword == CMD::PERIMETER) cout << pol.perimeter() << endl;
     else if (keyword == CMD::VERTICES) cout << pol.vertexCount() << endl;
@@ -32,24 +33,33 @@ void handlePolygonMethod(const string &keyword, istream &argStream, PolygonMap &
     else if (keyword == CMD::SETCOL) {
         double r, g, b;
         getArgs(argStream, r, g, b);
-             pol.setColor(r, g, b);
+        pol.setColor(r, g, b);
         printOk();
     }
-    else assert(false);  // Shouldn't get here
+    else
+        assert(false);  // Shouldn't get here
 }
 
 
 void handleBinaryOperation(const string &keyword, istream &argStream, PolygonMap &polygons) {
-    string id1, id2, id3;
+    string id1, id2;
     getArgs(argStream, id1, id2);
+    ConvexPolygon &p1 = getPolygon(id1, polygons);
+    const ConvexPolygon &p2 = getPolygon(id2, polygons);
+
+    if (keyword == CMD::INSIDE) {
+        cout << (isInside(p1, p2) ? "yes" : "no") << endl;
+        return;
+    }
+
+    string id3;
     argStream >> id3;  // no exception if not available
 
     if      (keyword == CMD::INTERSECTION);
     else if (keyword == CMD::UNION) {
-        if (id3.empty()) polygons[id1].convexUnion(getPolygon(id2, polygons));
-        else polygons[id1] = convexUnion(getPolygon(id2, polygons), getPolygon(id3, polygons));
+        if (id3.empty()) p1.convexUnion(p2);
+        else p1 = convexUnion(p2, getPolygon(id3, polygons));
     }
-    else if (keyword == CMD::INSIDE);
     else assert(false);
 
     printOk();
@@ -62,7 +72,8 @@ void handleNAryOperation(const string &keyword, istream &argStream, PolygonMap &
     vector<string> polIDs = readVector<string>(argStream);
 
     if (keyword == CMD::BBOX) polygons[id] = boundingBox(polIDs, polygons);
-    else assert(false);
+    else
+        assert(false);
 
     printOk();
 }
@@ -75,10 +86,11 @@ void handleIOCommand(const string &keyword, istream &argStream, PolygonMap &poly
     prefixPath(file, IO::OUT_DIR);  // prefix with output directory
     vector<string> polygonIDs = readVector<string>(argStream);
 
-    if      (keyword == CMD::SAVE) save(file, polygonIDs, polygons);
+    if (keyword == CMD::SAVE) save(file, polygonIDs, polygons);
     else if (keyword == CMD::LOAD) load(file, polygons);
     else if (keyword == CMD::DRAW) draw(file, polygonIDs, polygons);
-    else assert(false); // Shouldn't get here
+    else
+        assert(false); // Shouldn't get here
 
     printOk();
 }
@@ -86,7 +98,8 @@ void handleIOCommand(const string &keyword, istream &argStream, PolygonMap &poly
 
 void handleNullaryCommand(const string &keyword, istream &argStream, PolygonMap &polygons) {
     if (keyword == CMD::LIST) list(polygons);
-    else assert(false); // Shouldn't get here
+    else
+        assert(false); // Shouldn't get here
 }
 
 // -------------------

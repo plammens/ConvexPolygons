@@ -12,7 +12,13 @@ Vector2D operator-(const Point &A, const Point &B) {
 // Whether vectors AB and AC are in a clockwise configuration (in that order)
 bool isClockwiseTurn(const Point &A, const Point &B, const Point &C) {
     Vector2D AB = B - A, AC = C - A;
-    return AC.x*AB.y > AB.x*AC.y;  // TODO: refactor cross prod
+    return crossProd(AB, AC) < 0;
+}
+
+// Whether vectors AB and AC are in a clockwise configuration (in that order)
+bool isCounterClockwiseTurn(const Point &A, const Point &B, const Point &C) {
+    Vector2D AB = B - A, AC = C - A;
+    return crossProd(AB, AC) > 0;
 }
 
 

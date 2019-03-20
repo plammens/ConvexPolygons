@@ -27,7 +27,7 @@ Points ConvexPolygon::ConvexHull(Points &points) {
         hull.push_back(*it);
     }
 
-    hull.push_back(P0);  // Complete cycle
+    hull.push_back(P0);  // complete the cycle
     return hull;
 }
 
@@ -72,6 +72,7 @@ Point ConvexPolygon::centroid() const {
     return barycenter(vertices.begin(), vertices.end() - 1);
 }
 
+
 ConvexPolygon ConvexPolygon::boundingBox() const {
     if (vertices.empty()) throw ValueError("bounding box undefined for 0-gon");
 
@@ -99,7 +100,7 @@ ConvexPolygon &operator|(ConvexPolygon &polA, const ConvexPolygon &polB) {
 }
 
 
-ConvexPolygon convexUnion(const ConvexPolygon & pol1, const ConvexPolygon &pol2) {
+ConvexPolygon convexUnion(const ConvexPolygon &pol1, const ConvexPolygon &pol2) {
     Points points;
     extend(points, pol1.getVertices(), pol2.getVertices());
     return ConvexPolygon(points);
@@ -120,4 +121,33 @@ void ConvexPolygon::setColor(double r, double g, double b) { color = {r, g, b}; 
 
 bool ConvexPolygon::empty() const {
     return vertices.empty();
+}
+
+
+ConvexPolygon &ConvexPolygon::intersection(const ConvexPolygon &) {
+}
+
+
+bool isInside(const Point &P, const ConvexPolygon &pol) {
+    const Points &vertices = pol.getVertices();
+    const auto end = vertices.end() - 1;
+    for (auto it = vertices.begin(); it < end; ++it)
+        if (isCounterClockwiseTurn(it[0], it[1], P))
+            return false;
+    return true;
+}
+
+
+bool isInside(const ConvexPolygon &first, const ConvexPolygon &second) {
+    const Points &vertices1 = first.getVertices(), &vertices2 = second.getVertices();
+    unsigned long n = vertices1.size(), m = vertices2.size();
+
+    // We pick a method or another, depending on whether `m < log(n)`, since
+    // the brute force method is O(n*m), while the other is O(n*log(n))
+    if (unsigned(2 << m) < n) {  // O(n*m)
+        for (const Point &P : vertices1)  // "brute force"
+            if (not isInside(P, second)) return false;
+        return true;
+    } else  // O(n*log(n))
+        return vertices1 == convexUnion(first, second).getVertices();
 }

@@ -50,3 +50,7 @@ are named in `camelCase`.
 ## Error handling
 
 
+## Desing choices
+
+Free functions vs members.
+

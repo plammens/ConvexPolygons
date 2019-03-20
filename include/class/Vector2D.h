@@ -14,4 +14,7 @@ Vector2D operator*(double a, const Vector2D &u);
 Vector2D operator/(const Vector2D &u, double a);
 Vector2D operator+(const Vector2D &u, const Vector2D &v);
 
+double crossProd(const Vector2D & u, const Vector2D& v);
+
+
 #endif //CONVEXPOLYGONS_VECTOR2D_H

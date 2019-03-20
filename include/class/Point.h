@@ -49,6 +49,7 @@ Point upperRight(const Point &A, const Point &B);
 
 // Returns whether the vector AC lies clockwise with respect to AB
 bool isClockwiseTurn(const Point &A, const Point &B, const Point &C);
+bool isCounterClockwiseTurn(const Point &A, const Point &B, const Point &C);
 
 // Barycenter of a vector of points
 Point barycenter(Points::const_iterator begin, Points::const_iterator end);  // TODO: should do for any container?

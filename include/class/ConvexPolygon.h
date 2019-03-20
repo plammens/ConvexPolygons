@@ -6,11 +6,12 @@
 
 #include "class/Point.h"
 #include "class/RGBColor.h"
-#include "consts.h"
 
 
 using namespace std;
 
+
+// TODO: move out member functions
 
 class ConvexPolygon {
 private:
@@ -32,6 +33,7 @@ public:
     ConvexPolygon boundingBox() const;
 
     ConvexPolygon &convexUnion(const ConvexPolygon &);
+    ConvexPolygon &intersection(const ConvexPolygon &);
 
     const Points &getVertices() const;
     const RGBColor &getColor() const;
@@ -43,5 +45,8 @@ public:
 ConvexPolygon &operator|(ConvexPolygon &, const ConvexPolygon &);
 
 ConvexPolygon convexUnion(const ConvexPolygon &, const ConvexPolygon &);
+
+bool isInside(const Point &P, const ConvexPolygon &pol);
+bool isInside(const ConvexPolygon &first, const ConvexPolygon &second);
 
 #endif //CONVEXPOLYGONS_CONVEXPOLYGONS_H
