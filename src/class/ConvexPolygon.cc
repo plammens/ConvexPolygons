@@ -18,15 +18,11 @@ Points ConvexPolygon::ConvexHull(Points &points) {
     // Sort the points in decreasing order of the angle they form with x-axis (relative to P0):
     sort(begin, end, PointComp::xAngle(P0, true));
 
-    // Graham scan initialization:
-    Points hull {P0};  // starting point
-    auto it = begin + 1;
-    for (; it < end and *it == P0; ++it);  // skip duplicates
-    if (it < end) hull.push_back(*it);  // second point
-
-    // Main part of Graham scan:
-    for (++it; it < end; ++it) {
-        if (not isClockwiseTurn(hull.end()[-2], hull.end()[-1], *it))
+    // Graham scan:
+    Points hull{P0};  // starting point
+    for (auto it = begin + 1; it < end; ++it) {
+        if (*it == hull.back()) continue;  // skip duplicates
+        while (hull.size() >= 2 and not isClockwiseTurn(hull.end()[-2], hull.end()[-1], *it))
             hull.pop_back();
         hull.push_back(*it);
     }
