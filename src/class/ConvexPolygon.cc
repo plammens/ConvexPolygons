@@ -128,9 +128,14 @@ ConvexPolygon intersection(const ConvexPolygon &pol1, const ConvexPolygon &pol2)
     Points intersectionPoints;
 
     const Points &v1 = pol1.getVertices(), &v2 = pol2.getVertices();
+
+    for (const Point &P : v1)
+        if (isInside(P, pol2)) intersectionPoints.push_back(P);
+    for (const Point &P : v2)
+        if (isInside(P, pol1)) intersectionPoints.push_back(P);
+
     const auto end2 = v2.end() - 1;
     const auto end1 = v1.end() - 1;
-
     for (auto it1 = v1.begin(); it1 < end1; ++it1) {
         for (auto it2 = v2.begin(); it2 < end2; ++it2) {
             auto intersection = intersect({it1[0], it1[1]}, {it2[0], it2[1]});

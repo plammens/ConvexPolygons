@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.0)
 project(ConvexPolygons)
 
 set(CMAKE_CXX_STANDARD 11)
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -D NO_FREETYPE")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -D NO_FREETYPE -O0")
 
 include_directories(include libs/include)
 link_directories(libs/lib)
