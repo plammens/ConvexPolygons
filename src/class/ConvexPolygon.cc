@@ -73,7 +73,7 @@ double ConvexPolygon::perimeter() const {
 
 
 Point ConvexPolygon::centroid() const {
-    return barycenter(vertices);
+    return barycenter(vertices.begin(), vertices.end() - 1);
 }
 
 ConvexPolygon ConvexPolygon::boundingBox() const {

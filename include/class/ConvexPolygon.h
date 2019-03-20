@@ -39,6 +39,7 @@ public:
 };
 
 
+// Shortcut for union
 ConvexPolygon &operator|(ConvexPolygon &, const ConvexPolygon &);
 
 ConvexPolygon convexUnion(const ConvexPolygon &, const ConvexPolygon &);

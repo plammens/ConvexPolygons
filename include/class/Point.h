@@ -51,7 +51,7 @@ Point upperRight(const Point &A, const Point &B);
 bool isClockwiseTurn(const Point &A, const Point &B, const Point &C);
 
 // Barycenter of a vector of points
-Point barycenter(const Points &points);  // TODO: should do for any container?
+Point barycenter(Points::const_iterator begin, Points::const_iterator end);  // TODO: should do for any container?
 
 // Reads space-separated x, y coordinates into P
 istream &operator>>(istream &is, Point &P);

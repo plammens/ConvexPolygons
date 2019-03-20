@@ -77,15 +77,15 @@ Point operator+(const Point &A, const Vector2D &u) {
 }
 
 
-Point barycenter(const Points &points) {
-    if (points.empty()) throw ValueError("no points given for barycenter");
+Point barycenter(Points::const_iterator begin, Points::const_iterator end) {
+    if (begin == end) throw ValueError("no points given for barycenter");
     // Here we calculate the "average" of the points seen as vectors.
     // We use a custom binary operator that converts `Point`s to `Vector2D`s along the way.
-    Vector2D sumVector = accumulate(points.cbegin(), points.cend(), Vector2D{0, 0},
+    Vector2D sumVector = accumulate(begin, end, Vector2D{0, 0},
                                     [](const Vector2D &u, const Point &P) {
-                                        return u + (const Vector2D &) (P);
+                                        return u + (const Vector2D &)(P);
                                     });
-    return Point{0, 0} + sumVector/points.size();
+    return Point{0, 0} + sumVector/(end - begin);
 }
 
 
