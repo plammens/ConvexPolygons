@@ -22,7 +22,9 @@ void handleIDManagement(const string &keyword, istream &argStream, PolygonMap &p
 void handlePolygonMethod(const string &keyword, istream &argStream, PolygonMap &polygons);
 
 // Subroutine to handle operations with polygons
-void handlePolygonOperation(const string &keyword, istream &argStream, PolygonMap &polygons);
+void handleBinaryOperation(const string &keyword, istream &argStream, PolygonMap &polygons);
+
+void handleNAryOperation(const string &keyword, istream &argStream, PolygonMap &polygons);
 
 // Subroutine to handle file-related commands
 void handleIOCommand(const string &keyword, istream &argStream, PolygonMap &polygons);
@@ -63,10 +65,10 @@ const map<string, CommandHandler> cmdHandlerMap = {
         {CMD::VERTICES,     handlePolygonMethod},
         {CMD::CENTROID,     handlePolygonMethod},
         {CMD::SETCOL,       handlePolygonMethod},
-        {CMD::INTERSECTION, handlePolygonOperation},
-        {CMD::UNION,        handlePolygonOperation},
-        {CMD::INSIDE,       handlePolygonOperation},
-        {CMD::BBOX,         handlePolygonOperation},
+        {CMD::INTERSECTION, handleBinaryOperation},
+        {CMD::UNION,        handleBinaryOperation},
+        {CMD::INSIDE,       handleBinaryOperation},
+        {CMD::BBOX,         handleNAryOperation},
         {CMD::LIST,         handleNullaryCommand},
         {CMD::SAVE,         handleIOCommand},
         {CMD::LOAD,         handleIOCommand},

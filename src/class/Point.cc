@@ -11,7 +11,7 @@ Vector2D operator-(const Point &A, const Point &B) {
 // Whether vectors AB and AC are in a clockwise configuration (in that order)
 bool isClockwiseTurn(const Point &A, const Point &B, const Point &C) {
     Vector2D AB = B - A, AC = C - A;
-    return AC.x*AB.y > AB.x*AC.y;
+    return AC.x*AB.y > AB.x*AC.y;  // TODO: refactor cross prod
 }
 
 //Equality operators
@@ -69,8 +69,7 @@ Point operator+(const Point &A, const Vector2D &u) {
 
 Point barycenter(const Points &points) {
     if (points.empty()) throw ValueError("no points given for barycenter");
-
-    // Here we calculate the "average" of the points seen as vector.
+    // Here we calculate the "average" of the points seen as vectors.
     // We use a custom binary operator that converts `Point`s to `Vector2D`s along the way.
     Vector2D averageVec = average<Vector2D>(points.cbegin(), points.cend(),
                                             [](const Vector2D &u, const Point &P) {

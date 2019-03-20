@@ -1,4 +1,6 @@
 #include <iostream>
+#include <handlers.h>
+
 
 #include "handlers.h"
 #include "errors.h"
@@ -37,15 +39,29 @@ void handlePolygonMethod(const string &keyword, istream &argStream, PolygonMap &
 }
 
 
-void handlePolygonOperation(const string &keyword, istream &argStream, PolygonMap &polygons) {
-    string firstID;
-    getArgs(argStream, firstID);
+void handleBinaryOperation(const string &keyword, istream &argStream, PolygonMap &polygons) {
+    string id1, id2, id3;
+    getArgs(argStream, id1, id2);
+    argStream >> id3;  // no exception if not available
+
+    if      (keyword == CMD::INTERSECTION);
+    else if (keyword == CMD::UNION) {
+        if (id3.empty()) polygons[id1].convexUnion(getPolygon(id2, polygons));
+        else polygons[id1] = convexUnion(getPolygon(id2, polygons), getPolygon(id3, polygons));
+    }
+    else if (keyword == CMD::INSIDE);
+    else assert(false);
+
+    printOk();
+}
+
+
+void handleNAryOperation(const string &keyword, istream &argStream, PolygonMap &polygons) {
+    string id;
+    getArgs(argStream, id);
     vector<string> polIDs = readVector<string>(argStream);
 
-    if      (keyword == CMD::BBOX) polygons[firstID] = boundingBox(polIDs, polygons);
-    else if (keyword == CMD::INTERSECTION);
-    else if (keyword == CMD::UNION);
-    else if (keyword == CMD::INSIDE);
+    if (keyword == CMD::BBOX) polygons[id] = boundingBox(polIDs, polygons);
     else assert(false);
 
     printOk();
@@ -73,8 +89,8 @@ void handleNullaryCommand(const string &keyword, istream &argStream, PolygonMap 
     else assert(false); // Shouldn't get here
 }
 
-
 // -------------------
+
 
 CommandHandler getCommandHandler(const string &keyword) {
     auto it = cmdHandlerMap.find(keyword);
