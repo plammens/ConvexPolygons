@@ -53,21 +53,20 @@ unsigned long _size(const vector<T> &vec, const Types & ... others) {
 }
 
 
+template<typename T, typename ... Types>
+void extend(vector<T> &destination, const Types & ... vectors) {
+    destination.reserve(_size(vectors...));
+    _extend(destination, vectors...);
+}
+
 template<typename T>
-void _extend(vector<T> &destination, const vector<T> &origin) {
-    destination.reserve(destination.size() + origin.size());
+void _extend(vector<T> &destination) {
 }
 
 template<typename T, typename ... Types>
 void _extend(vector<T> &destination, const vector<T> &first, const Types & ... others) {
     destination.insert(destination.end(), first.begin(), first.end());
     _extend(destination, others...);
-}
-
-template<typename T, typename ... Types>
-void extend(vector<T> &destination, const vector<T> &first, const Types & ... others) {
-    destination.reserve(_size(first, others...));
-    _extend(destination, first, others...);
 }
 
 
