@@ -32,21 +32,19 @@ public:
     Point centroid() const;
     ConvexPolygon boundingBox() const;
 
-    ConvexPolygon &convexUnion(const ConvexPolygon &);
-    ConvexPolygon &intersection(const ConvexPolygon &);
-
-    const Points &getVertices() const;
-    const RGBColor &getColor() const;
-    void setColor(double r, double g, double b);
+    const Points &getVertices() const { return vertices; }
+    const RGBColor &getColor() const { return color; }
+    void setColor(double r, double g, double b) { color = {r, g, b}; }
 };
 
 
-// Shortcut for union
-ConvexPolygon &operator|(ConvexPolygon &, const ConvexPolygon &);
+bool isInside(const Point &P, const ConvexPolygon &pol);
+bool isInside(const ConvexPolygon &pol1, const ConvexPolygon &pol2);
 
 ConvexPolygon convexUnion(const ConvexPolygon &, const ConvexPolygon &);
+ConvexPolygon operator|(const ConvexPolygon &polA, const ConvexPolygon &polB);
 
-bool isInside(const Point &P, const ConvexPolygon &pol);
-bool isInside(const ConvexPolygon &first, const ConvexPolygon &second);
+ConvexPolygon intersection(const ConvexPolygon &, const ConvexPolygon &);
+ConvexPolygon operator&(const ConvexPolygon &, const ConvexPolygon &);
 
 #endif //CONVEXPOLYGONS_CONVEXPOLYGONS_H

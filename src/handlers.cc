@@ -36,30 +36,22 @@ void handlePolygonMethod(const string &keyword, istream &argStream, PolygonMap &
         pol.setColor(r, g, b);
         printOk();
     }
-    else
-        assert(false);  // Shouldn't get here
+    else assert(false);  // Shouldn't get here
 }
 
 
 void handleBinaryOperation(const string &keyword, istream &argStream, PolygonMap &polygons) {
-    string id1, id2;
+    string id1, id2, id3;
     getArgs(argStream, id1, id2);
-    ConvexPolygon &p1 = getPolygon(id1, polygons);
-    const ConvexPolygon &p2 = getPolygon(id2, polygons);
-
-    if (keyword == CMD::INSIDE) {
-        cout << (isInside(p1, p2) ? "yes" : "no") << endl;
-        return;
-    }
-
-    string id3;
     argStream >> id3;  // no exception if not available
 
-    if      (keyword == CMD::INTERSECTION);
-    else if (keyword == CMD::UNION) {
-        if (id3.empty()) p1.convexUnion(p2);
-        else p1 = convexUnion(p2, getPolygon(id3, polygons));
-    }
+    ConvexPolygon &p1 = polygons[id1];
+    const ConvexPolygon &p2 = getPolygon(id2, polygons);
+    const ConvexPolygon &p3 = getPolygon(id3.empty() ? id1 : id3, polygons);
+
+    if      (keyword == CMD::INSIDE) cout << (isInside(p1, p2) ? "yes" : "no") << endl;
+    else if (keyword == CMD::UNION) p1 = convexUnion(p2, p3);
+    else if (keyword == CMD::INTERSECTION) p1 = intersection(p2, p3);
     else assert(false);
 
     printOk();
@@ -72,8 +64,7 @@ void handleNAryOperation(const string &keyword, istream &argStream, PolygonMap &
     vector<string> polIDs = readVector<string>(argStream);
 
     if (keyword == CMD::BBOX) polygons[id] = boundingBox(polIDs, polygons);
-    else
-        assert(false);
+    else assert(false);
 
     printOk();
 }
@@ -89,8 +80,7 @@ void handleIOCommand(const string &keyword, istream &argStream, PolygonMap &poly
     if (keyword == CMD::SAVE) save(file, polygonIDs, polygons);
     else if (keyword == CMD::LOAD) load(file, polygons);
     else if (keyword == CMD::DRAW) draw(file, polygonIDs, polygons);
-    else
-        assert(false); // Shouldn't get here
+    else assert(false); // Shouldn't get here
 
     printOk();
 }
@@ -98,8 +88,7 @@ void handleIOCommand(const string &keyword, istream &argStream, PolygonMap &poly
 
 void handleNullaryCommand(const string &keyword, istream &argStream, PolygonMap &polygons) {
     if (keyword == CMD::LIST) list(polygons);
-    else
-        assert(false); // Shouldn't get here
+    else assert(false); // Shouldn't get here
 }
 
 // -------------------

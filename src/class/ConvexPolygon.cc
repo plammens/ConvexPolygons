@@ -2,7 +2,7 @@
 #include <iostream>
 #include <class/ConvexPolygon.h>
 
-
+#include "geom.h"
 #include "utils.h"
 
 
@@ -87,44 +87,18 @@ ConvexPolygon ConvexPolygon::boundingBox() const {
     return bBox;
 }
 
+bool isInside(const ConvexPolygon &pol1, const ConvexPolygon &pol2) {
+    const Points &vertices1 = pol1.getVertices(), &vertices2 = pol2.getVertices();
+    unsigned long n = vertices1.size(), m = vertices2.size();
 
-ConvexPolygon &ConvexPolygon::convexUnion(const ConvexPolygon &other) {
-    extend(vertices, other.getVertices());
-    vertices = ConvexHull(vertices);
-    return *this;
-}
-
-
-ConvexPolygon &operator|(ConvexPolygon &polA, const ConvexPolygon &polB) {
-    return polA.convexUnion(polB);
-}
-
-
-ConvexPolygon convexUnion(const ConvexPolygon &pol1, const ConvexPolygon &pol2) {
-    Points points;
-    extend(points, pol1.getVertices(), pol2.getVertices());
-    return ConvexPolygon(points);
-}
-
-
-// ---------------- Getters and setters ----------------
-
-
-const Points &ConvexPolygon::getVertices() const { return vertices; }
-
-
-const RGBColor &ConvexPolygon::getColor() const { return color; }
-
-
-void ConvexPolygon::setColor(double r, double g, double b) { color = {r, g, b}; }
-
-
-bool ConvexPolygon::empty() const {
-    return vertices.empty();
-}
-
-
-ConvexPolygon &ConvexPolygon::intersection(const ConvexPolygon &) {
+    // We pick a method or another, depending on whether `m < log(n)`, since
+    // the brute force method is O(n*m), while the other is O(n*log(n))
+    if (unsigned(2 << m) < n) {  // O(n*m)
+        for (const Point &P : vertices1)  // "brute force"
+            if (not isInside(P, pol2)) return false;
+        return true;
+    } else  // O(n*log(n))
+        return vertices2 == convexUnion(pol1, pol2).getVertices();
 }
 
 
@@ -138,16 +112,32 @@ bool isInside(const Point &P, const ConvexPolygon &pol) {
 }
 
 
-bool isInside(const ConvexPolygon &first, const ConvexPolygon &second) {
-    const Points &vertices1 = first.getVertices(), &vertices2 = second.getVertices();
-    unsigned long n = vertices1.size(), m = vertices2.size();
+ConvexPolygon convexUnion(const ConvexPolygon &pol1, const ConvexPolygon &pol2) {
+    Points points;
+    extend(points, pol1.getVertices(), pol2.getVertices());
+    return ConvexPolygon(points);
+}
 
-    // We pick a method or another, depending on whether `m < log(n)`, since
-    // the brute force method is O(n*m), while the other is O(n*log(n))
-    if (unsigned(2 << m) < n) {  // O(n*m)
-        for (const Point &P : vertices1)  // "brute force"
-            if (not isInside(P, second)) return false;
-        return true;
-    } else  // O(n*log(n))
-        return vertices2 == convexUnion(first, second).getVertices();
+
+ConvexPolygon operator|(const ConvexPolygon &polA, const ConvexPolygon &polB) {
+    return convexUnion(polA, polB);
+}
+
+
+ConvexPolygon intersection(const ConvexPolygon &pol1, const ConvexPolygon &pol2) {
+    Points intersectionPoints;
+
+    const Points &v1 = pol1.getVertices(), &v2 = pol2.getVertices();
+    const auto end2 = v2.end() - 1;
+    const auto end1 = v1.end() - 1;
+
+    for (auto it1 = v1.begin(); it1 < end1; ++it1) {
+        for (auto it2 = v2.begin(); it2 < end2; ++it2) {
+            auto intersection = intersect({it1[0], it1[1]}, {it2[0], it2[1]});
+            if (intersection.success)
+                intersectionPoints.push_back(intersection.result);
+        }
+    }
+
+    return ConvexPolygon(intersectionPoints);
 }
