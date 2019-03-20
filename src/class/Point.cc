@@ -8,14 +8,17 @@ Vector2D operator-(const Point &A, const Point &B) {
     return {A.x - B.x, A.y - B.y};
 }
 
+
 // Whether vectors AB and AC are in a clockwise configuration (in that order)
 bool isClockwiseTurn(const Point &A, const Point &B, const Point &C) {
     Vector2D AB = B - A, AC = C - A;
     return AC.x*AB.y > AB.x*AC.y;  // TODO: refactor cross prod
 }
 
+
 //Equality operators
 bool operator==(const Point &A, const Point &B) { return A.x == B.x and A.y == B.y; }
+
 
 bool operator!=(const Point &A, const Point &B) { return not(A == B); }
 
@@ -30,9 +33,11 @@ namespace PointComp {
         return A.x < B.x;
     }
 
+
     // Constructs a new xAngle comparison with P as origin. If `reversed` is true,
     // comparison by angle (not the whole ordering) is reversed.
     xAngle::xAngle(const Point &P, bool reversed) : origin(P), reversed(reversed) {}
+
 
     // Compares Points according to the angles that the vectors joining the origin
     // with each point form with the x-axis. Returns whether the first angle is smaller
@@ -50,38 +55,45 @@ namespace PointComp {
 
 }
 
+
 // Euclidean distance
 double distance(const Point &A, const Point &B) {
     return (A - B).norm();
 }
 
+
 Point bottomLeft(const Point &A, const Point &B) {
     return {min(A.x, B.x), min(A.y, B.y)};
 }
+
 
 Point upperRight(const Point &A, const Point &B) {
     return {max(A.x, B.x), max(A.y, B.y)};
 }
 
+
 Point operator+(const Point &A, const Vector2D &u) {
     return {A.x + u.x, A.y + u.y};
 }
+
 
 Point barycenter(const Points &points) {
     if (points.empty()) throw ValueError("no points given for barycenter");
     // Here we calculate the "average" of the points seen as vectors.
     // We use a custom binary operator that converts `Point`s to `Vector2D`s along the way.
-    Vector2D averageVec = average<Vector2D>(points.cbegin(), points.cend(),
-                                            [](const Vector2D &u, const Point &P) {
-                                                return u + (const Vector2D &)(P);
-                                            });
-    return Point{0, 0} + averageVec;
+    Vector2D sumVector = accumulate(points.cbegin(), points.cend(), Vector2D{0, 0},
+                                    [](const Vector2D &u, const Point &P) {
+                                        return u + (const Vector2D &) (P);
+                                    });
+    return Point{0, 0} + sumVector/points.size();
 }
+
 
 // Extraction operation from an input stream into a point
 istream &operator>>(istream &is, Point &P) {
     return (is >> P.x >> P.y);
 }
+
 
 ostream &operator<<(ostream &os, const Point &P) {
     os.setf(ios::fixed);
