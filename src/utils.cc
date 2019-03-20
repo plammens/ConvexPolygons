@@ -6,12 +6,12 @@
 using namespace std;
 
 
-void checkDirectory(const string &dir) {
-    system((boost::format("mkdir -p %s") % dir).str().c_str());
+int checkDirectory(const string &dir) {
+    return system((boost::format("mkdir -p %s") % dir).str().c_str());
 }
 
 
 void prefixPath(string &filePath, const string &prefixPath) {
-    checkDirectory(prefixPath);
+    if (checkDirectory(prefixPath) != 0) throw IOError("directory " + prefixPath);
     filePath.insert(0, prefixPath);
 }

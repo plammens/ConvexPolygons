@@ -37,7 +37,7 @@ void getArgs(istream &argStream, T &first, Types &... slots) {
 
 void prefixPath(string &filePath, const string &prefixPath);
 
-void checkDirectory(const string &dir);
+int checkDirectory(const string &dir);
 
 
 // ---------- extend ----------
