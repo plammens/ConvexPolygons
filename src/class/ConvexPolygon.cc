@@ -149,5 +149,5 @@ bool isInside(const ConvexPolygon &first, const ConvexPolygon &second) {
             if (not isInside(P, second)) return false;
         return true;
     } else  // O(n*log(n))
-        return vertices1 == convexUnion(first, second).getVertices();
+        return vertices2 == convexUnion(first, second).getVertices();
 }
