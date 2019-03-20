@@ -17,7 +17,9 @@ bool isClockwiseTurn(const Point &A, const Point &B, const Point &C) {
 
 
 //Equality operators
-bool operator==(const Point &A, const Point &B) { return A.x == B.x and A.y == B.y; }
+bool operator==(const Point &A, const Point &B) {
+    return numericEquals(A.x, B.x) and numericEquals(A.y, B.y);
+}
 
 
 bool operator!=(const Point &A, const Point &B) { return not(A == B); }

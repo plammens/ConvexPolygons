@@ -69,5 +69,7 @@ void _extend(vector<T> &destination, const vector<T> &first, const Types & ... o
     _extend(destination, others...);
 }
 
+bool numericEquals(const double a, const double b);
+
 
 #endif //CONVEXPOLYGONS_UTILS_H

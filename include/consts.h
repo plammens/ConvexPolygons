@@ -41,5 +41,9 @@ namespace IMG {  // some image constants
     constexpr double DRAW_SIZE = SIZE - 2*PADDING;  // size of available drawing space
 }
 
+namespace NUM {
+    constexpr double EPSILON = 1e-12; 
+}
+
 
 #endif //CONVEXPOLYGONS_CONSTS_H
