@@ -41,5 +41,6 @@ public:
 
 ConvexPolygon &operator|(ConvexPolygon &, const ConvexPolygon &);
 
+ConvexPolygon convexUnion(const ConvexPolygon &, const ConvexPolygon &);
 
 #endif //CONVEXPOLYGONS_CONVEXPOLYGONS_H

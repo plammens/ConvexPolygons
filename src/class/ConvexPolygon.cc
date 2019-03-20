@@ -103,6 +103,13 @@ ConvexPolygon &operator|(ConvexPolygon &polA, const ConvexPolygon &polB) {
 }
 
 
+ConvexPolygon convexUnion(const ConvexPolygon & pol1, const ConvexPolygon &pol2) {
+    Points points;
+    extend(points, pol1.getVertices(), pol2.getVertices());
+    return ConvexPolygon(points);
+}
+
+
 // ---------------- Getters and setters ----------------
 
 
