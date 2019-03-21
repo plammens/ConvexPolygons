@@ -1,10 +1,12 @@
+// General-purpose utilities
+// (header-only)
+
 #ifndef CONVEXPOLYGONS_UTILS_H
 #define CONVEXPOLYGONS_UTILS_H
 
 #include <vector>
 #include <iostream>
 #include <sstream>
-#include <numeric>
 #include "errors.h"
 #include "consts.h"
 

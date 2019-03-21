@@ -1,7 +1,10 @@
+// Geometric utilities
+
 #ifndef CONVEXPOLYGONS_GEOM_H
 #define CONVEXPOLYGONS_GEOM_H
 
 #include "class/Point.h"
+
 
 // Represents a segment as a line Ax + By = C delimited by two points
 class Segment {

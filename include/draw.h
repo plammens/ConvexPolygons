@@ -1,12 +1,13 @@
+// Utilities for drawing polygons to PNGs
+
 #ifndef CONVEXPOLYGONS_DRAW_H
 #define CONVEXPOLYGONS_DRAW_H
 
 #include <vector>
 #include <pngwriter.h>
-
-#include "aliases.h"
 #include "class/Point.h"
 #include "class/ConvexPolygon.h"
+#include "aliases.h"
 
 
 using namespace std;

@@ -1,9 +1,12 @@
+// IO commands for calculator
+
 #ifndef CONVEXPOLYGONS_COMMANDS_H
 #define CONVEXPOLYGONS_COMMANDS_H
 
 #include <map>
-#include "aliases.h"
 #include "class/ConvexPolygon.h"
+#include "aliases.h"
+
 
 using namespace std;
 

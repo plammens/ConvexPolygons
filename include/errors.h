@@ -1,3 +1,6 @@
+// Custom exceptions for the whole project
+// (header-only)
+
 #ifndef CONVEXPOLYGONS_ERRORS_H
 #define CONVEXPOLYGONS_ERRORS_H
 

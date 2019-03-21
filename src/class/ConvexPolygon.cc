@@ -1,4 +1,5 @@
 #include <algorithm>
+#include <numeric>
 #include <iostream>
 #include <boost/range/adaptors.hpp>
 #include <class/ConvexPolygon.h>

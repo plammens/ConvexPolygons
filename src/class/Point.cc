@@ -1,4 +1,4 @@
-
+#include <numeric>
 #include "class/Point.h"
 #include "utils.h"
 

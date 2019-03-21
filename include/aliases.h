@@ -1,3 +1,5 @@
+// Some shared typedefs
+
 #ifndef CONVEXPOLYGONS_ALIASES_H
 #define CONVEXPOLYGONS_ALIASES_H
 

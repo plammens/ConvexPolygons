@@ -1,3 +1,5 @@
+// Interface for RGB colors
+
 #ifndef CONVEXPOLYGONS_RGBCOLOR_H
 #define CONVEXPOLYGONS_RGBCOLOR_H
 

@@ -1,4 +1,4 @@
-//
+// Box class
 
 #ifndef CONVEXPOLYGONS_BOX_H
 #define CONVEXPOLYGONS_BOX_H
@@ -12,6 +12,7 @@ class Box {
 
 public:
     Box(const Point &, const Point &, const Point &, const Point &);
+
 
     const Point &SW() const { return _SW; }
     const Point &NW() const { return _NW; }

@@ -1,5 +1,8 @@
+// Interface for 2D vectors
+
 #ifndef CONVEXPOLYGONS_VECTOR2D_H
 #define CONVEXPOLYGONS_VECTOR2D_H
+
 
 // Interface for 2D (geometric) vectors
 struct Vector2D {

@@ -1,3 +1,5 @@
+// Command handlers that handle user input and dispatch to the appropriate function
+
 #ifndef CONVEXPOLYGONS_HANDLERS_H
 #define CONVEXPOLYGONS_HANDLERS_H
 
