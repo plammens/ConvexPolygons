@@ -1,9 +1,6 @@
 //
 
-#include <pngwriter.h>
-#include <class/ConvexPolygon.h>
-#include <draw.h>
-
+#include "draw.h"
 #include "utils.h"
 
 

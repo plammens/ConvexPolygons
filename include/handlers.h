@@ -4,6 +4,7 @@
 #include <functional>
 #include <cassert>
 #include "commands.h"
+#include "consts.h"
 
 
 // Command handler signature

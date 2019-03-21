@@ -1,13 +1,17 @@
 #include <algorithm>
 #include <iostream>
+#include <boost/range/adaptors.hpp>
 #include <class/ConvexPolygon.h>
 
+#include "class/ConvexPolygon.h"
 #include "geom.h"
 #include "utils.h"
 
 
 using namespace std;
 
+
+// ------------------- static functions ------------------------------
 
 Points ConvexPolygon::ConvexHull(Points &points) {
     assert(not points.empty());
@@ -31,6 +35,8 @@ Points ConvexPolygon::ConvexHull(Points &points) {
     return hull;
 }
 
+
+// --------------------- member functions ------------------------
 
 // Constructs a convex polygon from a given list of points with a Graham scan
 ConvexPolygon::ConvexPolygon(Points &points) {
@@ -87,26 +93,55 @@ ConvexPolygon ConvexPolygon::boundingBox() const {
     return bBox;
 }
 
+
+
+// ------------------ non-member functions ------------------------
+
+ConvexPolygon boundingBox(Range<ConvexPolygon> polygons) {
+    // skip empty polygons:
+    polygons = boost::adaptors::filter(polygons, [](const ConvexPolygon &pol) { return not pol.empty(); });
+    // if, after filtering, polygons is empty, throw an error
+    if (polygons.empty()) throw ValueError("bounding box undefined for empty set");
+
+    Point SW = {INFINITY, INFINITY};
+    Point NE = {-INFINITY, -INFINITY};
+    for (const ConvexPolygon &pol : polygons) {
+        ConvexPolygon bbox = pol.boundingBox();
+        SW = bottomLeft(SW, pol.boundingBox().getVertices()[0]);  // TODO: subclass?
+        NE = upperRight(NE, pol.boundingBox().getVertices()[2]);
+    }
+
+    Point NW = {SW.x, NE.y};
+    Point SE = {NE.x, SW.y};
+
+    Points boxVertices = {SW, NW, NE, SE};
+    return ConvexPolygon(boxVertices);
+}
+
+
 bool isInside(const Point &P, const ConvexPolygon &pol) {
     if (pol.empty()) return false;
 
     const Points &vertices = pol.getVertices();
-    const Point &P0 = vertices[0];
+    const Point &O = vertices[0];
 
     // Special cases:
-    if (pol.vertexCount() == 1) return P == P0;
-    if (pol.vertexCount() == 2) return isInSegment(P, {P0, vertices[1]});
+    if (pol.vertexCount() == 1) return P == O;
+    if (pol.vertexCount() == 2) return isInSegment(P, {O, vertices[1]});
 
-    // Binary search
+    // Binary search:
     unsigned long left = 1, right = pol.vertexCount() - 1;
     while (right - left > 1) {
         unsigned long mid = (left + right)/2;
-        if (isClockwiseTurn(P0, vertices[mid], P)) left = mid;
-        else if (isCounterClockwiseTurn(P0, vertices[mid], P)) right = mid;
-        else return isInSegment(P, {P0, vertices[mid]});
+        if (isClockwiseTurn(O, vertices[mid], P)) left = mid;
+        else if (isCounterClockwiseTurn(O, vertices[mid], P)) right = mid;
+        else return isInSegment(P, {O, vertices[mid]});
     }
 
-    return isInSegment(P, {P0, vertices[left]});
+    const Point &leftVertex = vertices[left], &rightVertex = vertices[right];  // aliases
+    return isClockwiseTurn(O, leftVertex, P)
+           and isClockwiseTurn(leftVertex, rightVertex, P)
+           and isClockwiseTurn(rightVertex, O, P);
 }
 
 
@@ -152,3 +187,9 @@ ConvexPolygon intersection(const ConvexPolygon &pol1, const ConvexPolygon &pol2)
 
     return ConvexPolygon(intersectionPoints);
 }
+
+
+ConvexPolygon operator&(const ConvexPolygon &pol1, const ConvexPolygon &pol2) {
+    return intersection(pol1, pol2);
+}
+

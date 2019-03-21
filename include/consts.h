@@ -3,11 +3,6 @@
 #ifndef CONVEXPOLYGONS_CONSTS_H
 #define CONVEXPOLYGONS_CONSTS_H
 
-#include <boost/range/any_range.hpp>
-
-
-template <typename T>
-using Range = boost::any_range<const T, boost::bidirectional_traversal_tag>;
 
 namespace CMD {
     constexpr auto

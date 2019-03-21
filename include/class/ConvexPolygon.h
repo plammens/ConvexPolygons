@@ -2,10 +2,9 @@
 #define CONVEXPOLYGONS_CONVEXPOLYGONS_H
 
 #include <vector>
-#include <string>
-
 #include "class/Point.h"
 #include "class/RGBColor.h"
+#include "aliases.h"
 
 
 using namespace std;
@@ -41,10 +40,13 @@ public:
 bool isInside(const Point &P, const ConvexPolygon &pol);
 bool isInside(const ConvexPolygon &pol1, const ConvexPolygon &pol2);
 
+ConvexPolygon boundingBox(Range<ConvexPolygon> polygons);
+
 ConvexPolygon convexUnion(const ConvexPolygon &, const ConvexPolygon &);
 ConvexPolygon operator|(const ConvexPolygon &polA, const ConvexPolygon &polB);
 
 ConvexPolygon intersection(const ConvexPolygon &, const ConvexPolygon &);
 ConvexPolygon operator&(const ConvexPolygon &, const ConvexPolygon &);
+
 
 #endif //CONVEXPOLYGONS_CONVEXPOLYGONS_H

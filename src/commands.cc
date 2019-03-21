@@ -84,28 +84,6 @@ void list(const PolygonMap &polygons) {
 }
 
 
-ConvexPolygon boundingBox(Range<ConvexPolygon> polygons) {
-    // skip empty polygons:
-    polygons = boost::adaptors::filter(polygons, [](const ConvexPolygon &pol){ return not pol.empty(); });
-    // if, after filtering, polygons is empty, throw an error
-    if (polygons.empty()) throw ValueError("bounding box undefined for empty set");
-
-    Point SW = {INFINITY, INFINITY};
-    Point NE = {-INFINITY, -INFINITY};
-    for (const ConvexPolygon &pol : polygons) {
-        ConvexPolygon bbox = pol.boundingBox();
-        SW = bottomLeft(SW, pol.boundingBox().getVertices()[0]);  // TODO: subclass?
-        NE = upperRight(NE, pol.boundingBox().getVertices()[2]);
-    }
-
-    Point NW = {SW.x, NE.y};
-    Point SE = {NE.x, SW.y};
-
-    Points boxVertices = {SW, NW, NE, SE};
-    return ConvexPolygon(boxVertices);
-}
-
-
 Range<ConvexPolygon> getPolygons(const vector<string> &polygonIDs, PolygonMap &polygons) {
     // This unary lambda "gets" a polygon from the map given its ID
     function<const ConvexPolygon &(const string &id)> getter =

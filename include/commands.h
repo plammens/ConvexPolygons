@@ -2,7 +2,7 @@
 #define CONVEXPOLYGONS_COMMANDS_H
 
 #include <map>
-#include "consts.h"
+#include "aliases.h"
 #include "class/ConvexPolygon.h"
 
 using namespace std;
@@ -31,7 +31,6 @@ void save(const string &file, const vector<string> &polygonIDs, const PolygonMap
 // Load polygons from text file
 void load(const string &file, PolygonMap &polygons);
 
-ConvexPolygon boundingBox(Range<ConvexPolygon> polygons);
 
 #endif //CONVEXPOLYGONS_COMMANDS_H
 

@@ -4,7 +4,7 @@
 #include <vector>
 #include <pngwriter.h>
 
-#include "consts.h"
+#include "aliases.h"
 #include "class/Point.h"
 #include "class/ConvexPolygon.h"
 
