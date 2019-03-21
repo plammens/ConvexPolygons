@@ -18,6 +18,8 @@ using namespace std;
 // draws png with polygons
 void draw(const string &file, Range<ConvexPolygon> polygons);
 
+
+// Utility to map points to their pixel-coordinates
 class ScaleHelper {
     double minX, minY, maxLength;
     int xOffset, yOffset;
@@ -29,7 +31,9 @@ public:
     int scaleY(double y) const;
 };
 
-void plotPolygon(pngwriter &png, const ConvexPolygon &pol, const ScaleHelper &scale);
+
+// Draws and fills a polygon
+void fillPolygon(pngwriter &png, const ConvexPolygon &pol, const ScaleHelper &scale);
 
 
 #endif //CONVEXPOLYGONS_DRAW_H
