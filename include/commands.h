@@ -31,8 +31,7 @@ void save(const string &file, const vector<string> &polygonIDs, const PolygonMap
 // Load polygons from text file
 void load(const string &file, PolygonMap &polygons);
 
-// TODO: please refactor
-ConvexPolygon boundingBox(const Range<ConvexPolygon> polygons);
+ConvexPolygon boundingBox(Range<ConvexPolygon> polygons);
 
 #endif //CONVEXPOLYGONS_COMMANDS_H
 

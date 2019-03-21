@@ -84,7 +84,10 @@ void list(const PolygonMap &polygons) {
 }
 
 
-ConvexPolygon boundingBox(const Range<ConvexPolygon> polygons) {
+ConvexPolygon boundingBox(Range<ConvexPolygon> polygons) {
+    // skip empty polygons:
+    polygons = boost::adaptors::filter(polygons, [](const ConvexPolygon &pol){ return not pol.empty(); });
+    // if, after filtering, polygons is empty, throw an error
     if (polygons.empty()) throw ValueError("bounding box undefined for empty set");
 
     Point SW = {INFINITY, INFINITY};

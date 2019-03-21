@@ -7,7 +7,7 @@
 
 
 template <typename T>
-using Range = boost::any_range<T, boost::random_access_traversal_tag>;
+using Range = boost::any_range<const T, boost::bidirectional_traversal_tag>;
 
 namespace CMD {
     constexpr auto
