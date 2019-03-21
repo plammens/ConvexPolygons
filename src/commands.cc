@@ -84,13 +84,13 @@ void list(const PolygonMap &polygons) {
 }
 
 
-ConvexPolygon boundingBox(const vector<string> &polIDs, const PolygonMap &polygons) {
-    if (polIDs.empty()) throw ValueError("bounding box undefined for empty set");
+ConvexPolygon boundingBox(const Range<ConvexPolygon> polygons) {
+    if (polygons.empty()) throw ValueError("bounding box undefined for empty set");
 
     Point SW = {INFINITY, INFINITY};
     Point NE = {-INFINITY, -INFINITY};
-    for (const string &id : polIDs) {
-        const ConvexPolygon &pol = getPolygon(id, polygons);
+    for (const ConvexPolygon &pol : polygons) {
+        ConvexPolygon bbox = pol.boundingBox();
         SW = bottomLeft(SW, pol.boundingBox().getVertices()[0]);  // TODO: subclass?
         NE = upperRight(NE, pol.boundingBox().getVertices()[2]);
     }
@@ -103,10 +103,10 @@ ConvexPolygon boundingBox(const vector<string> &polIDs, const PolygonMap &polygo
 }
 
 
-Range<ConvexPolygon> toPolygons(const vector<string> &polygonIDs, const PolygonMap &polygons) {
+Range<ConvexPolygon> getPolygons(const vector<string> &polygonIDs, PolygonMap &polygons) {
     // This unary lambda "gets" a polygon from the map given its ID
     function<const ConvexPolygon &(const string &id)> getter =
-            [&polygons](const string &id) {
+            [&polygons](const string &id) -> ConvexPolygon & {
                 return getPolygon(id, polygons);
             };
     // (Lazily) apply the lambda to each ID:

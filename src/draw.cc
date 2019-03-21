@@ -4,16 +4,16 @@
 #include <pngwriter.h>
 #include <class/ConvexPolygon.h>
 #include <commands.h>
+#include "utils.h"
 
 
-void draw(const string &file, const vector<string> &polygonIDs,
-          const map<string, ConvexPolygon> &polygons) {
-
+void draw(const string &file, const Range<ConvexPolygon> polygons) {
+    checkFileForWriting(file);
     pngwriter png(IMG::SIZE, IMG::SIZE, IMG::BACKGROUND, file.c_str());
-    ScaleHelper scale(polygonIDs, polygons);
+    ScaleHelper scale(polygons);
 
-    for (const string &id : polygonIDs)
-        plotPolygon(png, getPolygon(id, polygons), scale);
+    for (const ConvexPolygon &pol : polygons)
+        plotPolygon(png, pol, scale);
 
     png.close();
 }
@@ -36,8 +36,8 @@ void plotPolygon(pngwriter &png, const ConvexPolygon &pol, const ScaleHelper &sc
     }
 }
 
-ScaleHelper::ScaleHelper(const vector<string> &polIDs, const PolygonMap &polygons) {
-    ConvexPolygon bBox = boundingBox(polIDs, polygons);
+ScaleHelper::ScaleHelper(const Range<ConvexPolygon> polygons) {
+    ConvexPolygon bBox = boundingBox(polygons);
     Point SW = bBox.getVertices()[0], NE = bBox.getVertices()[3];
     minCoord = min(SW.x, SW.y);
     totalLength = max(NE.x, NE.y) - minCoord;

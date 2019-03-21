@@ -42,13 +42,13 @@ void printOk() {
 inline
 void printError(const string &error) {
     // \e[31;1m is the ANSI escape sequence for bright red text
-    cout << "\e[31;1m" << "error: " << error << "\e[0m" << endl;
+    cerr << "\e[31;1m" << "error: " << error << "\e[0m" << endl;
 }
 
 inline
 void printWarning(const string &warning) {
     // \e[33m is the ANSI escape sequence for yellow text
-    cout << "\e[33m" << "warning: " << warning << "\e[0m" << endl;
+    cerr << "\e[33m" << "warning: " << warning << "\e[0m" << endl;
 }
 
 

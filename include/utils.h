@@ -60,6 +60,12 @@ void prefixPath(string &filePath, const string &prefixPath) {
 }
 
 
+inline
+void checkFileForWriting(const string &filePath) {
+    if (not fopen(filePath.c_str(), "w")) throw IOError(filePath);
+}
+
+
 
 // ---------- extend ----------
 

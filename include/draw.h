@@ -12,17 +12,17 @@
 using namespace std;
 
 // TODO: single point polygons / empty polygon handling
+// TODO: center image
 
 
 // draws png with polygons
-void draw(const string &file, const vector<string> &polygonIDs, const PolygonMap &polygons);
+void draw(const string &file, const Range<ConvexPolygon> polygons);
 
 class ScaleHelper {
     double minCoord, totalLength;
 
 public:
-    ScaleHelper(const vector<string> &polIDs, const PolygonMap &polygons);
-
+    ScaleHelper(const Range<ConvexPolygon> polygons);
     int operator()(double coord) const;
 };
 

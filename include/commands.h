@@ -14,7 +14,7 @@ typedef map<string, ConvexPolygon> PolygonMap;
 const ConvexPolygon &getPolygon(const string &id, const PolygonMap &polygons);
 ConvexPolygon &getPolygon(const string &id, PolygonMap &polygons);
 
-Range<ConvexPolygon> toPolygons(const vector<string> &polygonIDs, const PolygonMap &polygons);
+Range<ConvexPolygon> getPolygons(const vector<string> &polygonIDs, PolygonMap &polygons);
 
 // Reads a sequence of points from `is` and saves a new polygon from it in `polygons`
 void readAndSavePolygon(istream &is, PolygonMap &polygons, const string &id = "");
@@ -32,7 +32,7 @@ void save(const string &file, const vector<string> &polygonIDs, const PolygonMap
 void load(const string &file, PolygonMap &polygons);
 
 // TODO: please refactor
-ConvexPolygon boundingBox(const vector<string> &polIDs, const PolygonMap &polygons);
+ConvexPolygon boundingBox(const Range<ConvexPolygon> polygons);
 
 #endif //CONVEXPOLYGONS_COMMANDS_H
 

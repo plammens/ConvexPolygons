@@ -66,7 +66,7 @@ void handleNAryOperation(const string &keyword, istream &argStream, PolygonMap &
     getArgs(argStream, id);
     vector<string> polIDs = readVector<string>(argStream);
 
-    if (keyword == CMD::BBOX) polygons[id] = boundingBox(polIDs, polygons);
+    if (keyword == CMD::BBOX) polygons[id] = boundingBox(getPolygons(polIDs, polygons));
     else assert(false);
 
     printOk();
@@ -82,7 +82,7 @@ void handleIOCommand(const string &keyword, istream &argStream, PolygonMap &poly
 
     if (keyword == CMD::SAVE) save(file, polygonIDs, polygons);
     else if (keyword == CMD::LOAD) load(file, polygons);
-    else if (keyword == CMD::DRAW) draw(file, polygonIDs, polygons);
+    else if (keyword == CMD::DRAW) draw(file, getPolygons(polygonIDs, polygons));
     else assert(false); // Shouldn't get here
 
     printOk();
