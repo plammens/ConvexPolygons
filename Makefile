@@ -23,9 +23,9 @@ MAIN_EXE = $(BIN_DIR)/$(MAIN)# output path for main program
 
 ## Compiler options ##
 CXX = g++
-CXXFLAGS =  -I $(INCLUDE_DIR) -I $(LIB_INCLUDE_DIR) \
-			-L $(LIB_FILE_DIR) -l PNGwriter -l png -D NO_FREETYPE\
-			-Wall -std=c++11 -O2
+CXXFLAGS = -Wall -std=c++11 -O2 -D NO_FREETYPE
+CXX_COMPILE_FLAGS = $(CXXFLAGS) -I $(INCLUDE_DIR) -I $(LIB_INCLUDE_DIR)
+CXX_LINK_FLAGS = $(CXXFLAGS) -L $(LIB_FILE_DIR) -l PNGwriter -l png
 
 
 ### Auto-detected files and paths ###
@@ -73,12 +73,12 @@ libs: $(LIB_FILE_DIR)/libPNGwriter.a
 
 # This rule links all object files together and outputs the main executable.
 $(MAIN_EXE): $(objects) | $(BIN_DIR)
-	$(CXX) $^ -o $@ $(CXXFLAGS)
+	$(CXX) $^ -o $@ $(CXX_LINK_FLAGS)
 
 # This rule compiles source files into their corresponding object file.
 # As a side effect of compilation we generate a dependency file (with the `-MMD -MF` flags)
 $(OBJ_DIR)/%.o: %.cc | $(OBJ_DIR) $(DEP_DIR)
-	$(CXX) -c $< -o $@ $(CXXFLAGS) -MMD -MF $(patsubst $(OBJ_DIR)/%.o,$(DEP_DIR)/%.d,$@)
+	$(CXX) -c $< -o $@ $(CXX_COMPILE_FLAGS) -MMD -MF $(patsubst $(OBJ_DIR)/%.o,$(DEP_DIR)/%.d,$@)
 
 
 # Create build directories if nonexistent:
