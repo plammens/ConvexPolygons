@@ -1,4 +1,4 @@
-#include <numeric>
+#include <numeric>  // std::accumulate
 #include "class/Point.h"
 #include "utils.h"
 

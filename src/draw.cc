@@ -1,6 +1,3 @@
-
-#include <draw.h>
-
 #include "draw.h"
 #include "utils.h"
 

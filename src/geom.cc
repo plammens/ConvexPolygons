@@ -1,7 +1,3 @@
-//
-
-#include <geom.h>
-
 #include "geom.h"
 #include "utils.h"
 

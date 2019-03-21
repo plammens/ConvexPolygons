@@ -1,10 +1,4 @@
-//
-// Created by paolo on 3/15/19.
-//
-
-#include <class/RGBColor.h>
-#include <boost/format.hpp>
-
+#include <boost/format.hpp>  // boost::format
 #include "class/RGBColor.h"
 #include "errors.h"
 #include "utils.h"
