@@ -1,22 +1,25 @@
+
+#include <draw.h>
+
 #include "draw.h"
 #include "utils.h"
 
 
-void draw(const string &file, Range<ConvexPolygon> polygons) {
+void draw(const string &file, Range<ConvexPolygon> polygons, bool fill) {
     checkFileForWriting(file);
     pngwriter png(IMG::X_SIZE, IMG::Y_SIZE, IMG::BACKGROUND, file.c_str());
 
     if (not polygons.empty()) {
         ScaleHelper scale(polygons);
         for (const ConvexPolygon &pol : polygons)
-            fillPolygon(png, pol, scale);
+            drawPolygon(png, pol, scale, fill);
     }
 
     png.close();
 }
 
 
-void fillPolygon(pngwriter &png, const ConvexPolygon &pol, const ScaleHelper &scale) {
+void drawPolygon(pngwriter &png, const ConvexPolygon &pol, const ScaleHelper &scale, bool fill) {
     if (pol.empty()) return;
 
     // Some aliases:
@@ -30,7 +33,7 @@ void fillPolygon(pngwriter &png, const ConvexPolygon &pol, const ScaleHelper &sc
         return;
     }
 
-    // Fill the polygon as a partition of triangles:
+    // Fill/sketch the polygon by partitioning in triangles/segments:
     const auto end = vertices.end() - 1;
     for (auto it = vertices.begin(); it < end; ++it) {
         const Point &P = it[0], &Q = it[1];  // Just some aliasing
@@ -38,9 +41,11 @@ void fillPolygon(pngwriter &png, const ConvexPolygon &pol, const ScaleHelper &sc
         int x1 = scale.scaleX(P.x), y1 = scale.scaleY(P.y);
         int x2 = scale.scaleX(Q.x), y2 = scale.scaleY(Q.y);
 
-        // Fill the triangle O-P-Q:
-        png.filledtriangle_blend(x0, y0, x1, y1, x2, y2,
-                                 IMG::POL_OPACITY, color.R(), color.G(), color.B());
+        if (fill)
+            png.filledtriangle_blend(x0, y0, x1, y1, x2, y2,
+                                     IMG::POL_OPACITY, color.R(), color.G(), color.B());
+        else
+            png.line(x1, y1, x2, y2, color.R(), color.G(), color.B());
     }
 }
 

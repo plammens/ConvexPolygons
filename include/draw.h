@@ -13,7 +13,7 @@ using namespace std;
 
 
 // draws png with polygons
-void draw(const string &file, Range<ConvexPolygon> polygons);
+void draw(const string &file, Range<ConvexPolygon> polygons, bool fill = false);
 
 
 // Utility to map points to their pixel-coordinates
@@ -30,7 +30,7 @@ public:
 
 
 // Draws and fills a polygon
-void fillPolygon(pngwriter &png, const ConvexPolygon &pol, const ScaleHelper &scale);
+void drawPolygon(pngwriter &png, const ConvexPolygon &pol, const ScaleHelper &scale, bool fill);
 
 
 #endif //CONVEXPOLYGONS_DRAW_H

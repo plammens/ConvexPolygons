@@ -73,7 +73,8 @@ const map<string, CommandHandler> cmdHandlerMap = {
         {CMD::LIST,         handleNullaryCommand},
         {CMD::SAVE,         handleIOCommand},
         {CMD::LOAD,         handleIOCommand},
-        {CMD::DRAW,         handleIOCommand}
+        {CMD::DRAW,         handleIOCommand},
+        {CMD::PAINT,        handleIOCommand}
 };
 
 // Gets the command handler associated to the command `keyword`
