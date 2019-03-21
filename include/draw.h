@@ -16,14 +16,17 @@ using namespace std;
 
 
 // draws png with polygons
-void draw(const string &file, const Range<ConvexPolygon> polygons);
+void draw(const string &file, Range<ConvexPolygon> polygons);
 
 class ScaleHelper {
-    double minCoord, totalLength;
+    double minX, minY, maxLength;
+    int xOffset, yOffset;
 
 public:
-    ScaleHelper(const Range<ConvexPolygon> polygons);
-    int operator()(double coord) const;
+    ScaleHelper(Range<ConvexPolygon> polygons);
+    pair<int, int> operator()(const Point &P) const;
+    int scaleX(double x) const;
+    int scaleY(double y) const;
 };
 
 void plotPolygon(pngwriter &png, const ConvexPolygon &pol, const ScaleHelper &scale);
