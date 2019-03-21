@@ -1,5 +1,3 @@
-//
-
 #include "draw.h"
 #include "utils.h"
 
@@ -27,6 +25,11 @@ void fillPolygon(pngwriter &png, const ConvexPolygon &pol, const ScaleHelper &sc
     const Point &O = vertices.front();  // origin from which to draw triangles
     const int x0 = scale.scaleX(O.x), y0 = scale.scaleY(O.y);  // scaled origin coordinates
 
+    if (pol.vertexCount() == 1) {
+        png.plot(x0, y0, color.R(), color.G(), color.B());
+        return;
+    }
+
     // Fill the polygon as a partition of triangles:
     const auto end = vertices.end() - 1;
     for (auto it = vertices.begin(); it < end; ++it) {
@@ -43,24 +46,25 @@ void fillPolygon(pngwriter &png, const ConvexPolygon &pol, const ScaleHelper &sc
 
 
 ScaleHelper::ScaleHelper(Range<ConvexPolygon> polygons) {
-    ConvexPolygon bBox = boundingBox(polygons);
-    Point SW = bBox.getVertices()[0], NE = bBox.getVertices()[2];
-    minX = SW.x;
-    minY = SW.y;
+    Box bBox = boundingBox(polygons);
+    Point SW = bBox.SW(), NE = bBox.NE();
+    minX = SW.x; minY = SW.y;
     double xLength = NE.x - SW.x, yLength = NE.y - SW.y;
     maxLength = max(xLength, yLength);
-    xOffset = IMG::PADDING + int(IMG::X_DRAW_SIZE*(1 - xLength/maxLength)/2);
-    yOffset = IMG::PADDING + int(IMG::Y_DRAW_SIZE*(1 - yLength/maxLength)/2);
+    xOffset = IMG::PADDING + int(round(IMG::X_DRAW_SIZE*(1 - xLength/maxLength)/2));
+    yOffset = IMG::PADDING + int(round(IMG::Y_DRAW_SIZE*(1 - yLength/maxLength)/2));
 }
 
 
 int ScaleHelper::scaleX(double x) const {
-    return xOffset + int(IMG::X_DRAW_SIZE*(x - minX)/maxLength);
+    if (maxLength == 0) return IMG::X_CENTER;
+    return xOffset + int(round(IMG::X_DRAW_SIZE*(x - minX)/maxLength));
 }
 
 
 int ScaleHelper::scaleY(double y) const {
-    return yOffset + int(IMG::Y_DRAW_SIZE*(y - minY)/maxLength);
+    if (maxLength == 0) return IMG::Y_CENTER;
+    return yOffset + int(round(IMG::Y_DRAW_SIZE*(y - minY)/maxLength));
 }
 
 

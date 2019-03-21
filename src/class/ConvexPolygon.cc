@@ -44,6 +44,11 @@ ConvexPolygon::ConvexPolygon(Points &points) {
     vertices = ConvexHull(points);
 }
 
+ConvexPolygon::ConvexPolygon(const Box &box) {
+    vertices = {box.SW(), box.NW(), box.NE(), box.SE()};
+    vertices = ConvexHull(vertices);
+}
+
 
 // Returns the number of vertices in the polygon
 unsigned long ConvexPolygon::vertexCount() const {
@@ -97,14 +102,13 @@ ConvexPolygon ConvexPolygon::boundingBox() const {
 
 // ------------------ non-member functions ------------------------
 
-ConvexPolygon boundingBox(Range<ConvexPolygon> polygons) {
+Box boundingBox(Range<ConvexPolygon> polygons) {
     // skip empty polygons:
     polygons = boost::adaptors::filter(polygons, [](const ConvexPolygon &pol) { return not pol.empty(); });
     // if, after filtering, polygons is empty, throw an error
     if (polygons.empty()) throw ValueError("bounding box undefined for empty set");
 
-    Point SW = {INFINITY, INFINITY};
-    Point NE = {-INFINITY, -INFINITY};
+    Point SW = polygons.begin()->getVertices()[0], NE = SW;  // Initialization
     for (const ConvexPolygon &pol : polygons) {
         ConvexPolygon bbox = pol.boundingBox();
         SW = bottomLeft(SW, pol.boundingBox().getVertices()[0]);  // TODO: subclass?
@@ -114,8 +118,7 @@ ConvexPolygon boundingBox(Range<ConvexPolygon> polygons) {
     Point NW = {SW.x, NE.y};
     Point SE = {NE.x, SW.y};
 
-    Points boxVertices = {SW, NW, NE, SE};
-    return ConvexPolygon(boxVertices);
+    return {SW, NW, NE, SE};
 }
 
 

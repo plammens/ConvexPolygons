@@ -11,9 +11,6 @@
 
 using namespace std;
 
-// TODO: single point polygons / empty polygon handling
-// TODO: center image
-
 
 // draws png with polygons
 void draw(const string &file, Range<ConvexPolygon> polygons);

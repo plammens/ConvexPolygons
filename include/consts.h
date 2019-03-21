@@ -34,7 +34,7 @@ namespace IMG {  // some image constants
     constexpr double BACKGROUND = 1.0;  // background color
     constexpr double POL_OPACITY = 0.6;  // polygon opacity
 
-    constexpr int X_CENTER = X_SIZE/2, Y_CENTER = Y_SIZE/2;
+    constexpr int X_CENTER = (X_SIZE + 1)/2, Y_CENTER = (Y_SIZE + 1)/2;
     constexpr int X_DRAW_SIZE = X_SIZE - 2*PADDING, Y_DRAW_SIZE = Y_SIZE - 2*PADDING;
     //              ^^^ size of available drawing space
 }

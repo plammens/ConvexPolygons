@@ -4,6 +4,7 @@
 #include <vector>
 #include "class/Point.h"
 #include "class/RGBColor.h"
+#include "class/Box.h"
 #include "aliases.h"
 
 
@@ -23,6 +24,7 @@ private:
 public:
     ConvexPolygon() = default;
     ConvexPolygon(Points &points);
+    ConvexPolygon(const Box &box);
 
     unsigned long vertexCount() const;
     double area() const;
@@ -37,10 +39,10 @@ public:
 };
 
 
+Box boundingBox(Range<ConvexPolygon> polygons);
+
 bool isInside(const Point &P, const ConvexPolygon &pol);
 bool isInside(const ConvexPolygon &pol1, const ConvexPolygon &pol2);
-
-ConvexPolygon boundingBox(Range<ConvexPolygon> polygons);
 
 ConvexPolygon convexUnion(const ConvexPolygon &, const ConvexPolygon &);
 ConvexPolygon operator|(const ConvexPolygon &polA, const ConvexPolygon &polB);
