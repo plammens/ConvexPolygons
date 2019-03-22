@@ -6,6 +6,7 @@
 #include <iostream>
 #include <vector>
 #include "class/Vector2D.h"
+#include "aliases.h"
 
 
 using namespace std;
@@ -53,7 +54,7 @@ bool isClockwiseTurn(const Point &A, const Point &B, const Point &C);
 bool isCounterClockwiseTurn(const Point &A, const Point &B, const Point &C);
 
 // Barycenter of a vector of points
-Point barycenter(Points::const_iterator begin, Points::const_iterator end);  // TODO: should do for any container?
+Point barycenter(Range <Point> points);
 
 // Reads space-separated x, y coordinates into P
 istream &operator>>(istream &is, Point &P);

@@ -1,7 +1,7 @@
 #include <algorithm>  // std::sort
 #include <numeric>  // std::accumulate
 #include <iostream>
-#include <boost/range/adaptors.hpp>  // boost::adaptors::filter
+#include <boost/range/adaptors.hpp>  // boost::adaptors::filter, ::sliced
 
 #include "class/ConvexPolygon.h"
 #include "geom.h"
@@ -80,7 +80,7 @@ double ConvexPolygon::perimeter() const {
 
 
 Point ConvexPolygon::centroid() const {
-    return barycenter(vertices.begin(), vertices.end() - 1);
+    return barycenter(vertices | boost::adaptors::sliced(0, vertexCount()));
 }
 
 
