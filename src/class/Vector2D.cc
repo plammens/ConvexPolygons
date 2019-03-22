@@ -1,5 +1,6 @@
 #include <cmath>  // std::sqrt
 #include "class/Vector2D.h"
+#include "utils.h"
 
 
 // Returns the squared euclidean norm
@@ -11,6 +12,11 @@ double Vector2D::sqrNorm() const {
 // Euclidean norm
 double Vector2D::norm() const {
     return sqrt(sqrNorm());
+}
+
+
+bool Vector2D::isNull() const {
+    return numericEquals(x, 0) and numericEquals(y, 0);
 }
 
 

@@ -10,6 +10,7 @@ struct Vector2D {
 
     double sqrNorm() const;
     double norm() const;
+    bool isNull() const;
 };
 
 // Some basic arithmetic
