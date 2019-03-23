@@ -13,10 +13,17 @@ struct Vector2D {
     bool isNull() const;
 };
 
+
+bool operator==(const Vector2D &u, const Vector2D &rhs);
+bool operator!=(const Vector2D &u, const Vector2D &v);
+
 // Some basic arithmetic
 Vector2D operator*(double a, const Vector2D &u);
 Vector2D operator/(const Vector2D &u, double a);
+
+
 Vector2D operator+(const Vector2D &u, const Vector2D &v);
+
 
 double crossProd(const Vector2D & u, const Vector2D& v);
 

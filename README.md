@@ -50,9 +50,8 @@ are named in `camelCase`.
 ## Error handling
 
 
-## Desing choices
+## Design choices
 
 Free functions vs members.
 
-[//]: TODO: foobar
 

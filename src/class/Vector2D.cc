@@ -38,3 +38,13 @@ Vector2D operator+(const Vector2D &u, const Vector2D &v) {
 double crossProd(const Vector2D &u, const Vector2D &v) {
     return u.x*v.y - u.y*v.x;
 }
+
+
+bool operator==(const Vector2D &u, const Vector2D &rhs) {
+    return numericEquals(u.x, rhs.x) and numericEquals(u.y, rhs.y);
+}
+
+
+bool operator!=(const Vector2D &u, const Vector2D &v) {
+    return not(v == u);
+}

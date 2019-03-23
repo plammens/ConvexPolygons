@@ -1,3 +1,9 @@
+// Program's main entry point
+// TODO: remove helper functions from headers
+// TODO: unify comment separators
+// TODO: final rearrange
+// TODO: docs & doxygen
+
 #include <iostream>
 #include <sstream>
 #include "handlers.h"
