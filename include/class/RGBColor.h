@@ -13,11 +13,8 @@ class RGBColor {
 private:
     double r, g, b;
 
-    inline static
-    bool checkRange(double val);
-
-    inline static
-    void checkRange(double r, double g, double b);
+    static
+    void checkRange(double val);
 
 public:
     RGBColor(double r = 0, double g = 0, double b = 0);
@@ -26,7 +23,14 @@ public:
     double R() const { return r; }
     double G() const { return g; }
     double B() const { return b; }
+    void setR(double r);
+    void setG(double g);
+    void setB(double b);
 };
+
+
+bool operator==(const RGBColor &lhs, const RGBColor &rhs);
+bool operator!=(const RGBColor &lhs, const RGBColor &rhs);
 
 
 #endif //CONVEXPOLYGONS_RGBCOLOR_H

@@ -1,29 +1,55 @@
-#include <boost/format.hpp>  // boost::format
 #include "class/RGBColor.h"
 #include "errors.h"
 #include "utils.h"
 
 
 RGBColor::RGBColor(double r, double g, double b) {
-    checkRange(r, g, b);
-    this->r = r;
-    this->g = g;
-    this->b = b;
+    setR(r);
+    setG(g);
+    setB(b);
 }
 
+
 RGBColor &RGBColor::operator=(const initializer_list<double> &initList) {
-    assert(initList.size() == 3);  // TODO: remove assert
+    if (initList.size() != 3) throw ValueError("color assignment needs exactly 3 arguments");
     auto it = initList.begin();
-    checkRange(it[0], it[1], it[2]);
-    r = it[0]; g = it[1]; b = it[2];
+    setR(it[0]);
+    setG(it[1]);
+    setB(it[2]);
     return *this;
 }
 
-bool RGBColor::checkRange(double val) {
-    return (val >= 0 and val <= 1);
+
+void RGBColor::checkRange(double val) {
+    if (val < 0 or val > 1) throw ValueError("color values should be in [0, 1]");
 }
 
-void RGBColor::checkRange(double r, double g, double b) {
-    if (not(checkRange(r) and checkRange(b) and checkRange(g)))
-        throw ValueError((boost::format("{%.3f, %.3f, %.3f} is not a color") % r % g % b).str());
+
+void RGBColor::setR(double r) {
+    checkRange(r);
+    this->r = r;
+}
+
+
+void RGBColor::setG(double g) {
+    checkRange(g);
+    this->g = g;
+}
+
+
+void RGBColor::setB(double b) {
+    checkRange(b);
+    this->b = b;
+}
+
+
+bool operator==(const RGBColor &lhs, const RGBColor &rhs) {
+    return numericEquals(lhs.R(), rhs.R()) and
+           numericEquals(lhs.G(), rhs.G()) and
+           numericEquals(lhs.B(), rhs.B());
+}
+
+
+bool operator!=(const RGBColor &lhs, const RGBColor &rhs) {
+    return not(rhs == lhs);
 }
