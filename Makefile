@@ -36,7 +36,7 @@ CXX = g++
 CXXFLAGS = -Wall -std=c++11 -O2 -D NO_FREETYPE
 CXX_COMPILE_FLAGS = $(CXXFLAGS) -I $(INCLUDE_DIR) -I $(LIB_INCLUDE_DIR)
 CXX_LINK_FLAGS = $(CXXFLAGS) -L $(LIB_FILE_DIR) -l PNGwriter -l png
-CXX_TEST_FLAGS = $(CXXFLAGS) -I $(TEST_DIR)/$(INCLUDE_DIR)
+CXX_TEST_FLAGS = $(CXXFLAGS) -I $(TEST_DIR)/$(INCLUDE_DIR) -I $(INCLUDE_DIR)
 
 
 ##### Auto-detected files and paths #####
@@ -44,18 +44,16 @@ CXX_TEST_FLAGS = $(CXXFLAGS) -I $(TEST_DIR)/$(INCLUDE_DIR)
 ## Directory search paths ##
 vpath %.h $(shell find $(INCLUDE_DIR) -type d)
 vpath %.cc $(shell find $(SRC_DIR) -type d)
+vpath test_%.cc $(shell find $(TEST_DIR)/$(SRC_DIR) -type d)
 
-## Auto-detected names of header/source pairs (assuming same name): ##
+## Auto-detected source files: ##
 sources = $(shell find $(SRC_DIR) -type f -name '*.cc')
 objects = $(patsubst %.cc,$(OBJ_DIR)/%.o, $(notdir $(sources)))
 
-# dependency files for automatic Makefile rule prerequisites:
-depends = $(patsubst $(OBJ_DIR)/%.o,$(DEP_DIR)/%.d,$(objects))
+test_sources = $(shell find $(TEST_DIR)/$(SRC_DIR) -type f -name 'test_*.cc') # test sources (prefixed with 'test_')
+test_objects = $(patsubst %.cc,$(OBJ_DIR)/%.o, $(notdir $(test_sources)))
 
-# Auto detected test source files:
-tests = $(shell find $(TEST_DIR)/$(SRC_DIR) -type f -name '*.cc')
-
-
+depends = $(patsubst $(OBJ_DIR)/%.o,$(DEP_DIR)/%.d,$(objects) $(test_objects)) # dependency files for automatic Makefile rule prerequisites
 
 
 
@@ -63,31 +61,55 @@ tests = $(shell find $(TEST_DIR)/$(SRC_DIR) -type f -name '*.cc')
 
 ############### Phony rules ###############
 
-.PHONY: all build run clean clean_build clean_out test libs
+.PHONY: all build run clean clean-build clean-out test libs \
+		.pre-build .pre-lib .pre-build-test
 
-all: libs $(MAIN_EXE)
 
-build: $(objects)
+all: libs build build-test
 
-run: all
+
+build: .pre-build $(MAIN_EXE)
+	@printf "\e[1mDone building main.\e[0m\n\n"
+
+libs: .pre-lib $(LIB_FILE_DIR)/libPNGwriter.a
+	@printf "\e[1mDone building libs.\e[0m\n\n"
+
+build-test: .pre-build-test $(TEST_EXE)
+	@printf "\e[1mDone building tests.\e[0m\n\n"
+
+
+run: build
+	@echo
 	@printf "\e[1mExecuting main program...\e[0m ($(MAIN_EXE))\n\n"
 	@$(MAIN_EXE)
 	@echo
 
-clean: clean_build clean_out
-
-clean_build:
-	rm -rf ./$(BUILD_DIR)
-
-clean_out:
-	rm -rf ./$(OUT_DIR)
-
-libs: $(LIB_FILE_DIR)/libPNGwriter.a
-
-test: build $(TEST_EXE)
+test: build-test
+	@echo
 	@printf "\e[1mStarting $(TEST_SUITE)...\e[0m ($(TEST_EXE))\n\n"
 	@$(TEST_EXE)
 	@echo
+
+
+clean: clean-build clean-out
+
+clean-build:
+	rm -r -I ./$(BUILD_DIR)
+
+clean-out:
+	rm -r -I ./$(OUT_DIR)
+
+
+# Just some text:
+
+.pre-build:
+	@printf "\e[1mBuilding main program...\e[0m\n"
+
+.pre-lib:
+	@printf "\e[1mBuilding libraries...\e[0m\n"
+
+.pre-build-test:
+	@printf "\e[1mBuilding tests...\e[0m\n"
 
 
 
@@ -131,7 +153,11 @@ $(LIB_FILE_DIR)/libPNGwriter.a:
 
 ############### Test rules ################
 
-# Compile and link all test sources at once, outputting the executable:
-$(TEST_EXE): $(tests) | $(BIN_DIR)
+# Compile and link all test objects (together with the project's objects), outputting an executable:
+$(TEST_EXE): $(test_objects) | $(BIN_DIR)
 	$(CXX) $^ -o $@ $(CXX_TEST_FLAGS)
 
+# This rule compiles test source files into their corresponding object file.
+# As a side effect of compilation we generate a dependency file.
+$(OBJ_DIR)/test_%.o: test_%.cc | $(OBJ_DIR) $(DEP_DIR)
+	$(CXX) -c $< -o $@ $(CXX_TEST_FLAGS) -MMD -MF $(patsubst $(OBJ_DIR)/%.o,$(DEP_DIR)/%.d,$@)
