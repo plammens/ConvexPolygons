@@ -24,6 +24,7 @@ OUT_DIR = out
 # name of main program:
 MAIN_NAME = main
 MAIN_EXE = $(BIN_DIR)/$(MAIN_NAME).x# output path for main program
+MAIN_OBJ = $(OBJ_DIR)/$(MAIN_NAME).o
 
 TEST_SUITE = doctest
 TEST_NAME = test
@@ -34,9 +35,12 @@ TEST_EXE = $(BIN_DIR)/$(TEST_NAME).x
 
 CXX = g++
 CXXFLAGS = -Wall -std=c++11 -O2 -D NO_FREETYPE
+
 CXX_COMPILE_FLAGS = $(CXXFLAGS) -I $(INCLUDE_DIR) -I $(LIB_INCLUDE_DIR)
 CXX_LINK_FLAGS = $(CXXFLAGS) -L $(LIB_FILE_DIR) -l PNGwriter -l png
-CXX_TEST_FLAGS = $(CXXFLAGS) -I $(TEST_DIR)/$(INCLUDE_DIR) -I $(INCLUDE_DIR)
+
+CXX_TEST_COMPILE_FLAGS = $(CXXFLAGS) -I $(TEST_DIR)/$(INCLUDE_DIR) -I $(INCLUDE_DIR)
+CXX_TEST_LINK_FLAGS = $(CXXFLAGS) $(CXX_LINK_FLAGS)
 
 
 ##### Auto-detected files and paths #####
@@ -47,13 +51,15 @@ vpath %.cc $(shell find $(SRC_DIR) -type d)
 vpath test_%.cc $(shell find $(TEST_DIR)/$(SRC_DIR) -type d)
 
 ## Auto-detected source files: ##
-sources = $(shell find $(SRC_DIR) -type f -name '*.cc')
-objects = $(patsubst %.cc,$(OBJ_DIR)/%.o, $(notdir $(sources)))
+sources = $(shell find $(SRC_DIR) -type f -name '*.cc' ! -name '$(MAIN_NAME)*')  # sources excluding main
+objects = $(patsubst %.cc,$(OBJ_DIR)/%.o, $(notdir $(sources)))  # object files
 
-test_sources = $(shell find $(TEST_DIR)/$(SRC_DIR) -type f -name 'test_*.cc') # test sources (prefixed with 'test_')
-test_objects = $(patsubst %.cc,$(OBJ_DIR)/%.o, $(notdir $(test_sources)))
+# test sources (prefixed with 'test_')
+test_sources = $(shell find $(TEST_DIR)/$(SRC_DIR) -type f -name 'test_*.cc')  # all test source files
+test_objects = $(patsubst %.cc,$(OBJ_DIR)/%.o, $(notdir $(test_sources)))  # all test object files
 
-depends = $(patsubst $(OBJ_DIR)/%.o,$(DEP_DIR)/%.d,$(objects) $(test_objects)) # dependency files for automatic Makefile rule prerequisites
+# dependency files for automatic Makefile rule prerequisites
+depends = $(patsubst $(OBJ_DIR)/%.o,$(DEP_DIR)/%.d,$(objects) $(test_objects))
 
 
 
@@ -94,10 +100,10 @@ test: build-test
 clean: clean-build clean-out
 
 clean-build:
-	rm -r -I ./$(BUILD_DIR)
+	rm -rf ./$(BUILD_DIR)
 
 clean-out:
-	rm -r -I ./$(OUT_DIR)
+	rm -rf ./$(OUT_DIR)
 
 
 # Just some text:
@@ -118,7 +124,7 @@ clean-out:
 -include $(depends)  # include dependecy relationships
 
 # This rule links all object files together and outputs the main executable.
-$(MAIN_EXE): $(objects) | $(BIN_DIR)
+$(MAIN_EXE): $(objects) $(MAIN_OBJ) | $(BIN_DIR)
 	$(CXX) $^ -o $@ $(CXX_LINK_FLAGS)
 
 # This rule compiles source files into their corresponding object file.
@@ -154,10 +160,10 @@ $(LIB_FILE_DIR)/libPNGwriter.a:
 ############### Test rules ################
 
 # Compile and link all test objects (together with the project's objects), outputting an executable:
-$(TEST_EXE): $(test_objects) | $(BIN_DIR)
-	$(CXX) $^ -o $@ $(CXX_TEST_FLAGS)
+$(TEST_EXE): $(objects) $(test_objects) | $(BIN_DIR)
+	$(CXX) $^ -o $@ $(CXX_TEST_LINK_FLAGS)
 
 # This rule compiles test source files into their corresponding object file.
 # As a side effect of compilation we generate a dependency file.
 $(OBJ_DIR)/test_%.o: test_%.cc | $(OBJ_DIR) $(DEP_DIR)
-	$(CXX) -c $< -o $@ $(CXX_TEST_FLAGS) -MMD -MF $(patsubst $(OBJ_DIR)/%.o,$(DEP_DIR)/%.d,$@)
+	$(CXX) -c $< -o $@ $(CXX_TEST_COMPILE_FLAGS) -MMD -MF $(patsubst $(OBJ_DIR)/%.o,$(DEP_DIR)/%.d,$@)
