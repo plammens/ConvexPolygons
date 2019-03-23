@@ -40,7 +40,7 @@ namespace PointComp {
         Point origin;
         bool reversed;
 
-        xAngle(const Point &P, bool reversed = false);
+        xAngle(const Point &P, bool descending = false);
         bool operator()(const Point &A, const Point &B);
     };
 }
@@ -53,7 +53,7 @@ Point upperRight(const Point &A, const Point &B);
 bool isClockwiseTurn(const Point &A, const Point &B, const Point &C);
 bool isCounterClockwiseTurn(const Point &A, const Point &B, const Point &C);
 
-// Barycenter of a vector of points
+// Barycenter of a range of points
 Point barycenter(Range <Point> points);
 
 // Reads space-separated x, y coordinates into P

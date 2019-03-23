@@ -43,9 +43,9 @@ namespace PointComp {
     }
 
 
-    // Constructs a new xAngle comparison with P as origin. If `reversed` is true,
-    // comparison by angle (not the whole ordering) is reversed.
-    xAngle::xAngle(const Point &P, bool reversed) : origin(P), reversed(reversed) {}
+    // Constructs a new xAngle comparison with P as origin. If `descending` is true,
+    // comparison by angle (not the whole ordering) is descending.
+    xAngle::xAngle(const Point &P, bool descending) : origin(P), reversed(descending) {}
 
 
     // Compares Points according to the angles that the vectors joining the origin
