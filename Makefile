@@ -6,6 +6,7 @@ INCLUDE_DIR = include
 SRC_DIR = src
 CLASS_SUBDIR = class
 LIB_ROOT_DIR = libs
+TEST_DIR = test
 
 BUILD_DIR = build
 BIN_DIR = $(BUILD_DIR)/bin
@@ -18,8 +19,8 @@ LIB_FILE_DIR = $(LIB_ROOT_DIR)/lib
 OUT_DIR = out
 
 # name of main program:
-MAIN = main
-MAIN_EXE = $(BIN_DIR)/$(MAIN)# output path for main program
+MAIN_NAME = main
+MAIN_EXE = $(BIN_DIR)/$(MAIN_NAME).x# output path for main program
 
 ## Compiler options ##
 CXX = g++
@@ -41,6 +42,18 @@ depends = $(patsubst $(OBJ_DIR)/%.o,$(DEP_DIR)/%.d,$(objects))
 # ^^^ dependency files for automatic Makefile rule prerequisites
 
 
+## Tests ##
+
+TEST_SUITE = doctest
+TEST_NAME = test# name of test executable
+TEST_EXE = $(BIN_DIR)/$(TEST_NAME).x# output path for test executable
+
+CXX_TEST_FLAGS = $(CXXFLAGS) -I $(TEST_DIR)/$(INCLUDE_DIR)
+
+tests = $(shell find $(TEST_DIR)/$(SRC_DIR) -type f -name '*.cc')
+
+
+
 ### Rules ###
 
 .PHONY: all compile run clean clean_build clean_out test libs
@@ -50,8 +63,9 @@ all: libs $(MAIN_EXE)
 compile: $(objects)
 
 run: all
-	@printf "\e[1mExecuting main program... \n\n\e[0m"
+	@printf "\e[1mExecuting main program...\e[0m ($(MAIN_EXE))\n\n"
 	@$(MAIN_EXE)
+	@echo
 
 clean: clean_build clean_out
 
@@ -61,8 +75,10 @@ clean_build:
 clean_out:
 	rm -rf ./$(OUT_DIR)
 
-test: all
-	$(MAIN_EXE) < test/test.txt
+test: compile $(TEST_EXE)
+	@printf "\e[1mStarting $(TEST_SUITE)...\e[0m ($(TEST_EXE))\n\n"
+	@$(TEST_EXE)
+	@echo
 
 libs: $(LIB_FILE_DIR)/libPNGwriter.a
 
@@ -96,3 +112,12 @@ $(LIB_FILE_DIR)/libPNGwriter.a:
 	cmake $(LIB_ROOT_DIR)/pngwriter/CMakeLists.txt -DPNGwriter_USE_FREETYPE=OFF -DCMAKE_INSTALL_PREFIX=$(LIB_ROOT_DIR)
 	make -C $(LIB_ROOT_DIR)/pngwriter
 	make -C $(LIB_ROOT_DIR)/pngwriter install
+
+
+
+## Test rules ##
+
+
+$(TEST_EXE): $(tests) | $(BIN_DIR)
+	$(CXX) $^ -o $@ $(CXX_TEST_FLAGS)
+
