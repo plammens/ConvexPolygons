@@ -4,6 +4,7 @@
 // TODO: final rearrange
 // TODO: docs & doxygen
 // TODO: remove using std
+// TODO: impl folder, hide utils
 
 #include <iostream>
 #include <sstream>

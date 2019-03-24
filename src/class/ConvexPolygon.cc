@@ -44,8 +44,7 @@ ConvexPolygon::ConvexPolygon(const Points &points) : vertices(ConvexHull(points)
 ConvexPolygon::ConvexPolygon(Points &&points) : vertices(ConvexHull(move(points))) {}
 
 ConvexPolygon::ConvexPolygon(const Box &box) {
-    vertices = {box.SW(), box.NW(), box.NE(), box.SE()};
-    vertices = ConvexHull(move(vertices));
+    vertices = {box.SW(), box.NW(), box.NE(), box.SE(), box.SW()};
 }
 
 
@@ -58,6 +57,8 @@ unsigned long ConvexPolygon::vertexCount() const {
 
 // Returns the area of the polygon
 double ConvexPolygon::area() const {
+    if (empty()) return 0;
+
     // We use the shoelace formula for calculating the area
     double sum = 0;
     const auto end = vertices.end() - 1;
@@ -69,6 +70,8 @@ double ConvexPolygon::area() const {
 
 // Returns perimeter of polygon
 double ConvexPolygon::perimeter() const {
+    if (empty()) return 0;
+
     // Sum of euclidean distance between pairs of adjacent points
     double sum = 0;
     const auto end = vertices.end() - 1;
