@@ -55,7 +55,7 @@ sources = $(shell find $(SRC_DIR) -type f -name '*.cc' ! -name '$(MAIN_NAME)*') 
 objects = $(patsubst %.cc,$(OBJ_DIR)/%.o, $(notdir $(sources)))  # object files
 
 # test sources (prefixed with 'test_')
-test_sources = $(shell find $(TEST_DIR)/$(SRC_DIR) -type f -name 'test_*.cc')  # all test source files
+test_sources = $(shell find $(TEST_DIR)/$(SRC_DIR) -type f -name 'test*.cc')  # all test source files
 test_objects = $(patsubst %.cc,$(OBJ_DIR)/%.o, $(notdir $(test_sources)))  # all test object files
 
 # dependency files for automatic Makefile rule prerequisites
