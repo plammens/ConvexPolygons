@@ -71,6 +71,7 @@ double ConvexPolygon::area() const {
 // Returns perimeter of polygon
 double ConvexPolygon::perimeter() const {
     if (empty()) return 0;
+    if (vertexCount() == 2) return (vertices[1] - vertices[0]).norm();
 
     // Sum of euclidean distance between pairs of adjacent points
     double sum = 0;
