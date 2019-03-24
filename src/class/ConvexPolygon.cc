@@ -13,8 +13,8 @@ using namespace std;
 
 // ------------------- static functions ------------------------------
 
-Points ConvexPolygon::ConvexHull(Points &points) {
-    assert(not points.empty());
+Points ConvexPolygon::ConvexHull(Points points) {
+    if (points.empty()) return {};
 
     const auto begin = points.begin(), end = points.end();  // aliasing
     // Get point with lowest y coordinate:
@@ -39,14 +39,13 @@ Points ConvexPolygon::ConvexHull(Points &points) {
 // --------------------- member functions ------------------------
 
 // Constructs a convex polygon from a given list of points with a Graham scan
-ConvexPolygon::ConvexPolygon(Points &points) {
-    if (points.empty()) return;
-    vertices = ConvexHull(points);
-}
+ConvexPolygon::ConvexPolygon(const Points &points) : vertices(ConvexHull(points)) {}
+
+ConvexPolygon::ConvexPolygon(Points &&points) : vertices(ConvexHull(move(points))) {}
 
 ConvexPolygon::ConvexPolygon(const Box &box) {
     vertices = {box.SW(), box.NW(), box.NE(), box.SE()};
-    vertices = ConvexHull(vertices);
+    vertices = ConvexHull(move(vertices));
 }
 
 
@@ -151,7 +150,7 @@ bool isInside(const ConvexPolygon &pol1, const ConvexPolygon &pol2) {
 ConvexPolygon convexUnion(const ConvexPolygon &pol1, const ConvexPolygon &pol2) {
     Points points;
     extend(points, pol1.getVertices(), pol2.getVertices());
-    return ConvexPolygon(points);
+    return ConvexPolygon(move(points));
 }
 
 
@@ -170,8 +169,8 @@ ConvexPolygon intersection(const ConvexPolygon &pol1, const ConvexPolygon &pol2)
     for (const Point &P : v2)
         if (isInside(P, pol1)) intersectionPoints.push_back(P);
 
-    const auto end2 = v2.end() - 1;
     const auto end1 = v1.end() - 1;
+    const auto end2 = v2.end() - 1;
     for (auto it1 = v1.begin(); it1 < end1; ++it1) {
         for (auto it2 = v2.begin(); it2 < end2; ++it2) {
             auto intersection = intersect({it1[0], it1[1]}, {it2[0], it2[1]});
@@ -180,7 +179,7 @@ ConvexPolygon intersection(const ConvexPolygon &pol1, const ConvexPolygon &pol2)
         }
     }
 
-    return ConvexPolygon(intersectionPoints);
+    return ConvexPolygon(move(intersectionPoints));
 }
 
 

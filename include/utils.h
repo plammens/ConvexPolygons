@@ -72,20 +72,20 @@ void checkFileForWriting(const string &filePath) {
 // ---------- extend ----------
 
 template<typename T>
-unsigned long _size(const vector<T> &vec) {
+constexpr unsigned long _size(const vector<T> &vec) {
     return vec.size();
 }
 
 
 template<typename T, typename ... Types>
-unsigned long _size(const vector<T> &vec, const Types &... others) {
+constexpr unsigned long _size(const vector<T> &vec, const Types &... others) {
     return vec.size() + _size(others...);
 }
 
 
 template<typename T, typename ... Types>
 void extend(vector<T> &destination, const Types &... vectors) {
-    destination.reserve(_size(vectors...));
+    destination.reserve(_size(vectors...));  // reserve copy size beforehand
     _extend(destination, vectors...);
 }
 

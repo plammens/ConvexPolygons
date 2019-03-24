@@ -17,15 +17,17 @@ using namespace std;
 
 class ConvexPolygon {
 private:
-    Points vertices;
+    Points vertices;  // TODO: cyclic container?
     RGBColor color;
 
     static
-    Points ConvexHull(Points &points);
+    Points ConvexHull(Points points);
 
 public:
     ConvexPolygon() = default;
-    ConvexPolygon(Points &points);
+    ConvexPolygon(const Points &points);
+    ConvexPolygon(Points &&points);  // rvalue reference overload
+
     ConvexPolygon(const Box &box);
 
     unsigned long vertexCount() const;
