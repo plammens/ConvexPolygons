@@ -93,7 +93,7 @@ run: build
 test: build-test
 	@echo
 	@printf "\e[1mStarting $(TEST_SUITE)...\e[0m ($(TEST_EXE))\n\n"
-	@$(TEST_EXE)
+	@$(TEST_EXE) $(ARGS)
 	@echo
 
 
