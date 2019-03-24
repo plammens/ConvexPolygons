@@ -80,7 +80,7 @@ build: .pre-build $(MAIN_EXE)
 libs: .pre-lib $(LIB_FILE_DIR)/libPNGwriter.a
 	@printf "\e[1mDone building libs.\e[0m\n\n"
 
-build-test: .pre-build-test $(TEST_EXE)
+build-test: build .pre-build-test $(TEST_EXE)
 	@printf "\e[1mDone building tests.\e[0m\n\n"
 
 

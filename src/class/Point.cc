@@ -71,16 +71,6 @@ double distance(const Point &A, const Point &B) {
 }
 
 
-Point bottomLeft(const Point &A, const Point &B) {
-    return {min(A.x, B.x), min(A.y, B.y)};
-}
-
-
-Point upperRight(const Point &A, const Point &B) {
-    return {max(A.x, B.x), max(A.y, B.y)};
-}
-
-
 Point operator+(const Point &A, const Vector2D &u) {
     return {A.x + u.x, A.y + u.y};
 }

@@ -84,18 +84,14 @@ Point ConvexPolygon::centroid() const {
 }
 
 
-ConvexPolygon ConvexPolygon::boundingBox() const {
+Box ConvexPolygon::boundingBox() const {
     if (vertices.empty()) throw ValueError("bounding box undefined for 0-gon");
 
     // SW: south-west; NE: north-east; etc.
     Point SW = accumulate(vertices.begin(), vertices.end(), vertices.front(), bottomLeft);
     Point NE = accumulate(vertices.begin(), vertices.end(), vertices.front(), upperRight);
-    Point NW = {SW.x, NE.y};
-    Point SE = {NE.x, SW.y};
 
-    ConvexPolygon bBox;
-    bBox.vertices = {SW, NW, NE, SE};
-    return bBox;
+    return Box(SW, NE);
 }
 
 
@@ -103,22 +99,18 @@ ConvexPolygon ConvexPolygon::boundingBox() const {
 // ------------------ non-member functions ------------------------
 
 Box boundingBox(Range<ConvexPolygon> polygons) {
-    // skip empty polygons:
+    // skip empty polygons, and if after filtering, polygons is empty, throw an error
     polygons = boost::adaptors::filter(polygons, [](const ConvexPolygon &pol){ return not pol.empty(); });
-    // if, after filtering, polygons is empty, throw an error
     if (polygons.empty()) throw ValueError("bounding box undefined for empty set");
 
     Point SW = polygons.begin()->getVertices()[0], NE = SW;  // Initialization
     for (const ConvexPolygon &pol : polygons) {
-        ConvexPolygon bbox = pol.boundingBox();
-        SW = bottomLeft(SW, pol.boundingBox().getVertices()[0]);  // TODO: subclass?
-        NE = upperRight(NE, pol.boundingBox().getVertices()[2]);
+        const Box &&box = pol.boundingBox();
+        SW = bottomLeft(SW, box.SW());
+        NE = upperRight(NE, box.NE());
     }
 
-    Point NW = {SW.x, NE.y};
-    Point SE = {NE.x, SW.y};
-
-    return {SW, NW, NE, SE};
+    return Box(SW, NE);
 }
 
 

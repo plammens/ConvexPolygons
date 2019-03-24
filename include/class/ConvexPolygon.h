@@ -32,7 +32,7 @@ public:
     double area() const;
     double perimeter() const;
     Point centroid() const;
-    ConvexPolygon boundingBox() const;
+    Box boundingBox() const;
 
     bool empty() const { return vertices.empty(); }
     const Points &getVertices() const { return vertices; }
