@@ -131,15 +131,15 @@ bool isInside(const Point &P, const ConvexPolygon &pol) {
     unsigned long left = 1, right = pol.vertexCount() - 1;
     while (right - left > 1) {
         unsigned long mid = (left + right)/2;
-        if (isClockwiseTurn(O, vertices[mid], P)) left = mid;
-        else if (isCounterClockwiseTurn(O, vertices[mid], P)) right = mid;
+        if      (isClockwiseTurn(O, vertices[mid], P))          left = mid;
+        else if (isCounterClockwiseTurn(O, vertices[mid], P))   right = mid;
         else return isInSegment(P, {O, vertices[mid]});
     }
 
     const Point &leftVertex = vertices[left], &rightVertex = vertices[right];  // aliases
-    return isClockwiseTurn(O, leftVertex, P)
-           and isClockwiseTurn(leftVertex, rightVertex, P)
-           and isClockwiseTurn(rightVertex, O, P);
+    return not isCounterClockwiseTurn(O, leftVertex, P) and
+           not isCounterClockwiseTurn(leftVertex, rightVertex, P) and
+           not isCounterClockwiseTurn(rightVertex, O, P);
 }
 
 

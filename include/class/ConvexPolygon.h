@@ -43,6 +43,18 @@ public:
 };
 
 
+inline
+bool operator==(const ConvexPolygon &lhs, const ConvexPolygon &rhs) {
+    return lhs.getVertices() == rhs.getVertices();
+}
+
+
+inline
+bool operator!=(const ConvexPolygon &lhs, const ConvexPolygon &rhs) {
+    return not(rhs == lhs);
+}
+
+
 Box boundingBox(Range<ConvexPolygon> polygons);
 
 bool isInside(const Point &P, const ConvexPolygon &pol);
