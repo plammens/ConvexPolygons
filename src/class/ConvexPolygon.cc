@@ -164,8 +164,9 @@ ConvexPolygon operator|(const ConvexPolygon &polA, const ConvexPolygon &polB) {
 
 
 ConvexPolygon intersection(const ConvexPolygon &pol1, const ConvexPolygon &pol2) {
-    Points intersectionPoints;
+    if (pol1.empty() or pol2.empty()) return {};
 
+    Points intersectionPoints;
     const Points &v1 = pol1.getVertices(), &v2 = pol2.getVertices();
 
     for (const Point &P : v1)
