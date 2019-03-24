@@ -12,7 +12,12 @@ set(PNGwriter_DIR libs/lib/cmake/PNGwriter)
 find_package(PNGwriter)
 
 file(GLOB UTILS "src/*.cc")
+list(FILTER UTILS EXCLUDE REGEX main)
 file(GLOB CLASSES "src/class/*.cc")
+file(GLOB TESTS "test/src/test_*.cc")
 
 add_executable(ConvexPolygons ${UTILS} ${CLASSES} src/main.cc)
 target_link_libraries(ConvexPolygons PNGwriter png)
+
+add_executable(Test ${TESTS} ${UTILS} ${CLASSES})
+target_link_libraries(Test PNGwriter png)
