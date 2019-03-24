@@ -7,6 +7,16 @@ Box::Box(const Point &P, const Point &Q) : _SW(bottomLeft(P, Q)), _NE(upperRight
 }
 
 
+bool operator==(const Box &lhs, const Box &rhs) {
+    return lhs.SW() == rhs.SW() and lhs.NE() == rhs.NE();
+}
+
+
+bool operator!=(const Box &lhs, const Box &rhs) {
+    return not(rhs == lhs);
+}
+
+
 Point bottomLeft(const Point &A, const Point &B) {
     return {min(A.x, B.x), min(A.y, B.y)};
 }

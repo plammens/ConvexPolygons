@@ -23,5 +23,8 @@ public:
 Point bottomLeft(const Point &A, const Point &B);
 Point upperRight(const Point &A, const Point &B);
 
+bool operator==(const Box &lhs, const Box &rhs);
+bool operator!=(const Box &lhs, const Box &rhs);
+
 
 #endif //CONVEXPOLYGONS_BOX_H
