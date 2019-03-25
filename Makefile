@@ -48,13 +48,13 @@ CXX_TEST_LINK_FLAGS = $(CXX_LINK_FLAGS) -O0
 ## Directory search paths ##
 vpath %.h $(shell find $(INCLUDE_DIR) -type d)
 vpath %.cc $(shell find $(SRC_DIR) -type d)
-vpath test_%.cc $(shell find $(TEST_DIR)/$(SRC_DIR) -type d)
+vpath test%.cc $(shell find $(TEST_DIR)/$(SRC_DIR) -type d)
 
 ## Auto-detected source files: ##
 sources = $(shell find $(SRC_DIR) -type f -name '*.cc' ! -name '$(MAIN_NAME)*')  # sources excluding main
 objects = $(patsubst %.cc,$(OBJ_DIR)/%.o, $(notdir $(sources)))  # object files
 
-# test sources (prefixed with 'test_')
+# test sources (prefixed with 'test')
 test_sources = $(shell find $(TEST_DIR)/$(SRC_DIR) -type f -name 'test*.cc')  # all test source files
 test_objects = $(patsubst %.cc,$(OBJ_DIR)/%.o, $(notdir $(test_sources)))  # all test object files
 
@@ -92,9 +92,12 @@ run: build
 
 test: build-test
 	@echo
-	@printf "\e[1mStarting $(TEST_SUITE)...\e[0m ($(TEST_EXE))\n\n"
+	@printf "\e[1mStarting $(TEST_SUITE)...\e[0m ($(TEST_EXE) $(ARGS))\n\n"
 	@$(TEST_EXE) $(ARGS)
 	@echo
+
+info:
+	$(info $(CXX_TEST_COMPILE_FLAGS))
 
 
 clean: clean-build clean-out
@@ -165,5 +168,5 @@ $(TEST_EXE): $(objects) $(test_objects) | $(BIN_DIR)
 
 # This rule compiles test source files into their corresponding object file.
 # As a side effect of compilation we generate a dependency file.
-$(OBJ_DIR)/test_%.o: test_%.cc | $(OBJ_DIR) $(DEP_DIR)
+$(OBJ_DIR)/test%.o: test%.cc | $(OBJ_DIR) $(DEP_DIR)
 	$(CXX) -c $< -o $@ $(CXX_TEST_COMPILE_FLAGS) -MMD -MF $(patsubst $(OBJ_DIR)/%.o,$(DEP_DIR)/%.d,$@)
