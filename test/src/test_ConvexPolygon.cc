@@ -39,6 +39,12 @@ TEST_SUITE("ConvexPolygon") {
         CHECK(ConvexPolygon(Points{{0, 0}, {1, 0}, {0.5, 0.5}, {1, 1}, {0, 1}}).getVertices()
               == Points{{0, 0}, {0, 1}, {1, 1}, {1, 0}, {0, 0}});
 
+        SUBCASE("first vertex") {
+            CHECK(ConvexPolygon({{0, 2}, {0, 1}, {0, -1}}).getVertices().front() == Point{0, -1});
+            CHECK(ConvexPolygon({{0, 2}, {0, 1}, {0, -1}}).getVertices().front() == Point{0, -1});
+            CHECK(ConvexPolygon({{0, 2}, {0, 0}, {-1, 0}}).getVertices().front() == Point{-1, 0});
+        }
+
         SUBCASE("octagon random shuffle") {
             Points points = {
                     {0, 1},
