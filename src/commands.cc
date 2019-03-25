@@ -22,7 +22,7 @@ ConvexPolygon &getPolygon(const string &id, PolygonMap &polygons) {
 
 void readAndSavePolygon(istream &is, PolygonMap &polygons, const string &id) {
     Points points = readVector<Point>(is);
-    polygons[id] = ConvexPolygon(points);
+    polygons.insert_or_assign(id, ConvexPolygon(points));
 }
 
 void readAndSavePolygon(istream &is, PolygonMap &polygons) {

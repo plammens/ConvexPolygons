@@ -34,7 +34,7 @@ TEST_EXE = $(BIN_DIR)/$(TEST_NAME).x
 ##### Compiler options and flags ######
 
 CXX = g++
-CXXFLAGS = -Wall -std=c++11 -O2 -D NO_FREETYPE
+CXXFLAGS = -Wall -std=c++17 -O2 -D NO_FREETYPE
 
 CXX_COMPILE_FLAGS = $(CXXFLAGS) -I $(INCLUDE_DIR) -I $(LIB_INCLUDE_DIR)
 CXX_LINK_FLAGS = $(CXXFLAGS) -L $(LIB_FILE_DIR) -l PNGwriter -l png
