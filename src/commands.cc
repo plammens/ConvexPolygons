@@ -21,9 +21,14 @@ ConvexPolygon &getPolygon(const string &id, PolygonMap &polygons) {
 
 
 void readAndSavePolygon(istream &is, PolygonMap &polygons, const string &id) {
-    if (id.empty()) getArgs(is, const_cast<string &>(id));  // if no `id` argument given, read it
     Points points = readVector<Point>(is);
     polygons[id] = ConvexPolygon(points);
+}
+
+void readAndSavePolygon(istream &is, PolygonMap &polygons) {
+    string id;
+    getArgs(is, id);
+    readAndSavePolygon(is, polygons, id);
 }
 
 

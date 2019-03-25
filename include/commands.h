@@ -19,8 +19,13 @@ ConvexPolygon &getPolygon(const string &id, PolygonMap &polygons);
 
 Range<ConvexPolygon> getPolygons(const vector<string> &polygonIDs, PolygonMap &polygons);
 
-// Reads a sequence of points from `is` and saves a new polygon from it in `polygons`
-void readAndSavePolygon(istream &is, PolygonMap &polygons, const string &id = "");
+// Reads an ID and a sequence of points form `is`, from which a polygon is
+// constructed and saved in `polygons` (with the given ID)
+void readAndSavePolygon(istream &is, PolygonMap &polygons);
+
+// Reads a sequence of points from `is` and saves a new polygon in `polygons`
+// with ID `id`
+void readAndSavePolygon(istream &is, PolygonMap &polygons, const string & id);
 
 // Print polygon to an output stream in plain format
 void printPolygon(const string &id, const ConvexPolygon &pol, ostream &os = cout);
