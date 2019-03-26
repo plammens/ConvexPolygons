@@ -34,13 +34,13 @@ TEST_EXE = $(BIN_DIR)/$(TEST_NAME).x
 ##### Compiler options and flags ######
 
 CXX = g++
-CXXFLAGS = -Wall -std=c++17 -O2 -D NO_FREETYPE
+CXXFLAGS = -std=c++17 -O2 -D NO_FREETYPE
 
 CXX_COMPILE_FLAGS = $(CXXFLAGS) -I $(INCLUDE_DIR) -I $(LIB_INCLUDE_DIR)
 CXX_LINK_FLAGS = $(CXXFLAGS) -L $(LIB_FILE_DIR) -l PNGwriter -l png
 
-CXX_TEST_COMPILE_FLAGS = $(CXX_COMPILE_FLAGS) -I $(TEST_DIR)/$(INCLUDE_DIR) -O0
-CXX_TEST_LINK_FLAGS = $(CXX_LINK_FLAGS) -O0
+CXX_TEST_COMPILE_FLAGS = $(CXX_COMPILE_FLAGS) -I $(TEST_DIR)/$(INCLUDE_DIR) -Og
+CXX_TEST_LINK_FLAGS = $(CXX_LINK_FLAGS) -Og
 
 
 ##### Auto-detected files and paths #####
@@ -67,7 +67,7 @@ depends = $(patsubst $(OBJ_DIR)/%.o,$(DEP_DIR)/%.d,$(objects) $(test_objects))
 
 ############### Phony rules ###############
 
-.PHONY: all build run clean clean-build clean-out test libs \
+.PHONY: all build build-test debug libs run test clean clean-build clean-out \
 		.pre-build .pre-lib .pre-build-test
 
 
@@ -77,11 +77,15 @@ all: libs build build-test
 build: .pre-build $(MAIN_EXE)
 	@printf "\e[1mDone building main.\e[0m\n\n"
 
+build-test: debug .pre-build-test $(TEST_EXE)
+	@printf "\e[1mDone building tests.\e[0m\n\n"
+
+debug: CXXFLAGS += -Wall -Wextra -Og
+debug: build
+
+
 libs: .pre-lib $(LIB_FILE_DIR)/libPNGwriter.a
 	@printf "\e[1mDone building libs.\e[0m\n\n"
-
-build-test: build .pre-build-test $(TEST_EXE)
-	@printf "\e[1mDone building tests.\e[0m\n\n"
 
 
 run: build
@@ -95,9 +99,6 @@ test: build-test
 	@printf "\e[1mStarting $(TEST_SUITE)...\e[0m ($(TEST_EXE) $(ARGS))\n\n"
 	@$(TEST_EXE) $(ARGS)
 	@echo
-
-info:
-	$(info $(CXX_TEST_COMPILE_FLAGS))
 
 
 clean: clean-build clean-out
