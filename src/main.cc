@@ -8,7 +8,8 @@
 
 #include <iostream>
 #include <sstream>
-#include "handlers.h"
+#include "class/ConvexPolygon.h"
+#include "details/handlers.h"
 #include "errors.h"
 
 

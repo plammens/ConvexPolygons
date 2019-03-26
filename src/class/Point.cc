@@ -1,7 +1,8 @@
-#include <numeric>  // std::accumulate
-#include <aliases.h>
 #include "class/Point.h"
-#include "utils.h"
+
+#include <numeric>  // std::accumulate
+#include "details/range.h" // Range<T>
+#include "details/utils.h"
 
 
 // Returns the vector difference between two points
@@ -76,7 +77,7 @@ Point operator+(const Point &A, const Vector2D &u) {
 }
 
 
-Point barycenter(Range <Point> points) {
+Point barycenter(ConstRange <Point> points) {
     if (points.empty()) throw ValueError("no points given for barycenter");
     // Here we calculate the "average" of the points seen as vectors.
     // We use a custom binary operator that converts `Point`s to `Vector2D`s along the way.

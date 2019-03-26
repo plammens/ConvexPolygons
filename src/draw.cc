@@ -1,8 +1,9 @@
-#include "draw.h"
-#include "utils.h"
+#include "details/draw.h"
+
+#include "details/utils.h"
 
 
-void draw(const string &file, Range<ConvexPolygon> polygons, bool fill) {
+void draw(const string &file, ConstRange<ConvexPolygon> polygons, bool fill) {
     checkFileForWriting(file);
     pngwriter png(IMG::X_SIZE, IMG::Y_SIZE, IMG::BACKGROUND, file.c_str());
 
@@ -47,7 +48,7 @@ void drawPolygon(pngwriter &png, const ConvexPolygon &pol, const ScaleHelper &sc
 }
 
 
-ScaleHelper::ScaleHelper(Range<ConvexPolygon> polygons) {
+ScaleHelper::ScaleHelper(ConstRange<ConvexPolygon> polygons) {
     Box bBox = boundingBox(polygons);
     Point SW = bBox.SW(), NE = bBox.NE();
     minX = SW.x; minY = SW.y;

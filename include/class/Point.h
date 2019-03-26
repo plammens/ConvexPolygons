@@ -3,10 +3,10 @@
 #ifndef CONVEXPOLYGONS_POINT_H
 #define CONVEXPOLYGONS_POINT_H
 
-#include <iostream>
+#include <istream>
 #include <vector>
 #include "class/Vector2D.h"
-#include "aliases.h"
+#include "details/range.h"
 
 
 using namespace std;
@@ -51,7 +51,7 @@ bool isClockwiseTurn(const Point &A, const Point &B, const Point &C);
 bool isCounterClockwiseTurn(const Point &A, const Point &B, const Point &C);
 
 // Barycenter of a range of points
-Point barycenter(Range <Point> points);
+Point barycenter(ConstRange <Point> points);
 
 // Reads space-separated x, y coordinates into P
 istream &operator>>(istream &is, Point &P);

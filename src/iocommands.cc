@@ -1,10 +1,11 @@
-#include <iostream>
+#include "details/iocommands.h"
+
 #include <fstream>
 #include <boost/range/adaptors.hpp>
-#include "commands.h"
-#include "handlers.h"
 #include "errors.h"
-#include "utils.h"
+#include "details/utils.h"
+
+using namespace std;
 
 
 const ConvexPolygon &getPolygon(const string &id, const PolygonMap &polygons) {
@@ -87,7 +88,7 @@ void list(const PolygonMap &polygons) {
 }
 
 
-Range<ConvexPolygon> getPolygons(const vector<string> &polygonIDs, PolygonMap &polygons) {
+ConstRange<ConvexPolygon> getPolygons(const vector<string> &polygonIDs, PolygonMap &polygons) {
     // This unary lambda "gets" a polygon from the map given its ID
     function<const ConvexPolygon &(const string &id)> getter =
             [&polygons](const string &id) -> ConvexPolygon & {

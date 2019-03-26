@@ -1,5 +1,6 @@
 #include "geom.h"
-#include "utils.h"
+
+#include "details/utils.h"
 
 
 SolveResult intersect(const Segment &r, const Segment &s) {

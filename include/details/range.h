@@ -1,4 +1,4 @@
-// Some shared typedefs
+// Shared typedefs for Boost.Range
 
 #ifndef CONVEXPOLYGONS_ALIASES_H
 #define CONVEXPOLYGONS_ALIASES_H
@@ -8,7 +8,7 @@
 
 
 template <typename T>
-using Range = boost::any_range<const T, boost::bidirectional_traversal_tag>;
+using ConstRange = boost::any_range<T, boost::bidirectional_traversal_tag, const T &>;
 
 
 #endif //CONVEXPOLYGONS_ALIASES_H

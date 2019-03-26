@@ -1,11 +1,10 @@
+#include "class/ConvexPolygon.h"
+
 #include <algorithm>  // std::sort
 #include <numeric>  // std::accumulate
-#include <iostream>
 #include <boost/range/adaptors.hpp>  // boost::adaptors::filter, ::sliced
-
-#include "class/ConvexPolygon.h"
-#include "geom.h"
-#include "utils.h"
+#include "geom.h"  // segment intersection
+#include "details/utils.h"  // extend
 
 
 using namespace std;
@@ -101,7 +100,7 @@ Box ConvexPolygon::boundingBox() const {
 
 // ------------------ non-member functions ------------------------
 
-Box boundingBox(Range<ConvexPolygon> polygons) {
+Box boundingBox(ConstRange<ConvexPolygon> polygons) {
     // skip empty polygons, and if after filtering, polygons is empty, throw an error
     polygons = boost::adaptors::filter(polygons, [](const ConvexPolygon &pol){ return not pol.empty(); });
     if (polygons.empty()) throw ValueError("bounding box undefined for empty set");

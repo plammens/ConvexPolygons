@@ -7,14 +7,14 @@
 #include <pngwriter.h>
 #include "class/Point.h"
 #include "class/ConvexPolygon.h"
-#include "aliases.h"
+#include "range.h"
 
 
 using namespace std;
 
 
 // draws png with polygons
-void draw(const string &file, Range<ConvexPolygon> polygons, bool fill = false);
+void draw(const string &file, ConstRange<ConvexPolygon> polygons, bool fill = false);
 
 
 // Utility to map points to their pixel-coordinates
@@ -23,7 +23,7 @@ class ScaleHelper {
     int xOffset, yOffset;
 
 public:
-    ScaleHelper(Range<ConvexPolygon> polygons);
+    ScaleHelper(ConstRange<ConvexPolygon> polygons);
     pair<int, int> operator()(const Point &P) const;
     int scaleX(double x) const;
     int scaleY(double y) const;

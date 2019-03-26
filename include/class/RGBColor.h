@@ -4,7 +4,6 @@
 #define CONVEXPOLYGONS_RGBCOLOR_H
 
 #include <initializer_list>
-#include <cassert>
 
 using namespace std;
 

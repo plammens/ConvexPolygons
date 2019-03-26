@@ -11,7 +11,7 @@
 
 // Cache some repeatedly used polygons:
 const ConvexPolygon
-        empty,
+        emptyPol,
         vertex({{0, 0}}),
         line(Points{{0, 0}, {1, 1}}),
         line2(Points{{0, 0}, {0, 1}}),
@@ -81,19 +81,19 @@ TEST_SUITE("ConvexPolygon") {
     TEST_CASE("info members") {
 
         SUBCASE("vertexCount") {
-            CHECK(empty.vertexCount() == 0);
+            CHECK(emptyPol.vertexCount() == 0);
             CHECK(vertex.vertexCount() == 1);
             CHECK(line.vertexCount() == 2);
             CHECK(square.vertexCount() == 4);
             CHECK(hexagon.vertexCount() == 6);
         }
         SUBCASE("empty") {
-            CHECK(empty.empty());
+            CHECK(emptyPol.empty());
             CHECK(not vertex.empty());
             CHECK(not square.empty());
         }
         SUBCASE("area") {
-            REQUIRE(empty.area() == 0);
+            REQUIRE(emptyPol.area() == 0);
             CHECK(vertex.area() == 0);
             CHECK(line.area() == 0);
             CHECK(square.area() == 1);
@@ -101,19 +101,19 @@ TEST_SUITE("ConvexPolygon") {
             CHECK(hexagon.area() == 12);
         }
         SUBCASE("perimeter") {
-            CHECK(empty.perimeter() == 0);
+            CHECK(emptyPol.perimeter() == 0);
             CHECK(vertex.perimeter() == 0);
             CHECK(line.perimeter() == std::sqrt(2));
             CHECK(square.perimeter() == 4);
         }
         SUBCASE("centroid") {
-            CHECK_THROWS_AS(empty.centroid(), ValueError);
+            CHECK_THROWS_AS(emptyPol.centroid(), ValueError);
             CHECK(vertex.centroid() == Point{0, 0});
             CHECK(line.centroid() == Point{0.5, 0.5});
             CHECK(hexagon.centroid() == Point{0, 0});
         }
         SUBCASE("bbox") {
-            CHECK_THROWS_AS(empty.boundingBox(), ValueError);
+            CHECK_THROWS_AS(emptyPol.boundingBox(), ValueError);
             CHECK(vertex.boundingBox() == Box({0, 0}, {0, 0}));
             CHECK(line.boundingBox() == Box({{0, 0}, {1, 1}}));
         }
@@ -125,7 +125,7 @@ TEST_SUITE("Polygon operations") {
 
     TEST_CASE("isInside") {
         SUBCASE("single point") {
-            CHECK(not isInside({0, 0}, empty));
+            CHECK(not isInside({0, 0}, emptyPol));
             CHECK(isInside({0, 0}, vertex));
             CHECK(not isInside({0, 0.1}, line));
             CHECK(isInside({0, 0.1}, square));
@@ -142,8 +142,8 @@ TEST_SUITE("Polygon operations") {
         }
         SUBCASE("polygons") {
             SUBCASE("trivial") {
-                CHECK(isInside(empty, empty));
-                CHECK(isInside(empty, vertex));
+                CHECK(isInside(emptyPol, emptyPol));
+                CHECK(isInside(emptyPol, vertex));
                 CHECK(isInside(vertex, vertex));
                 CHECK(isInside(line, line));
                 CHECK(isInside(square, square));
@@ -162,9 +162,9 @@ TEST_SUITE("Polygon operations") {
 
     TEST_CASE("union") {
         SUBCASE("trivial") {
-            CHECK(convexUnion(empty, empty) == empty);
-            CHECK(convexUnion(empty, line) == line);
-            CHECK(convexUnion(empty, square) == square);
+            CHECK(convexUnion(emptyPol, emptyPol) == emptyPol);
+            CHECK(convexUnion(emptyPol, line) == line);
+            CHECK(convexUnion(emptyPol, square) == square);
         }
 
         CHECK(convexUnion(square, square2) == squareUnion);
@@ -173,9 +173,9 @@ TEST_SUITE("Polygon operations") {
 
     TEST_CASE("intersection") {
         SUBCASE("trivial") {
-            CHECK(intersection(empty, empty) == empty);
-            CHECK(intersection(empty, line) == empty);
-            CHECK(intersection(empty, square) == empty);
+            CHECK(intersection(emptyPol, emptyPol) == emptyPol);
+            CHECK(intersection(emptyPol, line) == emptyPol);
+            CHECK(intersection(emptyPol, square) == emptyPol);
         }
 
         CHECK(intersection(square, square2) == smallSquare);

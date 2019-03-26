@@ -7,7 +7,7 @@
 #include "class/Point.h"
 #include "class/RGBColor.h"
 #include "class/Box.h"
-#include "aliases.h"
+#include "details/range.h"
 
 
 using namespace std;
@@ -55,7 +55,7 @@ bool operator!=(const ConvexPolygon &lhs, const ConvexPolygon &rhs) {
 }
 
 
-Box boundingBox(Range<ConvexPolygon> polygons);
+Box boundingBox(ConstRange<ConvexPolygon> polygons);
 
 bool isInside(const Point &P, const ConvexPolygon &pol);
 bool isInside(const ConvexPolygon &pol1, const ConvexPolygon &pol2);

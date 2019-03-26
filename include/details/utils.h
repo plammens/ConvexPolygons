@@ -5,8 +5,7 @@
 #define CONVEXPOLYGONS_UTILS_H
 
 #include <vector>
-#include <iostream>
-#include <sstream>
+#include <istream>
 #include "errors.h"
 #include "consts.h"
 

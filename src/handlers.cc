@@ -1,7 +1,10 @@
-#include <iostream>
-#include "handlers.h"
+#include "details/handlers.h"
+
+#include <cassert>
+#include "details/iocommands.h"  // save, load, list...
+#include "details/draw.h"  // draw
 #include "errors.h"
-#include "utils.h"
+#include "details/utils.h"  // getArgs
 
 
 void handleIDManagement(const string &keyword, istream &argStream, PolygonMap &polygons) {
@@ -10,8 +13,7 @@ void handleIDManagement(const string &keyword, istream &argStream, PolygonMap &p
 
     if (keyword == CMD::POLYGON) readAndSavePolygon(argStream, polygons, id);
     else if (keyword == CMD::DELETE) polygons.erase(id);
-    else
-        assert(false);
+    else assert(false);
 
     printOk();
 }

@@ -3,21 +3,19 @@
 #ifndef CONVEXPOLYGONS_COMMANDS_H
 #define CONVEXPOLYGONS_COMMANDS_H
 
-#include <map>
-#include "class/ConvexPolygon.h"
-#include "aliases.h"
+#include <iostream>
+#include "polygonmap.h"
+#include "range.h"
 
 
 using namespace std;
-
-typedef map<string, ConvexPolygon> PolygonMap;
 
 
 // Gets polygon with ID `id` in `polygons`; throws `UndefinedID` if nonexistent
 const ConvexPolygon &getPolygon(const string &id, const PolygonMap &polygons);
 ConvexPolygon &getPolygon(const string &id, PolygonMap &polygons);
 
-Range<ConvexPolygon> getPolygons(const vector<string> &polygonIDs, PolygonMap &polygons);
+ConstRange<ConvexPolygon> getPolygons(const vector<string> &polygonIDs, PolygonMap &polygons);
 
 // Reads an ID and a sequence of points form `is`, from which a polygon is
 // constructed and saved in `polygons` (with the given ID)
@@ -41,5 +39,3 @@ void load(const string &file, PolygonMap &polygons);
 
 
 #endif //CONVEXPOLYGONS_COMMANDS_H
-
-#include "draw.h"  // Extend with draw header

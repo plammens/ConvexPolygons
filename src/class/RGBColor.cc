@@ -1,6 +1,7 @@
 #include "class/RGBColor.h"
+
 #include "errors.h"
-#include "utils.h"
+#include "details/utils.h"
 
 
 RGBColor::RGBColor(double r, double g, double b) {

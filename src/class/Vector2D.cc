@@ -1,6 +1,7 @@
-#include <cmath>  // std::sqrt
 #include "class/Vector2D.h"
-#include "utils.h"
+
+#include <cmath>  // std::sqrt
+#include "details/utils.h"
 
 
 // Returns the squared euclidean norm

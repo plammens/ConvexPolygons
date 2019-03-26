@@ -3,10 +3,14 @@
 #ifndef CONVEXPOLYGONS_HANDLERS_H
 #define CONVEXPOLYGONS_HANDLERS_H
 
-#include <functional>
-#include <cassert>
-#include "commands.h"
+#include <functional> // function
+#include <iostream>
+#include <map>
+#include <string>
 #include "consts.h"
+#include "polygonmap.h"
+
+using namespace std;
 
 
 // Command handler signature
