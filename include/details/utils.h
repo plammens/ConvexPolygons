@@ -16,7 +16,7 @@ using namespace std;
 
 inline
 bool numericEquals(double a, double b) {
-    return abs(a - b) < NUM::EPSILON;
+    return abs(a - b) < NUM::EPSILON*max(max(abs(a), abs(b)), 1.0);
 }
 
 
