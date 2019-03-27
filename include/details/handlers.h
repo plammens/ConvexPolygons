@@ -87,4 +87,7 @@ const map<string, CommandHandler> cmdHandlerMap = {
 CommandHandler getCommandHandler(const string &keyword);
 
 
+void parseCommand(const string &command, PolygonMap &polygons);
+
+
 #endif //CONVEXPOLYGONS_HANDLERS_H

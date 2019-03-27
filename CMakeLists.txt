@@ -19,8 +19,8 @@ file(GLOB Tests "test/src/test*.cc")
 
 add_library(ConvexPolygons OBJECT ${Source})
 
-add_executable(Calculator ${ConvexPolygons} src/main.cc)
-target_link_libraries(ConvexPolygons PNGwriter png)
+add_executable(Calculator $<TARGET_OBJECTS:ConvexPolygons> src/main.cc)
+target_link_libraries(Calculator PNGwriter png)
 
-add_executable(Test ${ConvexPolygons} ${Tests})
+add_executable(Test $<TARGET_OBJECTS:ConvexPolygons> ${Tests})
 target_link_libraries(Test PNGwriter png)

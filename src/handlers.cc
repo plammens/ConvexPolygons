@@ -1,3 +1,5 @@
+#include "class/ConvexPolygon.h"
+#include <iostream>
 #include "details/handlers.h"
 
 #include <cassert>
@@ -102,4 +104,27 @@ CommandHandler getCommandHandler(const string &keyword) {
     auto it = cmdHandlerMap.find(keyword);
     if (it == cmdHandlerMap.end()) throw UnknownCommand(keyword);
     return it->second;
+}
+
+
+// Check whether command is valid and run corresponding handler
+void parseCommand(const string &command, PolygonMap &polygons) {
+    if (command.empty()) return;  // ignore empty lines
+
+    try {
+        istringstream iss(command);
+        string keyword;
+        iss >> keyword;
+        if (keyword[0] == '#') { cout << '#' << endl; return; }  // comments
+
+        // Get appropriate handler: (may throw `UnknownCommand`)
+        CommandHandler handler = getCommandHandler(keyword);
+        handler(keyword, iss, polygons);
+        if (not (iss >> ws).eof()) throw UnusedArgument();  // check unused arguments
+
+    } catch (Error &error) {
+        printError(error.what());
+    } catch (Warning &warning) {
+        printWarning(warning.what());
+    }
 }
