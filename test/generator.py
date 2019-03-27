@@ -6,12 +6,12 @@ import datetime
 
 scale = 1e6
 path = "text/"
-n = 1000
+n = 10000
 
 
 def make_points(n: int, offset: float = 0) -> iter:
-    a = 2 * math.pi / n
-    return ((scale*math.cos(offset + i * a), scale*math.sin(offset + i * a)) for i in range(n))
+    a = math.tau / n
+    return ((scale*math.cos(offset + i*a), scale*math.sin(offset + i*a)) for i in range(n))
 
 
 def write_polygon(fileobj, name: str, points: iter):
@@ -30,4 +30,4 @@ def write_header(fileobj, description: str):
 with open(path + "test.txt", 'w') as file:
     write_header(file, description="a circle and a small rotation thereof")
     write_polygon(file, "circ", make_points(n))
-    write_polygon(file, "circ-rot", make_points(n, math.pi / n / 4))
+    write_polygon(file, "circ-rot", make_points(n, math.tau/n/4))

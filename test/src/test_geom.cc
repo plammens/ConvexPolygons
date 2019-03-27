@@ -15,14 +15,11 @@ TEST_SUITE("geom") {
 
         SUBCASE("degenerate") {
             Segment s3 = {{0, 0}, {1, 0}},
-                    s4 = {{0, -1e-12}, {1, 1e-12}};
+                    s4 = {{0, -1e-13}, {1, 1e-13}};
 
             IntersectResult solve = intersect(s3, s4);
             REQUIRE(solve.success);
             CHECK(solve.point == Point{0.5, 0});
-
-            solve = intersect(s3, {{0, -1e-13}, {1, 1e-13}});
-            CHECK(not solve.success);
         }
     }
 

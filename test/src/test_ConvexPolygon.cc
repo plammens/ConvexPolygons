@@ -183,6 +183,14 @@ TEST_SUITE("Polygon operations") {
             CHECK(intersection(line, square) == line);
             CHECK(intersection(rectangle1, rectangle2) == square);
         }
+        SUBCASE("rotated") {
+            const double s = std::sqrt(2)/2;
+            const ConvexPolygon
+                a({{0, 1}, {-1, 0}, {0, -1}, {1, 0}}),
+                b({{s, s}, {-s, s}, {-s, -s}, {s, -s}});
+
+            CHECK(intersection(a, b).vertexCount() == 8);
+        }
     }
 
 }
