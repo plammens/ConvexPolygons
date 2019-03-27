@@ -80,17 +80,17 @@ depends = $(patsubst $(OBJ_DIR)/%.o,$(DEP_DIR)/%.d,$(objects) $(test_objects))
 all: libs build build-test
 
 
-build: .pre-build $(MAIN_EXE)
+build: $(MAIN_EXE) | .pre-build
 	@printf "\e[1mDone building main.\e[0m\n\n"
 
-build-test: debug .pre-build-test $(TEST_EXE) $(TEST_TEXT_FILES)
+build-test: debug $(TEST_EXE) $(TEST_TEXT_FILES) | .pre-build-test
 	@printf "\e[1mDone building tests.\e[0m\n\n"
 
 debug: CXXFLAGS += -Wall -Og
 debug: build
 
 
-libs: .pre-lib $(LIB_FILE_DIR)/libPNGwriter.a
+libs: $(LIB_FILE_DIR)/libPNGwriter.a | .pre-lib
 	@printf "\e[1mDone building libs.\e[0m\n\n"
 
 
@@ -179,5 +179,5 @@ $(OBJ_DIR)/test%.o: test%.cc | $(OBJ_DIR) $(DEP_DIR)
 	$(CXX) -c $< -o $@ $(CXX_TEST_COMPILE_FLAGS) -MMD -MF $(patsubst $(OBJ_DIR)/%.o,$(DEP_DIR)/%.d,$@)
 
 $(TEST_TEXT_FILES): $(TEST_DIR)/generator.py
-	cd $(TEST_DIR) && python3 generator.py
+	python3 $(TEST_DIR)/generator.py
 

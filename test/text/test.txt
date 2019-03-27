@@ -1,4 +1,4 @@
-# test file automatically created by generator.py (2019-03-27 16:27:42.565292)
+# test file automatically created by test/generator.py (2019-03-27 18:00:48.457468)
 # description: a circle and a small rotation thereof
 # config: n = 10000
 

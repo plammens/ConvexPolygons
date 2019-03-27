@@ -5,7 +5,7 @@ import datetime
 
 
 scale = 1e6
-path = "text/"
+path = "test/text/"
 n = 10000
 
 
