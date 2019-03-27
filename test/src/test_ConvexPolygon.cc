@@ -177,11 +177,12 @@ TEST_SUITE("Polygon operations") {
             CHECK(intersection(emptyPol, line) == emptyPol);
             CHECK(intersection(emptyPol, square) == emptyPol);
         }
-
-        CHECK(intersection(square, square2) == smallSquare);
-        CHECK(intersection(square, hexagon) == square);
-        CHECK(intersection(line, square) == line);
-        CHECK(intersection(rectangle1, rectangle2) == square);
+        SUBCASE("small") {
+            CHECK(intersection(square, square2) == smallSquare);
+            CHECK(intersection(square, hexagon) == square);
+            CHECK(intersection(line, square) == line);
+            CHECK(intersection(rectangle1, rectangle2) == square);
+        }
     }
 
 }

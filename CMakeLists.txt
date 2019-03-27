@@ -4,7 +4,7 @@ project(ConvexPolygons)
 
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -D NO_FREETYPE -O2")
-set(CMAKE_CXX_FLAGS_DEBUG  "${CMAKE_CXX_FLAGS} -O0")
+set(CMAKE_CXX_FLAGS_DEBUG  "${CMAKE_CXX_FLAGS_DEBUG} -O0")
 
 include_directories(include libs/include test/include)
 link_directories(libs/lib)
@@ -16,8 +16,11 @@ file(GLOB Source "src/*.cc" "src/class/*.cc" "src/details/*.cc")
 list(FILTER Source EXCLUDE REGEX main)
 file(GLOB Tests "test/src/test*.cc")
 
-add_executable(ConvexPolygons ${Source} src/main.cc)
+
+add_library(ConvexPolygons OBJECT ${Source})
+
+add_executable(Calculator ${ConvexPolygons} src/main.cc)
 target_link_libraries(ConvexPolygons PNGwriter png)
 
-add_executable(Test ${Tests} ${Source})
+add_executable(Test ${ConvexPolygons} ${Tests})
 target_link_libraries(Test PNGwriter png)
