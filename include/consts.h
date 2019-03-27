@@ -22,6 +22,7 @@ namespace CMD {
             LIST = "list",
             SAVE = "save",
             LOAD = "load",
+            INCLUDE = "include",
             DRAW = "draw",
             PAINT = "paint";
 }

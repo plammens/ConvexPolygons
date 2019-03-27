@@ -86,6 +86,7 @@ void handleIOCommand(const string &keyword, istream &argStream, PolygonMap &poly
     else if (keyword == CMD::LOAD) load(file, polygons);
     else if (keyword == CMD::DRAW) draw(file, getPolygons(polygonIDs, polygons));
     else if (keyword == CMD::PAINT) draw(file, getPolygons(polygonIDs, polygons), true);
+    else if (keyword == CMD::INCLUDE) include(file, polygons);
     else assert(false); // Shouldn't get here
 
     printOk();

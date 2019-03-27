@@ -37,5 +37,8 @@ void save(const string &file, const vector<string> &polygonIDs, const PolygonMap
 // Load polygons from text file
 void load(const string &file, PolygonMap &polygons);
 
+// Parse commands from file
+void include(const string &file, PolygonMap &polygons, bool silent = false);
+
 
 #endif //CONVEXPOLYGONS_COMMANDS_H

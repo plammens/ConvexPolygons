@@ -33,10 +33,30 @@ void readAndSavePolygon(istream &is, PolygonMap &polygons) {
 }
 
 
+//////////////////////
+
+inline
+ifstream openForReading(const string &filename) {
+    ifstream file;
+    file.open(filename);
+    if (not file.is_open()) throw IOError(filename);
+    return file;
+}
+
+inline
+ofstream openForWriting(const string &filename) {
+    ofstream file;
+    file.open(filename);
+    if (not file.is_open()) throw IOError(filename);
+    return file;
+}
+
+
+//////////////////////
+
+
 void save(const string &file, const vector<string> &polygonIDs, const PolygonMap &polygons) {
-    ofstream fileStream;
-    fileStream.open(file);
-    if (not fileStream.is_open()) throw IOError(file);
+    ofstream fileStream = openForWriting(file);
 
     // We buffer the result so we can catch errors before we write to the file
     ostringstream oss;
@@ -49,11 +69,8 @@ void save(const string &file, const vector<string> &polygonIDs, const PolygonMap
     fileStream.close();
 }
 
-
 void load(const string &file, PolygonMap &polygons) {
-    ifstream fileStream;
-    fileStream.open(file);
-    if (not fileStream.is_open()) throw IOError(file);
+    ifstream fileStream = openForReading(file);
 
     string line;
     while (getline(fileStream, line)) {
@@ -61,6 +78,21 @@ void load(const string &file, PolygonMap &polygons) {
         readAndSavePolygon(argStream, polygons);
     }
 
+    fileStream.close();
+}
+
+
+void parseCommand(const string &, PolygonMap &);  // forward declaration
+
+void include(const string &file, PolygonMap &polygons, bool silent) {
+    ifstream fileStream = openForReading(file);
+    if (silent) cout.setstate(ios_base::failbit);  // suppress output
+
+    string line;
+    while (getline(fileStream, line))
+        parseCommand(line, polygons);
+
+    cout.clear();
     fileStream.close();
 }
 
