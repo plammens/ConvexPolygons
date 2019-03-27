@@ -4,9 +4,14 @@ import math
 import datetime
 
 
+scale = 1e6
+path = "text/"
+n = 1000
+
+
 def make_points(n: int, offset: float = 0) -> iter:
     a = 2 * math.pi / n
-    return ((math.cos(offset + i * a), math.sin(offset + i * a)) for i in range(n))
+    return ((scale*math.cos(offset + i * a), scale*math.sin(offset + i * a)) for i in range(n))
 
 
 def write_polygon(fileobj, name: str, points: iter):
@@ -21,9 +26,6 @@ def write_header(fileobj, description: str):
     fileobj.write("# description: {}\n".format(description))
     fileobj.write("# config: n = {}\n\n".format(n))
 
-
-path = "text/"
-n = 10000
 
 with open(path + "test.txt", 'w') as file:
     write_header(file, description="a circle and a small rotation thereof")

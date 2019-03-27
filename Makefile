@@ -1,14 +1,20 @@
+# TODO: refactor into config and auto variables
+
 ############################# Global variables ################################
 
 ##### Directory names #####
 
-INCLUDE_DIR = include
-SRC_DIR = src
-CLASS_SUBDIR = class
-LIB_ROOT_DIR = libs
-TEST_DIR = test
+INCLUDE_DIR := include
+SRC_DIR := src
+CLASS_SUBDIR := class
+LIB_ROOT_DIR := libs
 
-BUILD_DIR = build
+TEST_DIR := test
+TEST_TEXT_DIR = $(TEST_DIR)/text
+TEST_TEXT_FILES := test
+TEST_TEXT_FILES := $(patsubst %,$(TEST_TEXT_DIR)/%.txt,$(TEST_TEXT_FILES))
+
+BUILD_DIR := build
 BIN_DIR = $(BUILD_DIR)/bin
 OBJ_DIR = $(BUILD_DIR)/obj
 DEP_DIR = $(BUILD_DIR)/depend
@@ -16,18 +22,18 @@ LIB_INCLUDE_DIR = $(LIB_ROOT_DIR)/include
 LIB_FILE_DIR = $(LIB_ROOT_DIR)/lib
 
 # dircetory for program's output files:
-OUT_DIR = out
+OUT_DIR := out
 
 
-##### Executable names #####
+##### names #####
 
 # name of main program:
-MAIN_NAME = main
+MAIN_NAME := main
 MAIN_EXE = $(BIN_DIR)/$(MAIN_NAME).x# output path for main program
 MAIN_OBJ = $(OBJ_DIR)/$(MAIN_NAME).o
 
-TEST_SUITE = doctest
-TEST_NAME = test
+TEST_SUITE := doctest
+TEST_NAME := test
 TEST_EXE = $(BIN_DIR)/$(TEST_NAME).x
 
 
@@ -45,18 +51,18 @@ CXX_TEST_LINK_FLAGS = $(CXX_LINK_FLAGS) -Og
 
 ##### Auto-detected files and paths #####
 
-## Directory search paths ##
+# Directory search paths:
 vpath %.h $(shell find $(INCLUDE_DIR) -type d)
 vpath %.cc $(shell find $(SRC_DIR) -type d)
 vpath test%.cc $(shell find $(TEST_DIR)/$(SRC_DIR) -type d)
 
-## Auto-detected source files: ##
+# sources and objects:
 sources = $(shell find $(SRC_DIR) -type f -name '*.cc' ! -name '$(MAIN_NAME)*')  # sources excluding main
 objects = $(patsubst %.cc,$(OBJ_DIR)/%.o, $(notdir $(sources)))  # object files
 
-# test sources (prefixed with 'test')
-test_sources = $(shell find $(TEST_DIR)/$(SRC_DIR) -type f -name 'test*.cc')  # all test source files
-test_objects = $(patsubst %.cc,$(OBJ_DIR)/%.o, $(notdir $(test_sources)))  # all test object files
+# test sources (prefixed with 'test'):
+test_sources = $(shell find $(TEST_DIR)/$(SRC_DIR) -type f -name 'test*.cc')
+test_objects = $(patsubst %.cc,$(OBJ_DIR)/%.o, $(notdir $(test_sources)))
 
 # dependency files for automatic Makefile rule prerequisites
 depends = $(patsubst $(OBJ_DIR)/%.o,$(DEP_DIR)/%.d,$(objects) $(test_objects))
@@ -77,7 +83,7 @@ all: libs build build-test
 build: .pre-build $(MAIN_EXE)
 	@printf "\e[1mDone building main.\e[0m\n\n"
 
-build-test: debug .pre-build-test $(TEST_EXE)
+build-test: debug .pre-build-test $(TEST_EXE) $(TEST_TEXT_FILES)
 	@printf "\e[1mDone building tests.\e[0m\n\n"
 
 debug: CXXFLAGS += -Wall -Og
@@ -171,3 +177,7 @@ $(TEST_EXE): $(objects) $(test_objects) | $(BIN_DIR)
 # As a side effect of compilation we generate a dependency file.
 $(OBJ_DIR)/test%.o: test%.cc | $(OBJ_DIR) $(DEP_DIR)
 	$(CXX) -c $< -o $@ $(CXX_TEST_COMPILE_FLAGS) -MMD -MF $(patsubst $(OBJ_DIR)/%.o,$(DEP_DIR)/%.d,$@)
+
+$(TEST_TEXT_FILES): $(TEST_DIR)/generator.py
+	cd $(TEST_DIR) && python3 generator.py
+

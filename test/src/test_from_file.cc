@@ -15,7 +15,7 @@ TEST_SUITE("from file") {
         ConvexPolygon &circ_rot = getPolygon("circ-rot", testMap);
         ConvexPolygon its = intersection(circ, circ_rot);
 
-        CHECK(its.vertexCount() > 0);
+        CHECK(its.vertexCount() == 20000);
     }
 
 }
