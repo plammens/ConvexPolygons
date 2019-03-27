@@ -3,9 +3,9 @@
 #include "details/utils.h"
 
 
-SolveResult intersect(const Segment &r, const Segment &s) {
+IntersectResult intersect(const Segment &r, const Segment &s) {
     double det = r.A()*s.B() - r.B()*s.A();
-    if (numericEquals(det, 0)) return {{}, false};
+    if (numeric::equal(det, 0)) return {{}, false};
 
     // Solve by Cramer's rule:
     Point intersection{};
@@ -20,8 +20,8 @@ SolveResult intersect(const Segment &r, const Segment &s) {
 bool isInSegment(const Point &P, const Segment &r) {
     Vector2D direction = r.end() - r.start(), u = P - r.start();
     if (u.x*direction.y != u.y*direction.x) return false;
-    double lambda = (numericEquals(direction.x, 0) ? u.y/direction.y : u.x/direction.x);
-    return 0 <= lambda and lambda <= 1;
+    double lambda = (numeric::equal(direction.x, 0) ? u.y/direction.y : u.x/direction.x);
+    return numeric::leq(0, lambda) and numeric::leq(lambda, 1);
 }
 
 

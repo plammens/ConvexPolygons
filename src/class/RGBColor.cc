@@ -45,9 +45,9 @@ void RGBColor::setB(double b) {
 
 
 bool operator==(const RGBColor &lhs, const RGBColor &rhs) {
-    return numericEquals(lhs.R(), rhs.R()) and
-           numericEquals(lhs.G(), rhs.G()) and
-           numericEquals(lhs.B(), rhs.B());
+    return numeric::equal(lhs.R(), rhs.R()) and
+           numeric::equal(lhs.G(), rhs.G()) and
+           numeric::equal(lhs.B(), rhs.B());
 }
 
 

@@ -14,9 +14,23 @@ using namespace std;
 
 // ------------- numeric ----------
 
-inline
-bool numericEquals(double a, double b) {
-    return abs(a - b) < NUM::EPSILON*max(max(abs(a), abs(b)), 1.0);
+namespace numeric {
+
+    inline
+    double scaledEpsilon(double a, double b) {
+        return max(1., max(abs(a), abs(b)))*NUM::EPSILON;
+    }
+
+    inline
+    bool equal(double a, double b) {
+        return abs(a - b) < scaledEpsilon(a, b);
+    }
+
+    inline
+    bool leq(double a, double b) {
+        return a < b + scaledEpsilon(a, b);
+    }
+
 }
 
 
@@ -90,7 +104,8 @@ void extend(vector<T> &destination, const Types &... vectors) {
 
 
 template<typename T>
-void _extend(vector<T> &destination) {
+void _extend(vector<T> &destination, const vector<T> &first) {
+    destination.insert(destination.end(), first.begin(), first.end());
 }
 
 

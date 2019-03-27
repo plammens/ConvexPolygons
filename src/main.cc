@@ -5,6 +5,7 @@
 // TODO: docs & doxygen
 // TODO: remove using std
 // TODO: impl folder, hide utils
+// TODO: boost or not?
 
 #include <iostream>
 #include <sstream>

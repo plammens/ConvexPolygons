@@ -21,13 +21,13 @@ public:
 };
 
 
-struct SolveResult {
-    Point result;
+struct IntersectResult {
+    Point point;
     bool success;
 };
 
 
-SolveResult intersect(const Segment &r, const Segment &s);
+IntersectResult intersect(const Segment &r, const Segment &s);
 
 bool isInSegment(const Point &P, const Segment &r);
 

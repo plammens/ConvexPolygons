@@ -17,7 +17,7 @@ double Vector2D::norm() const {
 
 
 bool Vector2D::isNull() const {
-    return numericEquals(x, 0) and numericEquals(y, 0);
+    return numeric::equal(x, 0) and numeric::equal(y, 0);
 }
 
 
@@ -42,7 +42,7 @@ double crossProd(const Vector2D &u, const Vector2D &v) {
 
 
 bool operator==(const Vector2D &u, const Vector2D &rhs) {
-    return numericEquals(u.x, rhs.x) and numericEquals(u.y, rhs.y);
+    return numeric::equal(u.x, rhs.x) and numeric::equal(u.y, rhs.y);
 }
 
 

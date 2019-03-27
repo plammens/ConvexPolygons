@@ -26,7 +26,7 @@ bool isCounterClockwiseTurn(const Point &A, const Point &B, const Point &C) {
 
 //Equality operators
 bool operator==(const Point &A, const Point &B) {
-    return numericEquals(A.x, B.x) and numericEquals(A.y, B.y);
+    return numeric::equal(A.x, B.x) and numeric::equal(A.y, B.y);
 }
 
 

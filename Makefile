@@ -80,7 +80,7 @@ build: .pre-build $(MAIN_EXE)
 build-test: debug .pre-build-test $(TEST_EXE)
 	@printf "\e[1mDone building tests.\e[0m\n\n"
 
-debug: CXXFLAGS += -Wall -Wextra -Og
+debug: CXXFLAGS += -Wall -Og
 debug: build
 
 
