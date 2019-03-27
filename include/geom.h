@@ -6,28 +6,24 @@
 #include "class/Point.h"
 
 
-// Represents a segment as a line Ax + By = C delimited by two points
-class Segment {
-    Point _start, _end;
-    double _A, _B, _C;
+// Represents a segment delimited by two points
+struct Segment {
+    Point startPt, endPt;
 
-public:
-    Segment(const Point &, const Point &);
-    double A() const { return _A; }
-    double B() const { return _B; }
-    double C() const { return _C; }
-    const Point &start() const { return _start; }
-    const Point &end() const { return _end; }
+    Vector2D direction() const;
 };
 
 
 struct IntersectResult {
     Point point;
     bool success;
+
+    explicit
+    operator bool() const { return success; };
 };
 
 
-IntersectResult intersect(const Segment &r, const Segment &s);
+IntersectResult intersect(const Segment &seg1, const Segment &seg2);
 
 bool isInSegment(const Point &P, const Segment &r);
 
