@@ -11,8 +11,6 @@ LIB_ROOT_DIR := libs
 
 TEST_DIR := test
 TEST_TEXT_DIR = $(TEST_DIR)/text
-TEST_TEXT_FILES := test
-TEST_TEXT_FILES := $(patsubst %,$(TEST_TEXT_DIR)/%.txt,$(TEST_TEXT_FILES))
 
 BUILD_DIR := build
 BIN_DIR = $(BUILD_DIR)/bin
@@ -80,10 +78,11 @@ depends = $(patsubst $(OBJ_DIR)/%.o,$(DEP_DIR)/%.d,$(objects) $(test_objects))
 all: libs build build-test
 
 
-build: $(MAIN_EXE) | .pre-build
+build: .pre-build $(MAIN_EXE)
 	@printf "\e[1mDone building main.\e[0m\n\n"
 
-build-test: debug $(TEST_EXE) $(TEST_TEXT_FILES) | .pre-build-test
+build-test: debug .pre-build-test $(TEST_EXE) $(TEST_TEXT_FILES)
+	python3 test/generator.py
 	@printf "\e[1mDone building tests.\e[0m\n\n"
 
 debug: CXXFLAGS += -Wall -Og
@@ -177,7 +176,4 @@ $(TEST_EXE): $(objects) $(test_objects) | $(BIN_DIR)
 # As a side effect of compilation we generate a dependency file.
 $(OBJ_DIR)/test%.o: test%.cc | $(OBJ_DIR) $(DEP_DIR)
 	$(CXX) -c $< -o $@ $(CXX_TEST_COMPILE_FLAGS) -MMD -MF $(patsubst $(OBJ_DIR)/%.o,$(DEP_DIR)/%.d,$@)
-
-$(TEST_TEXT_FILES): $(TEST_DIR)/generator.py
-	python3 $(TEST_DIR)/generator.py
 

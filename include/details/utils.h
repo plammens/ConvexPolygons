@@ -18,18 +18,13 @@ using namespace std;
 namespace numeric {
 
     inline
-    double scaledEpsilon(double a, double b) {
-        return max(1., max(std::abs(a), std::abs(b)))*NUM::EPSILON;
-    }
-
-    inline
     bool equal(double a, double b) {
-        return std::abs(a - b) < scaledEpsilon(a, b);
+        return std::abs(a - b) < NUM::EPSILON;
     }
 
     inline
     bool leq(double a, double b) {
-        return a < b + scaledEpsilon(a, b);
+        return a < b + NUM::EPSILON;
     }
 
 }

@@ -24,25 +24,31 @@ bool _isInSegment(const Point &P, const Segment &seg) {
 }
 
 
+// Representation of a line with its normal equation, Ax + By = C.
+// Used to find the intersection of segments.
+struct Line {
+    double A, B, C;
+
+    // Conversion from a Segment
+    Line(const Segment &s)
+            : A(s.endPt.y - s.startPt.y), B(s.startPt.x - s.endPt.x),
+              C(A*s.startPt.x + B*s.startPt.y) {}
+};
+
+
 ///////////////////////// EXPOSED FUNCTIONS ///////////////////////////
 
 
 IntersectResult intersect(const Segment &seg1, const Segment &seg2) {
-    const double A1 = seg1.endPt.y - seg1.startPt.y,
-                 B1 = seg1.startPt.x - seg1.endPt.x,
-                 C1 = A1*seg1.startPt.x + B1*seg2.startPt.y;
+    const Line l1 = seg1, l2 = seg2;  // get line equations
 
-    const double A2 = seg2.endPt.y - seg2.startPt.y,
-                 B2 = seg2.startPt.x - seg2.endPt.x,
-                 C2 = A2*seg2.startPt.x + B2*seg2.startPt.y;
-
-    double det = A1*B2 - B1*A2;
-    if (numeric::equal(det, 0)) return {{}, false};
+    double det = l1.A*l2.B - l1.B*l2.A;
+    if (det == 0) return {{}, false};
 
     // Solve by Cramer's rule:
     Point intersection;
-    intersection.x = (C1*B2 - B1*C2)/det;
-    intersection.y = (A1*C2 - C1*A2)/det;
+    intersection.x = (l1.C*l2.B - l1.B*l2.C)/det;
+    intersection.y = (l1.A*l2.C - l1.C*l2.A)/det;
 
     bool withinBounds = _isInSegment(intersection, seg1) and _isInSegment(intersection, seg2);
     return {intersection, withinBounds};

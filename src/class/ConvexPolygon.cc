@@ -3,6 +3,7 @@
 #include <algorithm>  // std::sort
 #include <numeric>  // std::accumulate
 #include <boost/range/adaptors.hpp>  // boost::adaptors::filter, ::sliced
+#include <iterator>
 #include "geom.h"  // segment intersection
 #include "details/utils.h"  // extend
 
@@ -162,6 +163,35 @@ ConvexPolygon operator|(const ConvexPolygon &polA, const ConvexPolygon &polB) {
 }
 
 
+inline
+void _intersectionSweepLine(const ConvexPolygon &pol1, const ConvexPolygon &pol2,
+                            Points &intersectionPoints) {
+    auto it1L = pol1.getVertices().begin(), it2L = pol2.getVertices().begin();
+    auto it1R = pol1.getVertices().rbegin(), it2R = pol2.getVertices().rbegin();
+
+    auto edge1Left = [&it1L](){ return Segment{it1L[0], it1L[1]}; };
+    auto edge1Right = [&it1R](){ return Segment{it1R[0], it1R[1]}; };
+    auto edge2Left = [&it2L](){ return Segment{it2L[0], it2L[1]}; };
+    auto edge2Right = [&it2R](){ return Segment{it2R[0], it2R[1]}; };
+
+    auto res1 = [&](){ return intersect(edge1Left(), edge2Left()); };
+    auto res2 = [&](){ return intersect(edge1Left(), edge2Right()); };
+    auto res3 = [&](){ return intersect(edge1Right(), edge2Left()); };
+    auto res4 = [&](){ return intersect(edge1Right(), edge2Right()); };
+
+    // Sweepline:
+    while (not (it1L == it1R.base() or it2L == it2R.base())) {
+        for (const IntersectResult &ir : {res1(), res2(), res3(), res4()})
+            if (ir.success) intersectionPoints.push_back(ir.point);
+
+        if      (it1L[1].y <= it1R[1].y and it1L[1].y <= it2L[1].y and it1L[1].y <= it2R[1].y) ++it1L;
+        else if (it1R[1].y <= it1L[1].y and it1R[1].y <= it2L[1].y and it1R[1].y <= it2R[1].y) ++it1R;
+        else if (it2L[1].y <= it1L[1].y and it2L[1].y <= it1R[1].y and it2L[1].y <= it2R[1].y) ++it2L;
+        else ++it2R;
+    }
+}
+
+
 ConvexPolygon intersection(const ConvexPolygon &pol1, const ConvexPolygon &pol2) {
     if (pol1.empty() or pol2.empty()) return {};
 
@@ -173,15 +203,8 @@ ConvexPolygon intersection(const ConvexPolygon &pol1, const ConvexPolygon &pol2)
     for (const Point &P : v2)
         if (isInside(P, pol1)) intersectionPoints.push_back(P);
 
-    const auto end1 = v1.end() - 1;
-    const auto end2 = v2.end() - 1;
-    for (auto it1 = v1.begin(); it1 < end1; ++it1) {
-        for (auto it2 = v2.begin(); it2 < end2; ++it2) {
-            auto intersectResult = intersect({it1[0], it1[1]}, {it2[0], it2[1]});
-            if (intersectResult.success)
-                intersectionPoints.push_back(intersectResult.point);
-        }
-    }
+    if (pol1.vertexCount() > 1 and pol2.vertexCount() > 1)
+        _intersectionSweepLine(pol1, pol2, intersectionPoints);
 
     return ConvexPolygon(move(intersectionPoints));
 }
