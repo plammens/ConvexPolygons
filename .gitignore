@@ -33,8 +33,16 @@
 *.out
 *.app
 
+
+
 README.html
+
 build/
 out/
 libs/pngwriter/
 libs/lib/cmake/
+
+test/text/
+
+docs/html/
+docs/latex/

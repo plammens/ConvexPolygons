@@ -15,6 +15,7 @@ TEST_TEXT_DIR = $(TEST_DIR)/text
 BUILD_DIR := build
 BIN_DIR = $(BUILD_DIR)/bin
 OBJ_DIR = $(BUILD_DIR)/obj
+DOCS_DIR = docs
 DEP_DIR = $(BUILD_DIR)/depend
 LIB_INCLUDE_DIR = $(LIB_ROOT_DIR)/include
 LIB_FILE_DIR = $(LIB_ROOT_DIR)/lib
@@ -71,7 +72,7 @@ depends = $(patsubst $(OBJ_DIR)/%.o,$(DEP_DIR)/%.d,$(objects) $(test_objects))
 
 ############### Phony rules ###############
 
-.PHONY: all build build-test debug libs run test clean clean-build clean-out \
+.PHONY: all build build-test debug libs run test clean clean-build clean-out docs \
 		.pre-build .pre-lib .pre-build-test
 
 
@@ -113,6 +114,10 @@ clean-build:
 
 clean-out:
 	rm -rf ./$(OUT_DIR)
+
+
+docs:
+	doxygen $(DOCS_DIR)/Doxyfile
 
 
 # Just some text:
