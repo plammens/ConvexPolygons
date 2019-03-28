@@ -34,7 +34,7 @@ TEST_EXE = $(BIN_DIR)/$(TEST_NAME).x
 ##### Compiler options and flags ######
 
 CXX = g++
-CXXFLAGS = -std=c++17 -O2 -D NO_FREETYPE
+CXXFLAGS = -std=c++11 -O2 -D NO_FREETYPE
 
 CXX_COMPILE_FLAGS = $(CXXFLAGS) -I $(INCLUDE_DIR) -I $(LIB_INCLUDE_DIR)
 CXX_LINK_FLAGS = $(CXXFLAGS) -L $(LIB_FILE_DIR) -l PNGwriter -l png
@@ -156,8 +156,8 @@ $(DEP_DIR):
 # Build PNGwriter library from source:
 $(LIB_FILE_DIR)/libPNGwriter.a:
 	cmake $(LIB_ROOT_DIR)/pngwriter/CMakeLists.txt -DPNGwriter_USE_FREETYPE=OFF -DCMAKE_INSTALL_PREFIX=$(LIB_ROOT_DIR)
-	make -C $(LIB_ROOT_DIR)/pngwriter
-	make -C $(LIB_ROOT_DIR)/pngwriter install
+	make -C $(LIB_ROOT_DIR)/pngwriter --no-print-directory
+	make -C $(LIB_ROOT_DIR)/pngwriter install --no-print-directory
 
 
 

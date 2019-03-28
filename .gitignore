@@ -37,3 +37,4 @@ README.html
 build/
 out/
 libs/pngwriter/
+libs/lib/cmake/
