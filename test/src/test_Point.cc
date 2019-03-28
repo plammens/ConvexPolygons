@@ -1,6 +1,7 @@
 #include <doctest.h>
 #include <sstream>
 #include "class/Point.h"
+#include "geom.h"
 
 
 TEST_SUITE("Point") {

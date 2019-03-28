@@ -8,7 +8,7 @@
 
 
 template <typename T>
-using ConstRange = boost::any_range<T, boost::bidirectional_traversal_tag, const T &>;
+using ConstRange = boost::any_range<T, boost::forward_traversal_tag, const T &>;
 
 
 #endif //CONVEXPOLYGONS_ALIASES_H

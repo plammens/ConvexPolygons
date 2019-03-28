@@ -1,8 +1,14 @@
+/** @file
+ * Implementation of RGBColor's interface.
+*/
+
 #include "class/RGBColor.h"
 
 #include "errors.h"
 #include "details/utils.h"
 
+
+//////// MEMBER FUNCTIONS ////////
 
 RGBColor::RGBColor(double r, double g, double b) {
     setR(r);
@@ -21,28 +27,34 @@ RGBColor &RGBColor::operator=(const initializer_list<double> &initList) {
 }
 
 
+//// Setters ////
+
+void RGBColor::setR(double red) {
+    checkRange(red);
+    r = red;
+}
+
+void RGBColor::setG(double green) {
+    checkRange(green);
+    this->g = green;
+}
+
+void RGBColor::setB(double blue) {
+    checkRange(blue);
+    this->b = blue;
+}
+
+
+
+//////// STATIC FUNCTIONS ////////
+
 void RGBColor::checkRange(double val) {
     if (val < 0 or val > 1) throw ValueError("color values should be in [0, 1]");
 }
 
 
-void RGBColor::setR(double r) {
-    checkRange(r);
-    this->r = r;
-}
 
-
-void RGBColor::setG(double g) {
-    checkRange(g);
-    this->g = g;
-}
-
-
-void RGBColor::setB(double b) {
-    checkRange(b);
-    this->b = b;
-}
-
+//////// NONMEMBER FUNCTIONS ////////
 
 bool operator==(const RGBColor &lhs, const RGBColor &rhs) {
     return numeric::equal(lhs.R(), rhs.R()) and

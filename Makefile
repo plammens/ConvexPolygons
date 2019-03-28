@@ -118,6 +118,7 @@ clean-out:
 
 docs:
 	doxygen $(DOCS_DIR)/Doxyfile
+	firefox $(DOCS_DIR)/html/index.html &
 
 
 # Just some text:

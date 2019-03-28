@@ -1,5 +1,6 @@
 #include "geom.h"
 
+#include <numeric>
 #include "details/utils.h"
 
 ///////////////////////// INTERNAL HELPER FUNCTIONS ///////////////////////////
@@ -63,4 +64,62 @@ bool isInSegment(const Point &P, const Segment &r) {
 
 Vector2D Segment::direction() const {
     return endPt - startPt;
+}
+
+
+// Whether vectors AB and AC are in a clockwise configuration (in that order)
+bool isClockwiseTurn(const Point &A, const Point &B, const Point &C) {
+    Vector2D AB = B - A, AC = C - A;
+    return crossProd(AB, AC) < 0;
+}
+
+
+// Whether vectors AB and AC are in a clockwise configuration (in that order)
+bool isCounterClockwiseTurn(const Point &A, const Point &B, const Point &C) {
+    Vector2D AB = B - A, AC = C - A;
+    return crossProd(AB, AC) > 0;
+}
+
+
+Point barycenter(ConstRange <Point> points) {
+    if (points.empty()) throw ValueError("no points given for barycenter");
+    // Here we calculate the "average" of the points seen as vectors.
+    // We use a custom binary operator that converts `Point`s to `Vector2D`s along the way.
+    Vector2D sumVector = accumulate(points.begin(), points.end(), Vector2D{0, 0},
+                                    [](const Vector2D &u, const Point &P) {
+                                        return u + (const Vector2D &)(P);
+                                    });
+    return Point{0, 0} + sumVector/boost::size(points);
+}
+
+
+namespace PointComp {
+
+    // Returns whether A has a smaller y-coordinate than B
+    // (and smaller x-coordinate in case of equality).
+    bool yCoord(const Point &A, const Point &B) {
+        if (A.y != B.y) return A.y < B.y;
+        return A.x < B.x;
+    }
+
+
+    // Constructs a new xAngle comparison with P as origin. If `descending` is true,
+    // comparison by angle (not the whole ordering) is descending.
+    xAngle::xAngle(const Point &P, bool descending) : origin(P), reversed(descending) {}
+
+
+    // Compares Points according to the angles that the vectors joining the origin
+    // with each point form with the x-axis. Returns whether the first angle is smaller
+    // (if not reversed; otherwise, vice-versa). In case the angles coincide
+    // (or one of them is undefined), returns whether the first vector has smaller norm.
+    // Pre: angles are in [0, PI]
+    bool xAngle::operator()(const Point &A, const Point &B) {
+        Vector2D OA = A - origin, OB = B - origin;
+        double normOA = OA.sqrNorm(), normOB = OB.sqrNorm();
+        double projA = OA.x*abs(OA.x)*normOB, projB = OB.x*abs(OB.x)*normOA;  // Scaled projections onto the x-axis
+
+        if (projA != projB) return reversed xor (projA > projB);
+        else return normOA < normOB;
+    }
+
 }

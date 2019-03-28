@@ -1,10 +1,14 @@
-// Box class
+/** @file
+ * Interface for 2D horizontal boxes.
+*/
 
 #ifndef CONVEXPOLYGONS_BOX_H
 #define CONVEXPOLYGONS_BOX_H
 
 #include "class/Point.h"
 
+
+////////// BOX CLASS //////////
 
 // Representation of a 2D horizontal (i.e. non-rotated) box (e.g. a bounding box)
 class Box {
@@ -20,8 +24,15 @@ public:
 };
 
 
+
+////////// ASSOCIATED NONMEMBER FUNCTIONS //////////
+
 Point bottomLeft(const Point &A, const Point &B);
 Point upperRight(const Point &A, const Point &B);
+
+
+
+////////// EQUALITY OPERATORS //////////
 
 bool operator==(const Box &lhs, const Box &rhs);
 bool operator!=(const Box &lhs, const Box &rhs);
