@@ -6,6 +6,7 @@
 
 #include <vector>
 #include <istream>
+#include <cmath>
 #include "errors.h"
 #include "consts.h"
 
@@ -18,12 +19,12 @@ namespace numeric {
 
     inline
     double scaledEpsilon(double a, double b) {
-        return max(1., max(abs(a), abs(b)))*NUM::EPSILON;
+        return max(1., max(std::abs(a), std::abs(b)))*NUM::EPSILON;
     }
 
     inline
     bool equal(double a, double b) {
-        return abs(a - b) < scaledEpsilon(a, b);
+        return std::abs(a - b) < scaledEpsilon(a, b);
     }
 
     inline

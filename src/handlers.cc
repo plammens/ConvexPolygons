@@ -54,8 +54,8 @@ void handleBinaryOperation(const string &keyword, istream &argStream, PolygonMap
         cout << (isInside(p1, p2) ? "yes" : "no") << endl;
         return;
     }
-    else if (keyword == CMD::UNION) polygons.insert_or_assign(id1, convexUnion(p1, p2));
-    else if (keyword == CMD::INTERSECTION) polygons.insert_or_assign(id1, intersection(p1, p2));
+    else if (keyword == CMD::UNION) polygons[id1] = convexUnion(p1, p2);
+    else if (keyword == CMD::INTERSECTION) polygons[id1] = intersection(p1, p2);
     else assert(false);
 
     printOk();
@@ -68,7 +68,7 @@ void handleNAryOperation(const string &keyword, istream &argStream, PolygonMap &
     vector<string> polIDs = readVector<string>(argStream);
 
     if (keyword == CMD::BBOX)
-        polygons.insert_or_assign(id, boundingBox(getPolygons(polIDs, polygons)));
+        polygons[id] = boundingBox(getPolygons(polIDs, polygons));
     else assert(false);
 
     printOk();
