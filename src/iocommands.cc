@@ -36,19 +36,15 @@ void readAndSavePolygon(istream &is, PolygonMap &polygons) {
 //////////////////////
 
 inline
-ifstream openForReading(const string &filename) {
-    ifstream file;
-    file.open(filename);
-    if (not file.is_open()) throw IOError(filename);
-    return file;
+void open(ifstream &stream, const string &filename) {
+    stream.open(filename);
+    if (not stream.is_open()) throw IOError(filename);
 }
 
 inline
-ofstream openForWriting(const string &filename) {
-    ofstream file;
-    file.open(filename);
-    if (not file.is_open()) throw IOError(filename);
-    return file;
+void open(ofstream &stream, const string &filename) {
+    stream.open(filename);
+    if (not stream.is_open()) throw IOError(filename);
 }
 
 
@@ -56,7 +52,7 @@ ofstream openForWriting(const string &filename) {
 
 
 void save(const string &file, const vector<string> &polygonIDs, const PolygonMap &polygons) {
-    ofstream fileStream = openForWriting(file);
+    ofstream fileStream; open(fileStream, file);
 
     // We buffer the result so we can catch errors before we write to the file
     ostringstream oss;
@@ -70,7 +66,7 @@ void save(const string &file, const vector<string> &polygonIDs, const PolygonMap
 }
 
 void load(const string &file, PolygonMap &polygons) {
-    ifstream fileStream = openForReading(file);
+    ifstream fileStream; open(fileStream, file);
 
     string line;
     while (getline(fileStream, line)) {
@@ -85,7 +81,7 @@ void load(const string &file, PolygonMap &polygons) {
 void parseCommand(const string &, PolygonMap &);  // forward declaration
 
 void include(const string &file, PolygonMap &polygons, bool silent) {
-    ifstream fileStream = openForReading(file);
+    ifstream fileStream; open(fileStream, file);
     if (silent) cout.setstate(ios_base::failbit);  // suppress output
 
     string line;
