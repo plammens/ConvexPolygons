@@ -84,7 +84,7 @@ all: libs build build-test
 build: .pre-build $(MAIN_EXE)
 	@printf "\e[1mDone building main.\e[0m\n\n"
 
-build-test: debug .pre-build-test $(TEST_EXE) $(TEST_TEXT_FILES)
+build-test: debug .pre-build-test $(TEST_EXE) $(TEST_DIR)/text
 	python3 test/generator.py
 	@printf "\e[1mDone building tests.\e[0m\n\n"
 
@@ -186,4 +186,9 @@ $(TEST_EXE): $(objects) $(test_objects) | $(BIN_DIR)
 # As a side effect of compilation we generate a dependency file.
 $(OBJ_DIR)/test%.o: test%.cc | $(OBJ_DIR) $(DEP_DIR)
 	$(CXX) -c $< -o $@ $(CXX_TEST_COMPILE_FLAGS) -MMD -MF $(patsubst $(OBJ_DIR)/%.o,$(DEP_DIR)/%.d,$@)
+
+
+$(TEST_DIR)/text:
+	mkdir -p $(TEST_DIR)/text
+
 
