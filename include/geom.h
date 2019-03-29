@@ -4,7 +4,7 @@
 #define CONVEXPOLYGONS_GEOM_H
 
 #include "class/Point.h"
-#include "Point.h"
+#include "details/range.h"
 
 
 // Represents a segment delimited by two points
@@ -43,6 +43,7 @@ namespace PointComp {
         Point origin;
         bool reversed;
 
+        explicit
         xAngle(const Point &P, bool descending = false);
         bool operator()(const Point &A, const Point &B);
     };

@@ -1,22 +1,18 @@
-/** @file
- * Implementation of Point's interface.
-*/
-
 #include "class/Point.h"
 
 #include "details/range.h" // Range<T>
 #include "details/utils.h"
 
 
-//////////// ASSOCIATED NONMEMBER FUNCTIONS ////////////
+//-------- ASSOCIATED NONMEMBER FUNCTIONS --------//
 
-// Euclidean distance
+
 double distance(const Point &A, const Point &B) {
     return (A - B).norm();
 }
 
 
-//// Arithmetic operators ////
+//---- Arithmetic operations ----//
 
 // Returns the vector difference between two points
 Vector2D operator-(const Point &A, const Point &B) {
@@ -28,7 +24,7 @@ Point operator+(const Point &A, const Vector2D &u) {
 }
 
 
-//// Equality operators ////
+//---- Equality operators ----//
 
 bool operator==(const Point &A, const Point &B) {
     return numeric::equal(A.x, B.x) and numeric::equal(A.y, B.y);
@@ -38,7 +34,7 @@ bool operator!=(const Point &A, const Point &B) { return not(A == B); }
 
 
 
-//// Text IO ////
+//---- Text IO ----//
 
 // Extraction operation from an input stream into a point
 istream &operator>>(istream &is, Point &P) {

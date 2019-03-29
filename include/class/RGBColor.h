@@ -8,37 +8,72 @@
 #include <initializer_list>  // for init list assignment
 
 
+/**
+ * RGB representation of colors.
+ */
 class RGBColor {
+public:
+    /**
+     * Explicit constructor from red, green, and blue values.
+     * @param r  red value
+     * @param g  green value
+     * @param b  blue value
+     * @pre  all values are in the interval \f$ [0, 1] \f$
+     * @throws  ValueError if any of the arguments is not in \f$ [0, 1] \f$
+     */
+    explicit
+    RGBColor(double r = 0, double g = 0, double b = 0);
+
+    /**
+     * Assigns the color values in initList to the corresponding fields.
+     * Assigns to `r`, `g`, `b`, in that order.
+     * @param initList  initializer list with 3 doubles
+     * @pre  initList has exactly 3 elements
+     * @throws ValueError if initList.size() != 3
+     */
+    RGBColor &operator=(const std::initializer_list<double> &initList);
+
+
+    //! @name Getters
+    //! Getters for each of the color values.
+    ///@{
+    double R() const { return r; }
+    double G() const { return g; }
+    double B() const { return b; }
+    ///@}
+
+
+    //! @name Setters
+    //! Setters for each of the color values
+    ///@{
+    void setR(double red);
+    void setG(double green);
+    void setB(double blue);
+    ///@}
+
+
 private:
     double r, g, b;
 
     static
     void checkRange(double val);
-
-public:
-
-    /**
-     * Explicit constructor from red, green, and blue values.
-     * @param r  red value in [0, 1]
-     * @param g  green value in [0, 1]
-     * @param b  blue value in [0, 1]
-     */
-    explicit
-    RGBColor(double r = 0, double g = 0, double b = 0);
-
-    RGBColor &operator=(const std::initializer_list<double> &initList);
-
-    double R() const { return r; }
-    double G() const { return g; }
-    double B() const { return b; }
-    void setR(double r);
-    void setG(double green);
-    void setB(double blue);
 };
 
 
+
+//-------- ASSOCIATED NONMEMBER FUNCTIONS --------//
+
+
+
+//! @name Equality operators
+//! Numerical component-wise equality test.
+///@{
+
 bool operator==(const RGBColor &lhs, const RGBColor &rhs);
 bool operator!=(const RGBColor &lhs, const RGBColor &rhs);
+
+///@}
+
 
 
 #endif //CONVEXPOLYGONS_RGBCOLOR_H

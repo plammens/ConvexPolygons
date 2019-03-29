@@ -8,52 +8,85 @@
 #include <istream>
 #include <vector>
 #include "class/Vector2D.h"
-#include "details/range.h"
 
 
-//////////// POINT STRUCT ////////////
 
-// 2D Point representation (as aggregate type)
+/**
+ * Two-dimensional point in cartesian coordinates.
+ */
 struct Point {
-    double x, y;
+    double x;  ///< x coordinate
+    double y;  ///< y coordinate
 };
 
 
 
-//////////// ASSOCIATED NONMEMBER FUNCTIONS ////////////
+//-------- ASSOCIATED NONMEMBER FUNCTIONS --------//
 
 // Euclidean distance between A and B
 double distance(const Point &A, const Point &B);
 
 
-//// Arithmetic operators ////
 
-// Vector difference between points
+//! @name Arithmetic operations
+///@{
+
+/**
+ * Vector difference between two points.
+ * @param A  end point
+ * @param B  start point
+ * @return  \f$ A - B \f$
+ */
 Vector2D operator-(const Point &A, const Point &B);
 
-// Adding a vector to a point (yields another point)
+/**
+ * Translation of a point by a vector.
+ * @param A  start point
+ * @param u  translation vector
+ * @return \f$ A + \vec{u} \f$
+ */
 Point operator+(const Point &A, const Vector2D& u);
 
+///@}
 
-//// Equality operators ////
+
+
+//! @name Equality operators
+//! Numerical component-wise equality test. Compares each component individually with
+//! NUM::EPSILON tolerance.
+///@{
 
 bool operator==(const Point &A, const Point &B);
 bool operator!=(const Point &A, const Point &B);
 
+///@}
 
-//// Text IO ////
 
-// Reads space-separated x, y coordinates into P
+
+
+//! @name Text IO
+//! Formatter and reader functions for Point objects.
+///@{
+
+/**
+ * Reads space-separated `x`, `y` coordinates into `P`.
+ */
 std::istream &operator>>(std::istream &is, Point &P);
 
-// Formats P into space-separated x, y coordinates with 3-digit precision
+/**
+ * Formats P into space-separated x, y coordinates.
+ * Sets the `std::ios_base::fixed` format with 3-digit decimal precision.
+ */
 std::ostream &operator<<(std::ostream &os, const Point &P);
 
+///@}
 
 
-//////////// TYPEDEFS ////////////
 
-typedef std::vector<Point> Points;  // alias
+
+//-------- TYPEDEFS --------//
+
+typedef std::vector<Point> Points;
 
 
 #endif

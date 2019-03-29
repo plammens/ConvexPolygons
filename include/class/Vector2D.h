@@ -70,7 +70,6 @@ double crossProd(const Vector2D & u, const Vector2D& v);
 
 
 
-
 /// @name Equality operators
 /// Component-wise numerical equality of vectors.
 ///@{
