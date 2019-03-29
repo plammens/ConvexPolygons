@@ -115,7 +115,7 @@ namespace PointComp {
     // Pre: angles are in [0, PI]
     bool xAngle::operator()(const Point &A, const Point &B) {
         Vector2D OA = A - origin, OB = B - origin;
-        double normOA = OA.sqrNorm(), normOB = OB.sqrNorm();
+        double normOA = OA.squaredNorm(), normOB = OB.squaredNorm();
         double projA = OA.x*abs(OA.x)*normOB, projB = OB.x*abs(OB.x)*normOA;  // Scaled projections onto the x-axis
 
         if (projA != projB) return reversed xor (projA > projB);

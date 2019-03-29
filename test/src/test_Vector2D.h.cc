@@ -8,7 +8,7 @@ TEST_SUITE("Vector2D") {
     TEST_CASE("Vector2D norm") {
         Vector2D vec = {-1, 2};
 
-        CHECK(vec.sqrNorm() == 5);
+        CHECK(vec.squaredNorm() == 5);
         CHECK(vec.norm() == std::sqrt(5));
     }
 
