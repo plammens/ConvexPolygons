@@ -10,11 +10,8 @@
 #include "range.h"
 
 
-using namespace std;
-
-
 // draws png with polygons
-void draw(const string &file, ConstRange<ConvexPolygon> polygons, bool fill = false);
+void draw(const std::string &file, ConstRange<ConvexPolygon> polygons, bool fill = false);
 
 
 // Utility to map points to their pixel-coordinates
@@ -24,7 +21,7 @@ class ScaleHelper {
 
 public:
     ScaleHelper(ConstRange<ConvexPolygon> polygons);
-    pair<int, int> operator()(const Point &P) const;
+    std::pair<int, int> operator()(const Point &P) const;
     int scaleX(double x) const;
     int scaleY(double y) const;
 };

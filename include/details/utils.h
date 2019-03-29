@@ -11,7 +11,6 @@
 #include "consts.h"
 
 
-using namespace std;
 
 // ------------- numeric ----------
 
@@ -34,7 +33,7 @@ namespace numeric {
 
 template<typename T>
 vector<T> readVector(istream &is) {
-    vector<T> vec;
+    std::vector<T> vec;
     T elem;
     while (is >> elem)
         vec.push_back(elem);
@@ -43,14 +42,14 @@ vector<T> readVector(istream &is) {
 
 
 template<typename T>
-void getArgs(istream &argStream, T &first) {
+void getArgs(std::istream &argStream, T &first) {
     if (not(argStream >> first))
         throw ValueError("unable to parse arguments");
 }
 
 
 template<typename T, typename ... Types>
-void getArgs(istream &argStream, T &first, Types &... slots) {
+void getArgs(std::istream &argStream, T &first, Types &... slots) {
     getArgs(argStream, first);
     getArgs(argStream, slots...);
 }
@@ -59,13 +58,13 @@ void getArgs(istream &argStream, T &first, Types &... slots) {
 
 
 inline
-int checkDirectory(const string &dir) {
+int checkDirectory(const std::string &dir) {
     return system(("mkdir -p " + dir).c_str());
 }
 
 
 inline
-void prefixPath(string &filePath, const string &prefixPath) {
+void prefixPath(std::string &filePath, const std::string &prefixPath) {
     if (checkDirectory(prefixPath) != 0) throw IOError("directory " + prefixPath);
     filePath.insert(0, prefixPath);
 }
@@ -81,19 +80,19 @@ void checkFileForWriting(const string &filePath) {
 // ---------- extend ----------
 
 template<typename T>
-constexpr unsigned long _size(const vector<T> &vec) {
+constexpr unsigned long _size(const std::vector<T> &vec) {
     return vec.size();
 }
 
 
 template<typename T, typename ... Types>
-constexpr unsigned long _size(const vector<T> &vec, const Types &... others) {
+constexpr unsigned long _size(const std::vector<T> &vec, const Types &... others) {
     return vec.size() + _size(others...);
 }
 
 
 template<typename T, typename ... Types>
-void extend(vector<T> &destination, const Types &... vectors) {
+void extend(std::vector<T> &destination, const Types &... vectors) {
     destination.reserve(_size(vectors...));  // reserve copy size beforehand
     _extend(destination, vectors...);
 }
@@ -106,7 +105,7 @@ void _extend(vector<T> &destination, const vector<T> &first) {
 
 
 template<typename T, typename ... Types>
-void _extend(vector<T> &destination, const vector<T> &first, const Types &... others) {
+void _extend(std::vector<T> &destination, const std::vector<T> &first, const Types &... others) {
     destination.insert(destination.end(), first.begin(), first.end());
     _extend(destination, others...);
 }

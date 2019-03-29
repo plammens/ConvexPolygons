@@ -10,11 +10,8 @@
 #include "consts.h"
 #include "polygonmap.h"
 
-using namespace std;
-
-
 // Command handler signature
-typedef function<void(const string &, istream &, PolygonMap &)> CommandHandler;
+typedef std::function<void(const std::string &, std::istream &, PolygonMap &)> CommandHandler;
 
 
 // ---------------------------------------------------------------
@@ -23,21 +20,21 @@ typedef function<void(const string &, istream &, PolygonMap &)> CommandHandler;
 // non-const version
 
 // Subroutine to handle creation/assignment of a single polygon
-void handleIDManagement(const string &keyword, istream &argStream, PolygonMap &polygons);
+void handleIDManagement(const std::string &keyword, std::istream &argStream, PolygonMap &polygons);
 
 // Subroutine to handle commands involving printing info about a single polygon
-void handlePolygonMethod(const string &keyword, istream &argStream, PolygonMap &polygons);
+void handlePolygonMethod(const std::string &keyword, std::istream &argStream, PolygonMap &polygons);
 
 // Subroutine to handle operations with polygons
-void handleBinaryOperation(const string &keyword, istream &argStream, PolygonMap &polygons);
+void handleBinaryOperation(const std::string &keyword, std::istream &argStream, PolygonMap &polygons);
 
-void handleNAryOperation(const string &keyword, istream &argStream, PolygonMap &polygons);
+void handleNAryOperation(const std::string &keyword, std::istream &argStream, PolygonMap &polygons);
 
 // Subroutine to handle file-related commands
-void handleIOCommand(const string &keyword, istream &argStream, PolygonMap &polygons);
+void handleIOCommand(const std::string &keyword, std::istream &argStream, PolygonMap &polygons);
 
 // Run commands that take no arguments
-void handleNullaryCommand(const string &keyword, istream &argStream, PolygonMap &polygons);
+void handleNullaryCommand(const std::string &keyword, std::istream &argStream, PolygonMap &polygons);
 
 
 inline
@@ -47,13 +44,13 @@ void printOk() {
 
 
 inline
-void printError(const string &error) {
+void printError(const std::string &error) {
     // \e[31;1m is the ANSI escape sequence for bright red text
     cerr << "\e[31;1m" << "error: " << error << "\e[0m" << endl;
 }
 
 inline
-void printWarning(const string &warning) {
+void printWarning(const std::string &warning) {
     // \e[33m is the ANSI escape sequence for yellow text
     cerr << "\e[33m" << "warning: " << warning << "\e[0m" << endl;
 }
@@ -63,7 +60,7 @@ void printWarning(const string &warning) {
 
 
 // Maps each command keyword to its corresponding command handler
-const map<string, CommandHandler> cmdHandlerMap = {
+const std::map<std::string, CommandHandler> cmdHandlerMap = {
         {CMD::POLYGON,      handleIDManagement},
         {CMD::DELETE,       handleIDManagement},
         {CMD::PRINT,        handlePolygonMethod},
@@ -84,10 +81,10 @@ const map<string, CommandHandler> cmdHandlerMap = {
 };
 
 // Gets the command handler associated to the command `keyword`
-CommandHandler getCommandHandler(const string &keyword);
+CommandHandler getCommandHandler(const std::string &keyword);
 
 
-void parseCommand(const string &command, PolygonMap &polygons);
+void parseCommand(const std::string &command, PolygonMap &polygons);
 
 
 #endif //CONVEXPOLYGONS_HANDLERS_H

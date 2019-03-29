@@ -11,12 +11,6 @@
 #include "details/handlers.h"
 
 
-using namespace std;
-
-
-// -----------------------------------------------------------------
-
-
 int main() {
     PolygonMap polygons;
     string command;

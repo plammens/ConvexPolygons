@@ -3,16 +3,76 @@
 #include <algorithm>  // std::sort
 #include <numeric>  // std::accumulate
 #include <boost/range/adaptors.hpp>  // boost::adaptors::filter, ::sliced
-#include <iterator>
 #include "geom.h"  // segment intersection
 #include "details/utils.h"  // extend
 
 
-using namespace std;
+
+//-------- MEMBER FUNCTIONS --------//
+
+//---- Constructors ----//
+
+ConvexPolygon::ConvexPolygon(const Points &points) : vertices(ConvexHull(points)) {}
+
+ConvexPolygon::ConvexPolygon(Points &&points) : vertices(ConvexHull(move(points))) {}
+
+ConvexPolygon::ConvexPolygon(const Box &box) {
+    vertices = {box.SW(), box.NW(), box.NE(), box.SE(), box.SW()};
+}
 
 
-// ------------------- static functions ------------------------------
+//---- Info functions ----//
 
+unsigned long ConvexPolygon::vertexCount() const {
+    if (vertices.empty()) return 0;
+    return vertices.size() - 1;
+}
+
+double ConvexPolygon::area() const {
+    if (empty()) return 0;
+
+    // We use the shoelace formula for calculating the area
+    double sum = 0;
+    const auto end = vertices.end() - 1;
+    for (auto it = vertices.begin(); it < end; ++it)
+        sum += (it[1].x - it[0].x)*(it[1].y + it[0].y);
+    return std::abs(sum/2);
+}
+
+double ConvexPolygon::perimeter() const {
+    if (empty()) return 0;
+    if (vertexCount() == 2) return (vertices[1] - vertices[0]).norm();
+
+    // Sum of euclidean distance between pairs of adjacent points
+    double sum = 0;
+    const auto end = vertices.end() - 1;
+    for (auto it = vertices.begin(); it < end; ++it)
+        sum += distance(it[0], it[1]);
+    return sum;
+}
+
+Point ConvexPolygon::centroid() const {
+    return barycenter(vertices | boost::adaptors::sliced(0, vertexCount()));
+}
+
+Box ConvexPolygon::boundingBox() const {
+    if (vertices.empty()) throw ValueError("bounding box undefined for 0-gon");
+
+    // SW: south-west; NE: north-east; etc.
+    Point SW = accumulate(vertices.begin(), vertices.end(), vertices.front(), bottomLeft);
+    Point NE = accumulate(vertices.begin(), vertices.end(), vertices.front(), upperRight);
+
+    return Box(SW, NE);
+}
+
+
+
+//-------- STATIC FUNCTIONS --------//
+
+/*
+ * Calculates the convex hull of a sequence of points with the
+ * Graham scan algorithm. Complexity is O(n*log(n)).
+ */
 Points ConvexPolygon::ConvexHull(Points points) {
     if (points.empty()) return {};
 
@@ -36,70 +96,8 @@ Points ConvexPolygon::ConvexHull(Points points) {
 }
 
 
-// --------------------- member functions ------------------------
 
-// Constructs a convex polygon from a given list of points with a Graham scan
-ConvexPolygon::ConvexPolygon(const Points &points) : vertices(ConvexHull(points)) {}
-
-ConvexPolygon::ConvexPolygon(Points &&points) : vertices(ConvexHull(move(points))) {}
-
-ConvexPolygon::ConvexPolygon(const Box &box) {
-    vertices = {box.SW(), box.NW(), box.NE(), box.SE(), box.SW()};
-}
-
-
-// Returns the number of vertices in the polygon
-unsigned long ConvexPolygon::vertexCount() const {
-    if (vertices.empty()) return 0;
-    return vertices.size() - 1;
-}
-
-
-// Returns the area of the polygon
-double ConvexPolygon::area() const {
-    if (empty()) return 0;
-
-    // We use the shoelace formula for calculating the area
-    double sum = 0;
-    const auto end = vertices.end() - 1;
-    for (auto it = vertices.begin(); it < end; ++it)
-        sum += (it[1].x - it[0].x)*(it[1].y + it[0].y);
-    return abs(sum/2);
-}
-
-
-// Returns perimeter of polygon
-double ConvexPolygon::perimeter() const {
-    if (empty()) return 0;
-    if (vertexCount() == 2) return (vertices[1] - vertices[0]).norm();
-
-    // Sum of euclidean distance between pairs of adjacent points
-    double sum = 0;
-    const auto end = vertices.end() - 1;
-    for (auto it = vertices.begin(); it < end; ++it)
-        sum += distance(it[0], it[1]);
-    return sum;
-}
-
-
-Point ConvexPolygon::centroid() const {
-    return barycenter(vertices | boost::adaptors::sliced(0, vertexCount()));
-}
-
-
-Box ConvexPolygon::boundingBox() const {
-    if (vertices.empty()) throw ValueError("bounding box undefined for 0-gon");
-
-    // SW: south-west; NE: north-east; etc.
-    Point SW = accumulate(vertices.begin(), vertices.end(), vertices.front(), bottomLeft);
-    Point NE = accumulate(vertices.begin(), vertices.end(), vertices.front(), upperRight);
-
-    return Box(SW, NE);
-}
-
-
-
-// ------------------ non-member functions ------------------------
+//-------- ASSOCIATED NONMEMBER FUNCTIONS --------//
 
 Box boundingBox(ConstRange<ConvexPolygon> polygons) {
     // skip empty polygons, and if after filtering, polygons is empty, throw an error
@@ -116,6 +114,8 @@ Box boundingBox(ConstRange<ConvexPolygon> polygons) {
     return Box(SW, NE);
 }
 
+
+//---- isInside ----//
 
 bool isInside(const Point &P, const ConvexPolygon &pol) {
     if (pol.empty()) return false;
@@ -151,6 +151,8 @@ bool isInside(const ConvexPolygon &pol1, const ConvexPolygon &pol2) {
 }
 
 
+//---- Convex union ----//
+
 ConvexPolygon convexUnion(const ConvexPolygon &pol1, const ConvexPolygon &pol2) {
     Points points;
     extend(points, pol1.getVertices(), pol2.getVertices());
@@ -162,6 +164,9 @@ ConvexPolygon operator|(const ConvexPolygon &polA, const ConvexPolygon &polB) {
     return convexUnion(polA, polB);
 }
 
+
+
+//---- Intersection ----//
 
 inline
 void _intersectionSweepLine(const ConvexPolygon &pol1, const ConvexPolygon &pol2,
@@ -191,7 +196,6 @@ void _intersectionSweepLine(const ConvexPolygon &pol1, const ConvexPolygon &pol2
     }
 }
 
-
 ConvexPolygon intersection(const ConvexPolygon &pol1, const ConvexPolygon &pol2) {
     if (pol1.empty() or pol2.empty()) return {};
 
@@ -213,6 +217,10 @@ ConvexPolygon intersection(const ConvexPolygon &pol1, const ConvexPolygon &pol2)
 ConvexPolygon operator&(const ConvexPolygon &pol1, const ConvexPolygon &pol2) {
     return intersection(pol1, pol2);
 }
+
+
+
+//---- Equality operators ----//
 
 bool operator==(const ConvexPolygon &lhs, const ConvexPolygon &rhs) {
     return lhs.getVertices() == rhs.getVertices();
