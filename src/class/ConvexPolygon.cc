@@ -2,7 +2,8 @@
 
 #include <algorithm>  // std::sort
 #include <numeric>  // std::accumulate
-#include <boost/range/adaptors.hpp>  // boost::adaptors::filter, ::sliced
+#include <iterator>
+#include <boost/range/adaptors.hpp> // boost::adaptors::filter, ::sliced
 #include "geom.h"  // segment intersection
 #include "details/utils.h"  // extend
 
@@ -26,6 +27,7 @@ ConvexPolygon::ConvexPolygon(const Box &box) {
 unsigned long ConvexPolygon::vertexCount() const {
     if (vertices.empty()) return 0;
     return vertices.size() - 1;
+    // we subtract 1 because of the repeated element at the end
 }
 
 double ConvexPolygon::area() const {
@@ -35,15 +37,15 @@ double ConvexPolygon::area() const {
     double sum = 0;
     const auto end = vertices.end() - 1;
     for (auto it = vertices.begin(); it < end; ++it)
-        sum += (it[1].x - it[0].x)*(it[1].y + it[0].y);
+        sum += (it[1].x - it[0].x)*(it[1].y + it[0].y);  // shoelace formula
     return std::abs(sum/2);
 }
 
 double ConvexPolygon::perimeter() const {
     if (empty()) return 0;
+    // avoid adding the same edge twice if the polygon is a segment:
     if (vertexCount() == 2) return (vertices[1] - vertices[0]).norm();
 
-    // Sum of euclidean distance between pairs of adjacent points
     double sum = 0;
     const auto end = vertices.end() - 1;
     for (auto it = vertices.begin(); it < end; ++it)
@@ -52,6 +54,7 @@ double ConvexPolygon::perimeter() const {
 }
 
 Point ConvexPolygon::centroid() const {
+    // return the barycenter of first through last points (without the duplicate):
     return barycenter(vertices | boost::adaptors::sliced(0, vertexCount()));
 }
 
@@ -78,9 +81,9 @@ Points ConvexPolygon::ConvexHull(Points points) {
 
     const auto begin = points.begin(), end = points.end();  // aliases
     // Get point with lowest y coordinate:
-    const Point P0 = *min_element(begin, end, PointComp::yCoord);
+    const Point P0 = *min_element(begin, end, PointComp::xCoord);
     // Sort the points in decreasing order of the angle they form with x-axis (relative to P0):
-    sort(begin, end, PointComp::xAngle(P0, true));
+    sort(begin, end, PointComp::yAngle(P0, true));
 
     // Graham scan:
     Points hull{P0};  // starting point
@@ -104,11 +107,12 @@ Box boundingBox(ConstRange<ConvexPolygon> polygons) {
     polygons = boost::adaptors::filter(polygons, [](const ConvexPolygon &pol){ return not pol.empty(); });
     if (polygons.empty()) throw ValueError("bounding box undefined for empty set");
 
+    // Find out the bottom-left (SW) and upper-right (NE) corners of the box:
     Point SW = polygons.begin()->getVertices()[0], NE = SW;  // Initialization
     for (const ConvexPolygon &pol : polygons) {
         const Box &&box = pol.boundingBox();
-        SW = bottomLeft(SW, box.SW());
-        NE = upperRight(NE, box.NE());
+        SW = bottomLeft(SW, box.SW());  // if box.SW() is further down or to the left, update
+        NE = upperRight(NE, box.NE());  // if box.NE() is further up or to the right, update
     }
 
     return Box(SW, NE);
@@ -127,7 +131,16 @@ bool isInside(const Point &P, const ConvexPolygon &pol) {
     if (pol.vertexCount() == 1) return P == O;
     if (pol.vertexCount() == 2) return isInSegment(P, {O, vertices[1]});
 
-    // Binary search:
+
+    /*
+     * Here we begin a binary search: given a fixed vertex O (in this case the
+     * first vertex), and starting with the two vertices that are adjacent to O,
+     * at every iteration we bisect the polygon by tracing a segment between O and the
+     * median of the left and right vertices; then, we test whether `P` is to the
+     * left or to the right of the bisector segment, and we update the indices
+     * accordingly. We end up with a triangle, one of whose edges lies on the polygon.
+     */
+
     unsigned long left = 1, right = pol.vertexCount() - 1;
     while (right - left > 1) {
         unsigned long mid = (left + right)/2;
@@ -136,7 +149,8 @@ bool isInside(const Point &P, const ConvexPolygon &pol) {
         else return isInSegment(P, {O, vertices[mid]});
     }
 
-    const Point &leftVertex = vertices[left], &rightVertex = vertices[right];  // aliases
+    // Return whether P is in the final triangle, by testing if P is on the right side of each edge:
+    const Point &leftVertex = vertices[left], &rightVertex = vertices[right];
     return not isCounterClockwiseTurn(O, leftVertex, P) and
            not isCounterClockwiseTurn(leftVertex, rightVertex, P) and
            not isCounterClockwiseTurn(rightVertex, O, P);
@@ -154,6 +168,7 @@ bool isInside(const ConvexPolygon &pol1, const ConvexPolygon &pol2) {
 //---- Convex union ----//
 
 ConvexPolygon convexUnion(const ConvexPolygon &pol1, const ConvexPolygon &pol2) {
+    // We simply merge the vertices and calculate the convex hull:
     Points points;
     extend(points, pol1.getVertices(), pol2.getVertices());
     return ConvexPolygon(move(points));
@@ -168,12 +183,17 @@ ConvexPolygon operator|(const ConvexPolygon &polA, const ConvexPolygon &polB) {
 
 //---- Intersection ----//
 
+/*
+ * Internal subroutine for `intersection` that calculates intersection points between
+ * the edges of the two polygons and appends them to `intersectionPoints`
+ */
 inline
 void _intersectionSweepLine(const ConvexPolygon &pol1, const ConvexPolygon &pol2,
                             Points &intersectionPoints) {
     auto it1L = pol1.getVertices().begin(), it2L = pol2.getVertices().begin();
     auto it1R = pol1.getVertices().rbegin(), it2R = pol2.getVertices().rbegin();
 
+    // Some lambdas for commodity:
     auto edge1Left = [&it1L](){ return Segment{it1L[0], it1L[1]}; };
     auto edge1Right = [&it1R](){ return Segment{it1R[0], it1R[1]}; };
     auto edge2Left = [&it2L](){ return Segment{it2L[0], it2L[1]}; };
@@ -184,14 +204,15 @@ void _intersectionSweepLine(const ConvexPolygon &pol1, const ConvexPolygon &pol2
     auto res3 = [&](){ return intersect(edge1Right(), edge2Left()); };
     auto res4 = [&](){ return intersect(edge1Right(), edge2Right()); };
 
-    // Sweepline:
+    // Sweepline:=
     while (not (it1L == it1R.base() or it2L == it2R.base())) {
         for (const IntersectResult &ir : {res1(), res2(), res3(), res4()})
             if (ir.success) intersectionPoints.push_back(ir.point);
 
-        if      (it1L[1].y <= it1R[1].y and it1L[1].y <= it2L[1].y and it1L[1].y <= it2R[1].y) ++it1L;
-        else if (it1R[1].y <= it1L[1].y and it1R[1].y <= it2L[1].y and it1R[1].y <= it2R[1].y) ++it1R;
-        else if (it2L[1].y <= it1L[1].y and it2L[1].y <= it1R[1].y and it2L[1].y <= it2R[1].y) ++it2L;
+        // Increment the edge whose end point has the lowest x coordinate:
+        if      (it1L[1].x <= it1R[1].x and it1L[1].x <= it2L[1].x and it1L[1].x <= it2R[1].x) ++it1L;
+        else if (it1R[1].x <= it1L[1].x and it1R[1].x <= it2L[1].x and it1R[1].x <= it2R[1].x) ++it1R;
+        else if (it2L[1].x <= it1L[1].x and it2L[1].x <= it1R[1].x and it2L[1].x <= it2R[1].x) ++it2L;
         else ++it2R;
     }
 }

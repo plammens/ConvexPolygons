@@ -37,14 +37,14 @@ bool isCounterClockwiseTurn(const Point &A, const Point &B, const Point &C);
 Point barycenter(ConstRange <Point> points);
 
 namespace PointComp {
-    bool yCoord(const Point &A, const Point &B);
+    bool xCoord(const Point &A, const Point &B);
 
-    struct xAngle {
+    struct yAngle {
         Point origin;
         bool reversed;
 
         explicit
-        xAngle(const Point &P, bool descending = false);
+        yAngle(const Point &P, bool descending = false);
         bool operator()(const Point &A, const Point &B);
     };
 }

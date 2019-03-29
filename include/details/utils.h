@@ -32,7 +32,7 @@ namespace numeric {
 // --------- input reading utils ------------
 
 template<typename T>
-vector<T> readVector(istream &is) {
+std::vector<T> readVector(std::istream &is) {
     std::vector<T> vec;
     T elem;
     while (is >> elem)
@@ -71,7 +71,7 @@ void prefixPath(std::string &filePath, const std::string &prefixPath) {
 
 
 inline
-void checkFileForWriting(const string &filePath) {
+void checkFileForWriting(const std::string &filePath) {
     if (not fopen(filePath.c_str(), "w")) throw IOError(filePath);
 }
 
@@ -99,7 +99,7 @@ void extend(std::vector<T> &destination, const Types &... vectors) {
 
 
 template<typename T>
-void _extend(vector<T> &destination, const vector<T> &first) {
+void _extend(std::vector<T> &destination, const std::vector<T> &first) {
     destination.insert(destination.end(), first.begin(), first.end());
 }
 

@@ -37,12 +37,12 @@ bool operator!=(const Point &A, const Point &B) { return not(A == B); }
 //---- Text IO ----//
 
 // Extraction operation from an input stream into a point
-istream &operator>>(istream &is, Point &P) {
+std::istream &operator>>(std::istream &is, Point &P) {
     return (is >> P.x >> P.y);
 }
 
-ostream &operator<<(ostream &os, const Point &P) {
-    os.setf(ios::fixed);
+std::ostream &operator<<(std::ostream &os, const Point &P) {
+    os.setf(std::ios::fixed);
     os.precision(3);
     return os << P.x << ' ' << P.y;
 }

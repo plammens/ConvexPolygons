@@ -26,11 +26,11 @@ TEST_SUITE("IO commands") {
     TEST_CASE("read") {
         PolygonMap testMap;
 		
-        istringstream iss1("p1 0 0");
+        std::istringstream iss1("p1 0 0");
         readAndSavePolygon(iss1, testMap);
         CHECK(testMap["p1"] == ConvexPolygon({{0, 0}}));
 
-        istringstream iss2("1 1");
+        std::istringstream iss2("1 1");
         readAndSavePolygon(iss2, testMap, "p1");
         CHECK(testMap["p1"] == ConvexPolygon({{1, 1}}));
     }

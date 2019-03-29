@@ -3,7 +3,7 @@
 #include "details/utils.h"
 
 
-void draw(const string &file, ConstRange<ConvexPolygon> polygons, bool fill) {
+void draw(const std::string &file, ConstRange<ConvexPolygon> polygons, bool fill) {
     checkFileForWriting(file);
     pngwriter png(IMG::X_SIZE, IMG::Y_SIZE, IMG::BACKGROUND, file.c_str());
 
@@ -53,7 +53,7 @@ ScaleHelper::ScaleHelper(ConstRange<ConvexPolygon> polygons) {
     Point SW = bBox.SW(), NE = bBox.NE();
     minX = SW.x; minY = SW.y;
     double xLength = NE.x - SW.x, yLength = NE.y - SW.y;
-    maxLength = max(xLength, yLength);
+    maxLength = std::max(xLength, yLength);
     xOffset = IMG::PADDING + int(round(IMG::X_DRAW_SIZE*(1 - xLength/maxLength)/2));
     yOffset = IMG::PADDING + int(round(IMG::Y_DRAW_SIZE*(1 - yLength/maxLength)/2));
 }
@@ -71,7 +71,7 @@ int ScaleHelper::scaleY(double y) const {
 }
 
 
-pair<int, int> ScaleHelper::operator()(const Point &P) const {
+std::pair<int, int> ScaleHelper::operator()(const Point &P) const {
     return {scaleX(P.x), scaleY(P.y)};
 }
 

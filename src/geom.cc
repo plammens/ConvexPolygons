@@ -1,6 +1,7 @@
 #include "geom.h"
 
-#include <numeric>
+#include <numeric>  // std::accumulate
+#include <cmath>  // std::abs
 #include "details/utils.h"
 
 ///////////////////////// INTERNAL HELPER FUNCTIONS ///////////////////////////
@@ -14,7 +15,7 @@ bool colinear(const Vector2D &u, const Vector2D &v) {
 
 inline
 bool isInRange(double x, double a, double b) {
-    return numeric::leq(min(a, b), x) and numeric::leq(x, max(a, b));
+    return numeric::leq(std::min(a, b), x) and numeric::leq(x, std::max(a, b));
 }
 
 
@@ -81,14 +82,14 @@ bool isCounterClockwiseTurn(const Point &A, const Point &B, const Point &C) {
 }
 
 
-Point barycenter(ConstRange <Point> points) {
+Point barycenter(ConstRange<Point> points) {
     if (points.empty()) throw ValueError("no points given for barycenter");
     // Here we calculate the "average" of the points seen as vectors.
     // We use a custom binary operator that converts `Point`s to `Vector2D`s along the way.
-    Vector2D sumVector = accumulate(points.begin(), points.end(), Vector2D{0, 0},
-                                    [](const Vector2D &u, const Point &P) {
-                                        return u + (const Vector2D &)(P);
-                                    });
+    Vector2D sumVector = std::accumulate(points.begin(), points.end(), Vector2D{0, 0},
+                                         [](const Vector2D &u, const Point &P) {
+                                             return u + (const Vector2D &) (P);
+                                         });
     return Point{0, 0} + sumVector/boost::size(points);
 }
 
@@ -97,26 +98,28 @@ namespace PointComp {
 
     // Returns whether A has a smaller y-coordinate than B
     // (and smaller x-coordinate in case of equality).
-    bool yCoord(const Point &A, const Point &B) {
-        if (A.y != B.y) return A.y < B.y;
-        return A.x < B.x;
+    bool xCoord(const Point &A, const Point &B) {
+        if (A.x != B.x) return A.x < B.x;
+        return A.y < B.y;
     }
 
 
-    // Constructs a new xAngle comparison with P as origin. If `descending` is true,
+    // Constructs a new yAngle comparison with P as origin. If `descending` is true,
     // comparison by angle (not the whole ordering) is descending.
-    xAngle::xAngle(const Point &P, bool descending) : origin(P), reversed(descending) {}
+    yAngle::yAngle(const Point &P, bool descending) : origin(P), reversed(descending) {}
 
 
     // Compares Points according to the angles that the vectors joining the origin
-    // with each point form with the x-axis. Returns whether the first angle is smaller
+    // with each point form with the y-axis. Returns whether the first angle is smaller
     // (if not reversed; otherwise, vice-versa). In case the angles coincide
     // (or one of them is undefined), returns whether the first vector has smaller norm.
     // Pre: angles are in [0, PI]
-    bool xAngle::operator()(const Point &A, const Point &B) {
+    bool yAngle::operator()(const Point &A, const Point &B) {
         Vector2D OA = A - origin, OB = B - origin;
         double normOA = OA.squaredNorm(), normOB = OB.squaredNorm();
-        double projA = OA.x*abs(OA.x)*normOB, projB = OB.x*abs(OB.x)*normOA;  // Scaled projections onto the x-axis
+
+        // Scaled projections onto the y-axis:
+        double projA = OA.y*std::abs(OA.y)*normOB, projB = OB.y*std::abs(OB.y)*normOA;
 
         if (projA != projB) return reversed xor (projA > projB);
         else return normOA < normOB;

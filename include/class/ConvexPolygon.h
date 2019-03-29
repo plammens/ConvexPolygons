@@ -66,14 +66,14 @@ public:
     bool empty() const { return vertices.empty(); }
 
     /**
-     * Calculates the area of the polygon.
+     * Calculates the area of the polygon. If the polygon is empty, returns 0.
      * @return area of the polygon
      * @complexity linear in the number of vertices
      */
     double area() const;
 
     /**
-     * Calculates the perimeter of the polygon.
+     * Calculates the perimeter of the polygon. If the polygon is empty, returns 0.
      * @return perimeter of the polygon
      * @complexity linear in the number of vertices
      */
@@ -83,6 +83,10 @@ public:
      * Calculates the centroid (equibarycenter) of the polygon.
      * @return centroid of the polygon
      * @complexity  linear in the number of vertices
+     *
+     * @pre the polygon is not empty
+     *
+     * @throws ValueError if the polygon is empty
      */
     Point centroid() const;
 
@@ -110,8 +114,19 @@ public:
 
     //! @name Getters
     ///@{
+
+    /**
+     * Getter for the polygon's vertices. The vertices are laid out in
+     * a cyclic manner, in that the first element is repeated at the end
+     * to facilitate the use and implementation of algorithms involving,
+     * for example, a loop in the edges of the polygon.
+     *
+     * @return a const-reference to the internal vertex vector.
+     */
     const Points &getVertices() const { return vertices; }
+
     const RGBColor &getColor() const { return color; }
+
     ///@}
 
     /**

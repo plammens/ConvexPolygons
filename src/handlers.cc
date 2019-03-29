@@ -9,8 +9,8 @@
 #include "details/utils.h"  // getArgs
 
 
-void handleIDManagement(const string &keyword, istream &argStream, PolygonMap &polygons) {
-    string id;
+void handleIDManagement(const std::string &keyword, std::istream &argStream, PolygonMap &polygons) {
+    std::string id;
     getArgs(argStream, id);
 
     if (keyword == CMD::POLYGON) readAndSavePolygon(argStream, polygons, id);
@@ -21,16 +21,16 @@ void handleIDManagement(const string &keyword, istream &argStream, PolygonMap &p
 }
 
 
-void handlePolygonMethod(const string &keyword, istream &argStream, PolygonMap &polygons) {
-    string id;
+void handlePolygonMethod(const std::string &keyword, std::istream &argStream, PolygonMap &polygons) {
+    std::string id;
     getArgs(argStream, id);
     ConvexPolygon &pol = getPolygon(id, polygons);  // throws `UndefinedID` if nonexistent
 
     if (keyword == CMD::PRINT) printPolygon(id, pol);
-    else if (keyword == CMD::AREA) cout << pol.area() << endl;
-    else if (keyword == CMD::PERIMETER) cout << pol.perimeter() << endl;
-    else if (keyword == CMD::VERTICES) cout << pol.vertexCount() << endl;
-    else if (keyword == CMD::CENTROID) cout << pol.centroid() << endl;
+    else if (keyword == CMD::AREA) std::cout << pol.area() << std::endl;
+    else if (keyword == CMD::PERIMETER) std::cout << pol.perimeter() << std::endl;
+    else if (keyword == CMD::VERTICES) std::cout << pol.vertexCount() << std::endl;
+    else if (keyword == CMD::CENTROID) std::cout << pol.centroid() << std::endl;
     else if (keyword == CMD::SETCOL) {
         double r, g, b;
         getArgs(argStream, r, g, b);
@@ -41,8 +41,8 @@ void handlePolygonMethod(const string &keyword, istream &argStream, PolygonMap &
 }
 
 
-void handleBinaryOperation(const string &keyword, istream &argStream, PolygonMap &polygons) {
-    string id1, id2, id3;
+void handleBinaryOperation(const std::string &keyword, std::istream &argStream, PolygonMap &polygons) {
+    std::string id1, id2, id3;
     getArgs(argStream, id1, id2);
     argStream >> id3;  // no exception if not available
 
@@ -51,7 +51,7 @@ void handleBinaryOperation(const string &keyword, istream &argStream, PolygonMap
     const ConvexPolygon &p2 = getPolygon(id3.empty() ? id2 : id3, polygons);
 
     if      (keyword == CMD::INSIDE) {
-        cout << (isInside(p1, p2) ? "yes" : "no") << endl;
+        std::cout << (isInside(p1, p2) ? "yes" : "no") << std::endl;
         return;
     }
     else if (keyword == CMD::UNION) polygons[id1] = convexUnion(p1, p2);
@@ -62,10 +62,10 @@ void handleBinaryOperation(const string &keyword, istream &argStream, PolygonMap
 }
 
 
-void handleNAryOperation(const string &keyword, istream &argStream, PolygonMap &polygons) {
-    string id;
+void handleNAryOperation(const std::string &keyword, std::istream &argStream, PolygonMap &polygons) {
+    std::string id;
     getArgs(argStream, id);
-    vector<string> polIDs = readVector<string>(argStream);
+    std::vector<std::string> polIDs = readVector<std::string>(argStream);
 
     if (keyword == CMD::BBOX)
         polygons[id] = boundingBox(getPolygons(polIDs, polygons));
@@ -75,12 +75,12 @@ void handleNAryOperation(const string &keyword, istream &argStream, PolygonMap &
 }
 
 
-void handleIOCommand(const string &keyword, istream &argStream, PolygonMap &polygons) {
-    string file;
+void handleIOCommand(const std::string &keyword, std::istream &argStream, PolygonMap &polygons) {
+    std::string file;
     argStream >> file;
     if (file.empty()) throw SyntaxError("no file specified");
     prefixPath(file, IO::OUT_DIR);  // prefix with output directory
-    vector<string> polygonIDs = readVector<string>(argStream);
+    std::vector<std::string> polygonIDs = readVector<std::string>(argStream);
 
     if (keyword == CMD::SAVE) save(file, polygonIDs, polygons);
     else if (keyword == CMD::LOAD) load(file, polygons);
@@ -93,7 +93,7 @@ void handleIOCommand(const string &keyword, istream &argStream, PolygonMap &poly
 }
 
 
-void handleNullaryCommand(const string &keyword, istream &argStream, PolygonMap &polygons) {
+void handleNullaryCommand(const std::string &keyword, std::istream &argStream, PolygonMap &polygons) {
     if (keyword == CMD::LIST) list(polygons);
     else assert(false); // Shouldn't get here
 }
@@ -101,7 +101,7 @@ void handleNullaryCommand(const string &keyword, istream &argStream, PolygonMap 
 // -------------------
 
 
-CommandHandler getCommandHandler(const string &keyword) {
+CommandHandler getCommandHandler(const std::string &keyword) {
     auto it = cmdHandlerMap.find(keyword);
     if (it == cmdHandlerMap.end()) throw UnknownCommand(keyword);
     return it->second;
@@ -109,19 +109,19 @@ CommandHandler getCommandHandler(const string &keyword) {
 
 
 // Check whether command is valid and run corresponding handler
-void parseCommand(const string &command, PolygonMap &polygons) {
+void parseCommand(const std::string &command, PolygonMap &polygons) {
     if (command.empty()) return;  // ignore empty lines
 
     try {
-        istringstream iss(command);
-        string keyword;
+        std::istringstream iss(command);
+        std::string keyword;
         iss >> keyword;
-        if (keyword[0] == '#') { cout << '#' << endl; return; }  // comments
+        if (keyword[0] == '#') { std::cout << '#' << std::endl; return; }  // comments
 
         // Get appropriate handler: (may throw `UnknownCommand`)
         CommandHandler handler = getCommandHandler(keyword);
         handler(keyword, iss, polygons);
-        if (not (iss >> ws).eof()) throw UnusedArgument();  // check unused arguments
+        if (not (iss >> std::ws).eof()) throw UnusedArgument();  // check unused arguments
 
     } catch (Error &error) {
         printError(error.what());

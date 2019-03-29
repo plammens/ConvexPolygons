@@ -5,29 +5,27 @@
 #include "errors.h"
 #include "details/utils.h"
 
-using namespace std;
 
-
-const ConvexPolygon &getPolygon(const string &id, const PolygonMap &polygons) {
+const ConvexPolygon &getPolygon(const std::string &id, const PolygonMap &polygons) {
     auto it = polygons.find(id);
     if (it == polygons.end()) throw UndefinedID(id);
     return it->second;
 }
 
 
-ConvexPolygon &getPolygon(const string &id, PolygonMap &polygons) {
+ConvexPolygon &getPolygon(const std::string &id, PolygonMap &polygons) {
     // Behaviour is same as const version, so we just cast away to avoid duplication
     return const_cast<ConvexPolygon &>(getPolygon(id, const_cast<const PolygonMap &>(polygons)));
 }
 
 
-void readAndSavePolygon(istream &is, PolygonMap &polygons, const string &id) {
+void readAndSavePolygon(std::istream &is, PolygonMap &polygons, const std::string &id) {
     Points points = readVector<Point>(is);
     polygons[id] = ConvexPolygon(points);
 }
 
-void readAndSavePolygon(istream &is, PolygonMap &polygons) {
-    string id;
+void readAndSavePolygon(std::istream &is, PolygonMap &polygons) {
+    std::string id;
     getArgs(is, id);
     readAndSavePolygon(is, polygons, id);
 }
@@ -36,13 +34,13 @@ void readAndSavePolygon(istream &is, PolygonMap &polygons) {
 //////////////////////
 
 inline
-void open(ifstream &stream, const string &filename) {
+void open(std::ifstream &stream, const std::string &filename) {
     stream.open(filename);
     if (not stream.is_open()) throw IOError(filename);
 }
 
 inline
-void open(ofstream &stream, const string &filename) {
+void open(std::ofstream &stream, const std::string &filename) {
     stream.open(filename);
     if (not stream.is_open()) throw IOError(filename);
 }
@@ -51,12 +49,12 @@ void open(ofstream &stream, const string &filename) {
 //////////////////////
 
 
-void save(const string &file, const vector<string> &polygonIDs, const PolygonMap &polygons) {
-    ofstream fileStream; open(fileStream, file);
+void save(const std::string &file, const std::vector<std::string> &polygonIDs, const PolygonMap &polygons) {
+    std::ofstream fileStream; open(fileStream, file);
 
     // We buffer the result so we can catch errors before we write to the file
-    ostringstream oss;
-    for (const string &id : polygonIDs) {
+    std::ostringstream oss;
+    for (const std::string &id : polygonIDs) {
         const ConvexPolygon &pol = getPolygon(id, polygons);  // may throw UndefinedID
         printPolygon(id, pol, fileStream);
     }
@@ -65,12 +63,12 @@ void save(const string &file, const vector<string> &polygonIDs, const PolygonMap
     fileStream.close();
 }
 
-void load(const string &file, PolygonMap &polygons) {
-    ifstream fileStream; open(fileStream, file);
+void load(const std::string &file, PolygonMap &polygons) {
+    std::ifstream fileStream; open(fileStream, file);
 
-    string line;
+    std::string line;
     while (getline(fileStream, line)) {
-        istringstream argStream(line);
+        std::istringstream argStream(line);
         readAndSavePolygon(argStream, polygons);
     }
 
@@ -78,22 +76,22 @@ void load(const string &file, PolygonMap &polygons) {
 }
 
 
-void parseCommand(const string &, PolygonMap &);  // forward declaration
+void parseCommand(const std::string &, PolygonMap &);  // forward declaration
 
-void include(const string &file, PolygonMap &polygons, bool silent) {
-    ifstream fileStream; open(fileStream, file);
-    if (silent) cout.setstate(ios_base::failbit);  // suppress output
+void include(const std::string &file, PolygonMap &polygons, bool silent) {
+    std::ifstream fileStream; open(fileStream, file);
+    if (silent) std::cout.setstate(std::ios_base::failbit);  // suppress output
 
-    string line;
+    std::string line;
     while (getline(fileStream, line))
         parseCommand(line, polygons);
 
-    cout.clear();
+    std::cout.clear();
     fileStream.close();
 }
 
 
-void printPolygon(const string &id, const ConvexPolygon &pol, ostream &os) {
+void printPolygon(const std::string &id, const ConvexPolygon &pol, std::ostream &os) {
     os << id;
 
     const Points &vertices = pol.getVertices();
@@ -101,25 +99,25 @@ void printPolygon(const string &id, const ConvexPolygon &pol, ostream &os) {
     for (long i = 0; i < end; ++i)
         os << ' ' << vertices[i];
 
-    os << endl;
+    os << std::endl;
 }
 
 
 void list(const PolygonMap &polygons) {
     if (not polygons.empty()) {
         auto it = polygons.begin();
-        cout << it->first;
+        std::cout << it->first;
         for (++it; it != polygons.end(); ++it)
-            cout << ' ' << it->first;
+            std::cout << ' ' << it->first;
     }
-    cout << endl;
+    std::cout << std::endl;
 }
 
 
-ConstRange<ConvexPolygon> getPolygons(const vector<string> &polygonIDs, PolygonMap &polygons) {
+ConstRange<ConvexPolygon> getPolygons(const std::vector<std::string> &polygonIDs, PolygonMap &polygons) {
     // This unary lambda "gets" a polygon from the map given its ID
-    function<const ConvexPolygon &(const string &id)> getter =
-            [&polygons](const string &id) -> ConvexPolygon & {
+    std::function<const ConvexPolygon &(const std::string &id)> getter =
+            [&polygons](const std::string &id) -> ConvexPolygon & {
                 return getPolygon(id, polygons);
             };
     // (Lazily) apply the lambda to each ID:

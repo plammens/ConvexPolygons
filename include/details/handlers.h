@@ -39,20 +39,20 @@ void handleNullaryCommand(const std::string &keyword, std::istream &argStream, P
 
 inline
 void printOk() {
-    cout << "ok" << endl;
+    std::cout << "ok" << std::endl;
 }
 
 
 inline
 void printError(const std::string &error) {
     // \e[31;1m is the ANSI escape sequence for bright red text
-    cerr << "\e[31;1m" << "error: " << error << "\e[0m" << endl;
+    std::cerr << "\e[31;1m" << "error: " << error << "\e[0m" << std::endl;
 }
 
 inline
 void printWarning(const std::string &warning) {
     // \e[33m is the ANSI escape sequence for yellow text
-    cerr << "\e[33m" << "warning: " << warning << "\e[0m" << endl;
+    std::cerr << "\e[33m" << "warning: " << warning << "\e[0m" << std::endl;
 }
 
 
