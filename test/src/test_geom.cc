@@ -1,8 +1,37 @@
 #include <doctest.h>
+#include <vector>
 #include "geom.h"
 
 
+typedef std::vector<Point> Points;
+
+
+
 TEST_SUITE("geom") {
+
+    TEST_CASE("turns") {
+                SUBCASE("clockwise") {
+                    CHECK(isClockwiseTurn({0, 0}, {0, 1}, {1, 1}));
+                    CHECK(isClockwiseTurn({0, 1}, {1, 1}, {1, 0}));
+                    CHECK(not isClockwiseTurn({0, 0}, {0, 1}, {0, 2}));
+                    CHECK(not isClockwiseTurn({0, 0}, {0, 1}, {-1, 1}));
+        }
+                SUBCASE("counterclockwise") {
+                    CHECK(not isCounterClockwiseTurn({0, 0}, {0, 1}, {1, 1}));
+                    CHECK(not isCounterClockwiseTurn({0, 1}, {1, 1}, {1, 0}));
+                    CHECK(not isCounterClockwiseTurn({0, 0}, {0, 1}, {0, 2}));
+                    CHECK(isCounterClockwiseTurn({0, 0}, {0, 1}, {-1, 1}));
+        }
+    }
+
+
+    TEST_CASE("barycenter") {
+        Points points;
+
+        CHECK(barycenter(points = {{0, 0}, {1, 1}}) == Point{0.5, 0.5});
+        CHECK(barycenter(points = {{0, 0}, {0, 1}, {1, 1}, {1, 0}}) == Point{0.5, 0.5});
+        CHECK(barycenter(points = {{0, 0}, {-1, 0}}) == Point{-0.5, 0});
+    }
 
     TEST_CASE("intersect") {
         Segment s1 = {{0, 0}, {1, 1}},

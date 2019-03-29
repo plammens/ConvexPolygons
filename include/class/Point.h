@@ -6,7 +6,6 @@
 #define CONVEXPOLYGONS_POINT_H
 
 #include <istream>
-#include <vector>
 #include "class/Vector2D.h"
 
 
@@ -80,13 +79,6 @@ std::istream &operator>>(std::istream &is, Point &P);
 std::ostream &operator<<(std::ostream &os, const Point &P);
 
 ///@}
-
-
-
-
-//-------- TYPEDEFS --------//
-
-typedef std::vector<Point> Points;
 
 
 #endif

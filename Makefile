@@ -2,6 +2,8 @@
 
 ############################# Global variables ################################
 
+BROWSER = firefox
+
 ##### Directory names #####
 
 INCLUDE_DIR := include
@@ -118,7 +120,9 @@ clean-out:
 
 docs:
 	doxygen $(DOCS_DIR)/Doxyfile
-	firefox $(DOCS_DIR)/html/index.html &
+
+view-docs:
+	$(BROWSER) $(DOCS_DIR)/html/index.html &
 
 
 # Just some text:

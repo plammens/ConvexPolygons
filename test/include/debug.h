@@ -8,7 +8,7 @@
 
 
 template<typename T>
-ostream &operator<<(ostream &os, const std::vector<T> &vec) {
+std::ostream &operator<<(std::ostream &os, const std::vector<T> &vec) {
     os << '{';
     auto it = vec.begin();
     if (not vec.empty()) os << *it;
@@ -20,7 +20,7 @@ ostream &operator<<(ostream &os, const std::vector<T> &vec) {
 
 
 inline
-ostream &operator<<(ostream &os, const ConvexPolygon &pol) {
+std::ostream &operator<<(std::ostream &os, const ConvexPolygon &pol) {
     return os << pol.getVertices();
 }
 

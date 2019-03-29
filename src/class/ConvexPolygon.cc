@@ -16,7 +16,7 @@ using namespace std;
 Points ConvexPolygon::ConvexHull(Points points) {
     if (points.empty()) return {};
 
-    const auto begin = points.begin(), end = points.end();  // aliasing
+    const auto begin = points.begin(), end = points.end();  // aliases
     // Get point with lowest y coordinate:
     const Point P0 = *min_element(begin, end, PointComp::yCoord);
     // Sort the points in decreasing order of the angle they form with x-axis (relative to P0):
@@ -212,5 +212,13 @@ ConvexPolygon intersection(const ConvexPolygon &pol1, const ConvexPolygon &pol2)
 
 ConvexPolygon operator&(const ConvexPolygon &pol1, const ConvexPolygon &pol2) {
     return intersection(pol1, pol2);
+}
+
+bool operator==(const ConvexPolygon &lhs, const ConvexPolygon &rhs) {
+    return lhs.getVertices() == rhs.getVertices();
+}
+
+bool operator!=(const ConvexPolygon &lhs, const ConvexPolygon &rhs) {
+    return not(rhs == lhs);
 }
 

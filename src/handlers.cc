@@ -34,7 +34,7 @@ void handlePolygonMethod(const string &keyword, istream &argStream, PolygonMap &
     else if (keyword == CMD::SETCOL) {
         double r, g, b;
         getArgs(argStream, r, g, b);
-        pol.setColor(r, g, b);
+        pol.setColor(RGBColor{r, g, b});
         printOk();
     }
     else assert(false);  // Shouldn't get here
