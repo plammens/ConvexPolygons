@@ -15,18 +15,20 @@
 //!@{
 
 /**
- * Bottom left corner of the box spanned by two points.
- * @param A  first operand
- * @param B  second operand
- * @return \f$ (\min{A_x, B_x}, \min{A_y, B_y}) \f$
+ * Bottom-left corner of the box spanned by two points.
+ * @param A,B  points under consideration
+ * @return Bottom-left corner of the rectangle whose diagonal is the
+ * segment that joins `A` and `B`. Equivalently, the point
+ * \f$ (\min{A_x, B_x}, \min{A_y, B_y}) \f$.
  */
 Point bottomLeft(const Point &A, const Point &B);
 
 /**
  * Upper right corner of the box spanned by two points.
- * @param A  first operand
- * @param B  second operand
- * @return \f$ (\max{A_x, B_x}, \max{A_y, B_y}) \f$
+ * @param A,B  points under consideration
+ * @return Upper-right corner of the rectangle whose diagonal is the
+ * segment that joins `A` and `B`. Equivalently, the point
+ * \f$ (\max{A_x, B_x}, \max{A_y, B_y}) \f$.
  */
 Point upperRight(const Point &A, const Point &B);
 

@@ -61,23 +61,23 @@ void printWarning(const std::string &warning) {
 
 // Maps each command keyword to its corresponding command handler
 const std::map<std::string, CommandHandler> cmdHandlerMap = {
-        {CMD::POLYGON,      handleIDManagement},
-        {CMD::DELETE,       handleIDManagement},
-        {CMD::PRINT,        handlePolygonMethod},
-        {CMD::AREA,         handlePolygonMethod},
-        {CMD::PERIMETER,    handlePolygonMethod},
-        {CMD::VERTICES,     handlePolygonMethod},
-        {CMD::CENTROID,     handlePolygonMethod},
-        {CMD::SETCOL,       handlePolygonMethod},
-        {CMD::INTERSECTION, handleBinaryOperation},
-        {CMD::UNION,        handleBinaryOperation},
-        {CMD::INSIDE,       handleBinaryOperation},
-        {CMD::BBOX,         handleNAryOperation},
-        {CMD::LIST,         handleNullaryCommand},
-        {CMD::SAVE,         handleIOCommand},
-        {CMD::LOAD,         handleIOCommand},
-        {CMD::DRAW,         handleIOCommand},
-        {CMD::PAINT,        handleIOCommand}
+        {cmd::POLYGON,      handleIDManagement},
+        {cmd::DELETE,       handleIDManagement},
+        {cmd::PRINT,        handlePolygonMethod},
+        {cmd::AREA,         handlePolygonMethod},
+        {cmd::PERIMETER,    handlePolygonMethod},
+        {cmd::VERTICES,     handlePolygonMethod},
+        {cmd::CENTROID,     handlePolygonMethod},
+        {cmd::SETCOL,       handlePolygonMethod},
+        {cmd::INTERSECTION, handleBinaryOperation},
+        {cmd::UNION,        handleBinaryOperation},
+        {cmd::INSIDE,       handleBinaryOperation},
+        {cmd::BBOX,         handleNAryOperation},
+        {cmd::LIST,         handleNullaryCommand},
+        {cmd::SAVE,         handleIOCommand},
+        {cmd::LOAD,         handleIOCommand},
+        {cmd::DRAW,         handleIOCommand},
+        {cmd::PAINT,        handleIOCommand}
 };
 
 // Gets the command handler associated to the command `keyword`

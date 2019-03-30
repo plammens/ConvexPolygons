@@ -5,7 +5,7 @@
 
 void draw(const std::string &file, ConstRange<ConvexPolygon> polygons, bool fill) {
     checkFileForWriting(file);
-    pngwriter png(IMG::X_SIZE, IMG::Y_SIZE, IMG::BACKGROUND, file.c_str());
+    pngwriter png(img::X_SIZE, img::Y_SIZE, img::BACKGROUND, file.c_str());
 
     if (not polygons.empty()) {
         ScaleHelper scale(polygons);
@@ -41,7 +41,7 @@ void drawPolygon(pngwriter &png, const ConvexPolygon &pol, const ScaleHelper &sc
 
         if (fill)
             png.filledtriangle_blend(x0, y0, x1, y1, x2, y2,
-                                     IMG::POL_OPACITY, color.R(), color.G(), color.B());
+                                     img::POL_OPACITY, color.R(), color.G(), color.B());
         else
             png.line(x1, y1, x2, y2, color.R(), color.G(), color.B());
     }
@@ -54,20 +54,20 @@ ScaleHelper::ScaleHelper(ConstRange<ConvexPolygon> polygons) {
     minX = SW.x; minY = SW.y;
     double xLength = NE.x - SW.x, yLength = NE.y - SW.y;
     maxLength = std::max(xLength, yLength);
-    xOffset = IMG::PADDING + int(round(IMG::X_DRAW_SIZE*(1 - xLength/maxLength)/2));
-    yOffset = IMG::PADDING + int(round(IMG::Y_DRAW_SIZE*(1 - yLength/maxLength)/2));
+    xOffset = img::PADDING + int(round(img::X_DRAW_SIZE*(1 - xLength/maxLength)/2));
+    yOffset = img::PADDING + int(round(img::Y_DRAW_SIZE*(1 - yLength/maxLength)/2));
 }
 
 
 int ScaleHelper::scaleX(double x) const {
-    if (maxLength == 0) return IMG::X_CENTER;
-    return xOffset + int(round(IMG::X_DRAW_SIZE*(x - minX)/maxLength));
+    if (maxLength == 0) return img::X_CENTER;
+    return xOffset + int(round(img::X_DRAW_SIZE*(x - minX)/maxLength));
 }
 
 
 int ScaleHelper::scaleY(double y) const {
-    if (maxLength == 0) return IMG::Y_CENTER;
-    return yOffset + int(round(IMG::Y_DRAW_SIZE*(y - minY)/maxLength));
+    if (maxLength == 0) return img::Y_CENTER;
+    return yOffset + int(round(img::Y_DRAW_SIZE*(y - minY)/maxLength));
 }
 
 

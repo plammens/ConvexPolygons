@@ -4,7 +4,7 @@
 #include "errors.h"
 
 
-TEST_SUITE("IO commands") {
+TEST_SUITE("io commands") {
 
     TEST_CASE("PolygonMap") {
         ConvexPolygon pol({{0, 0}});

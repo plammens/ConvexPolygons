@@ -25,7 +25,7 @@ TEST_SUITE("Point") {
     }
 
 
-    TEST_CASE("IO") {
+    TEST_CASE("io") {
         Point P{0, 2.0005};
 
         SUBCASE("read") {

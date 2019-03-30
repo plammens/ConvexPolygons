@@ -34,7 +34,7 @@ bool operator!=(const Point &A, const Point &B) { return not(A == B); }
 
 
 
-//---- Text IO ----//
+//---- Text io ----//
 
 // Extraction operation from an input stream into a point
 std::istream &operator>>(std::istream &is, Point &P) {

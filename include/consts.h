@@ -1,11 +1,14 @@
-// Some shared global constants
+/**
+ * @file
+ * Shared global constants for the project.
+ */
 
 #ifndef CONVEXPOLYGONS_CONSTS_H
 #define CONVEXPOLYGONS_CONSTS_H
 
 
-// command keywords
-namespace CMD {
+/// Namespace for storing all recognized command keywords
+namespace cmd {
     constexpr auto
             POLYGON = "polygon",
             DELETE = "delete",
@@ -27,12 +30,13 @@ namespace CMD {
             PAINT = "paint";
 }
 
-namespace IO {
+/// Input-output related identifiers
+namespace io {
     constexpr auto OUT_DIR = "out/";
 }
 
-// some image constants
-namespace IMG {
+/// Image-related identifiers. Such as png image size.
+namespace img {
     constexpr int X_SIZE = 500, Y_SIZE = 500;
     constexpr int PADDING = 2;  // padding in pixels
     constexpr double BACKGROUND = 1.0;  // background color
@@ -44,7 +48,7 @@ namespace IMG {
 }
 
 // numeric constants
-namespace NUM {
+namespace num {
     constexpr double EPSILON = 1e-12; 
 }
 

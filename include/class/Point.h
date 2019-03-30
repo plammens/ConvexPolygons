@@ -22,7 +22,11 @@ struct Point {
 
 //-------- ASSOCIATED NONMEMBER FUNCTIONS --------//
 
-// Euclidean distance between A and B
+/**
+ * Euclidean distance between two points.
+ * @param A,B  points under consideration
+ * @return the value of `(A - B).norm()`
+ */
 double distance(const Point &A, const Point &B);
 
 
@@ -34,7 +38,7 @@ double distance(const Point &A, const Point &B);
  * Vector difference between two points.
  * @param A  end point
  * @param B  start point
- * @return  \f$ A - B \f$
+ * @return the vector \f$ A - B \f$
  */
 Vector2D operator-(const Point &A, const Point &B);
 
@@ -42,7 +46,7 @@ Vector2D operator-(const Point &A, const Point &B);
  * Translation of a point by a vector.
  * @param A  start point
  * @param u  translation vector
- * @return \f$ A + \vec{u} \f$
+ * @return the point \f$ A + \vec{u} \f$
  */
 Point operator+(const Point &A, const Vector2D& u);
 

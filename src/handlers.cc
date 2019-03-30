@@ -13,8 +13,8 @@ void handleIDManagement(const std::string &keyword, std::istream &argStream, Pol
     std::string id;
     getArgs(argStream, id);
 
-    if (keyword == CMD::POLYGON) readAndSavePolygon(argStream, polygons, id);
-    else if (keyword == CMD::DELETE) polygons.erase(id);
+    if (keyword == cmd::POLYGON) readAndSavePolygon(argStream, polygons, id);
+    else if (keyword == cmd::DELETE) polygons.erase(id);
     else assert(false);
 
     printOk();
@@ -26,12 +26,12 @@ void handlePolygonMethod(const std::string &keyword, std::istream &argStream, Po
     getArgs(argStream, id);
     ConvexPolygon &pol = getPolygon(id, polygons);  // throws `UndefinedID` if nonexistent
 
-    if (keyword == CMD::PRINT) printPolygon(id, pol);
-    else if (keyword == CMD::AREA) std::cout << pol.area() << std::endl;
-    else if (keyword == CMD::PERIMETER) std::cout << pol.perimeter() << std::endl;
-    else if (keyword == CMD::VERTICES) std::cout << pol.vertexCount() << std::endl;
-    else if (keyword == CMD::CENTROID) std::cout << pol.centroid() << std::endl;
-    else if (keyword == CMD::SETCOL) {
+    if (keyword == cmd::PRINT) printPolygon(id, pol);
+    else if (keyword == cmd::AREA) std::cout << pol.area() << std::endl;
+    else if (keyword == cmd::PERIMETER) std::cout << pol.perimeter() << std::endl;
+    else if (keyword == cmd::VERTICES) std::cout << pol.vertexCount() << std::endl;
+    else if (keyword == cmd::CENTROID) std::cout << pol.centroid() << std::endl;
+    else if (keyword == cmd::SETCOL) {
         double r, g, b;
         getArgs(argStream, r, g, b);
         pol.setColor(RGBColor{r, g, b});
@@ -50,12 +50,12 @@ void handleBinaryOperation(const std::string &keyword, std::istream &argStream, 
     const ConvexPolygon &p1 = getPolygon(id3.empty() ? id1 : id2, polygons);
     const ConvexPolygon &p2 = getPolygon(id3.empty() ? id2 : id3, polygons);
 
-    if      (keyword == CMD::INSIDE) {
+    if      (keyword == cmd::INSIDE) {
         std::cout << (isInside(p1, p2) ? "yes" : "no") << std::endl;
         return;
     }
-    else if (keyword == CMD::UNION) polygons[id1] = convexUnion(p1, p2);
-    else if (keyword == CMD::INTERSECTION) polygons[id1] = intersection(p1, p2);
+    else if (keyword == cmd::UNION) polygons[id1] = convexUnion(p1, p2);
+    else if (keyword == cmd::INTERSECTION) polygons[id1] = intersection(p1, p2);
     else assert(false);
 
     printOk();
@@ -67,7 +67,7 @@ void handleNAryOperation(const std::string &keyword, std::istream &argStream, Po
     getArgs(argStream, id);
     std::vector<std::string> polIDs = readVector<std::string>(argStream);
 
-    if (keyword == CMD::BBOX)
+    if (keyword == cmd::BBOX)
         polygons[id] = boundingBox(getPolygons(polIDs, polygons));
     else assert(false);
 
@@ -79,14 +79,14 @@ void handleIOCommand(const std::string &keyword, std::istream &argStream, Polygo
     std::string file;
     argStream >> file;
     if (file.empty()) throw SyntaxError("no file specified");
-    prefixPath(file, IO::OUT_DIR);  // prefix with output directory
+    prefixPath(file, io::OUT_DIR);  // prefix with output directory
     std::vector<std::string> polygonIDs = readVector<std::string>(argStream);
 
-    if (keyword == CMD::SAVE) save(file, polygonIDs, polygons);
-    else if (keyword == CMD::LOAD) load(file, polygons);
-    else if (keyword == CMD::DRAW) draw(file, getPolygons(polygonIDs, polygons));
-    else if (keyword == CMD::PAINT) draw(file, getPolygons(polygonIDs, polygons), true);
-    else if (keyword == CMD::INCLUDE) include(file, polygons);
+    if (keyword == cmd::SAVE) save(file, polygonIDs, polygons);
+    else if (keyword == cmd::LOAD) load(file, polygons);
+    else if (keyword == cmd::DRAW) draw(file, getPolygons(polygonIDs, polygons));
+    else if (keyword == cmd::PAINT) draw(file, getPolygons(polygonIDs, polygons), true);
+    else if (keyword == cmd::INCLUDE) include(file, polygons);
     else assert(false); // Shouldn't get here
 
     printOk();
@@ -94,7 +94,7 @@ void handleIOCommand(const std::string &keyword, std::istream &argStream, Polygo
 
 
 void handleNullaryCommand(const std::string &keyword, std::istream &argStream, PolygonMap &polygons) {
-    if (keyword == CMD::LIST) list(polygons);
+    if (keyword == cmd::LIST) list(polygons);
     else assert(false); // Shouldn't get here
 }
 

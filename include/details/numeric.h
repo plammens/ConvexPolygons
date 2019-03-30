@@ -14,12 +14,12 @@ namespace numeric {
 
     inline
     bool equal(double a, double b) {
-        return std::abs(a - b) < NUM::EPSILON;
+        return std::abs(a - b) < num::EPSILON;
     }
 
     inline
     bool leq(double a, double b) {
-        return a < b + NUM::EPSILON;
+        return a < b + num::EPSILON;
     }
 
     inline

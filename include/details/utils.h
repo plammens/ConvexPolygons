@@ -36,7 +36,7 @@ void getArgs(std::istream &argStream, T &first, Types &... slots) {
     getArgs(argStream, slots...);
 }
 
-// ----------- File IO utils ----------
+// ----------- File io utils ----------
 
 
 inline

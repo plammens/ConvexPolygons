@@ -15,9 +15,8 @@ class RGBColor {
 public:
     /**
      * Explicit constructor from red, green, and blue values.
-     * @param r  red value
-     * @param g  green value
-     * @param b  blue value
+     * @param r,g,b  red, green and blue values
+     *
      * @pre  all values are in the interval \f$ [0, 1] \f$
      * @throws  ValueError if any of the arguments is not in \f$ [0, 1] \f$
      */

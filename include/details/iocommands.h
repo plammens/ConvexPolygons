@@ -1,4 +1,4 @@
-// IO commands for calculator
+// io commands for calculator
 
 #ifndef CONVEXPOLYGONS_COMMANDS_H
 #define CONVEXPOLYGONS_COMMANDS_H

@@ -15,12 +15,13 @@
 
 //-------- TYPEDEFS --------//
 
+/// Alias for a vector of points
 typedef std::vector<Point> Points;
 
 
 
 
-//-------- CONVEXPOLYGON CLASS --------//
+//-------- CONVEX POLYGON CLASS --------//
 
 /**
  * Interface for planar convex polygons. Can be constructed from a sequence of points.
