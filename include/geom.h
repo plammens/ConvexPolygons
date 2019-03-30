@@ -41,10 +41,8 @@ namespace PointComp {
 
     struct yAngle {
         Point origin;
-        bool reversed;
 
-        explicit
-        yAngle(const Point &P, bool descending = false);
+        explicit yAngle(const Point &P);
         bool operator()(const Point &A, const Point &B);
     };
 }

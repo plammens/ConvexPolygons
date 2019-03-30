@@ -25,37 +25,6 @@ TEST_SUITE("Point") {
     }
 
 
-    TEST_CASE("comparisons") {
-        SUBCASE("xCoord") {
-            CHECK(PointComp::xCoord({0, 0}, {1, 0}));
-            CHECK(not PointComp::xCoord({1, 0}, {0, 0}));
-            CHECK(PointComp::xCoord({0, 0}, {0, 1}));
-            CHECK(not PointComp::xCoord({0, 0}, {0, 0}));
-        }
-
-        SUBCASE("yAngle") {
-            SUBCASE("ascending") {
-                PointComp::yAngle comp({0, 0}, false);
-
-                CHECK(comp({0, 1}, {0, -1}));
-                CHECK(not comp({0, -1}, {0, 1}));
-                CHECK(comp({0, 1}, {0, 2}));
-                CHECK(comp({0, 1}, {1, -0.5}));
-                CHECK(not comp({0, 0}, {0, 0}));
-            }
-            SUBCASE("ascending") {
-                PointComp::yAngle comp({0, 0}, true);
-
-                CHECK(not comp({0, 1}, {0, -1}));
-                CHECK(comp({0, -1}, {0, 1}));
-                CHECK(comp({0, 1}, {0, 2}));
-                CHECK(not comp({0, 1}, {1, -0.5}));
-                CHECK(not comp({0, 0}, {0, 0}));
-            }
-        }
-    }
-
-
     TEST_CASE("IO") {
         Point P{0, 2.0005};
 

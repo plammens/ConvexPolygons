@@ -13,6 +13,6 @@
 
 int main() {
     PolygonMap polygons;
-    string command;
-    while (getline(cin, command)) parseCommand(command, polygons);
+    std::string command;
+    while (getline(std::cin, command)) parseCommand(command, polygons);
 }

@@ -106,7 +106,7 @@ namespace PointComp {
 
     // Constructs a new yAngle comparison with P as origin. If `descending` is true,
     // comparison by angle (not the whole ordering) is descending.
-    yAngle::yAngle(const Point &P, bool descending) : origin(P), reversed(descending) {}
+    yAngle::yAngle(const Point &P) : origin(P) {}
 
 
     // Compares Points according to the angles that the vectors joining the origin
@@ -121,7 +121,7 @@ namespace PointComp {
         // Scaled projections onto the y-axis:
         double projA = OA.y*std::abs(OA.y)*normOB, projB = OB.y*std::abs(OB.y)*normOA;
 
-        if (projA != projB) return reversed xor (projA > projB);
+        if (projA != projB) return (projA > projB);
         else return normOA < normOB;
     }
 

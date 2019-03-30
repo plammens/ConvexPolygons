@@ -83,7 +83,7 @@ Points ConvexPolygon::ConvexHull(Points points) {
     // Get point with lowest y coordinate:
     const Point P0 = *min_element(begin, end, PointComp::xCoord);
     // Sort the points in decreasing order of the angle they form with x-axis (relative to P0):
-    sort(begin, end, PointComp::yAngle(P0, true));
+    sort(begin, end, PointComp::yAngle(P0));
 
     // Graham scan:
     Points hull{P0};  // starting point

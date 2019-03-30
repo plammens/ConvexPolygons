@@ -24,6 +24,27 @@ TEST_SUITE("geom") {
         }
     }
 
+    TEST_CASE("comparisons") {
+        SUBCASE("xCoord") {
+            CHECK(PointComp::xCoord({0, 0}, {1, 0}));
+            CHECK(not PointComp::xCoord({1, 0}, {0, 0}));
+            CHECK(PointComp::xCoord({0, 0}, {0, 1}));
+            CHECK(not PointComp::xCoord({0, 0}, {0, 0}));
+        }
+
+        SUBCASE("yAngle") {
+            PointComp::yAngle comp({0, 0});
+
+            CHECK(comp({0, 1}, {0, -1}));
+            CHECK(not comp({0, -1}, {0, 1}));
+            CHECK(comp({0, 1}, {0, 2}));
+            CHECK(comp({0, 1}, {1, -0.5}));
+            CHECK(not comp({0, 0}, {0, 0}));
+            CHECK(comp({0, 1}, {1, 0}));
+            CHECK(comp({1, -0.5}, {1, -1}));
+        }
+    }
+
 
     TEST_CASE("barycenter") {
         Points points;

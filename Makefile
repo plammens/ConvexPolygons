@@ -74,7 +74,8 @@ depends = $(patsubst $(OBJ_DIR)/%.o,$(DEP_DIR)/%.d,$(objects) $(test_objects))
 
 ############### Phony rules ###############
 
-.PHONY: all build build-test debug libs run test clean clean-build clean-out docs \
+.PHONY: all build build-test debug libs run test \
+		clean clean-build clean-out docs view-docs \
 		.pre-build .pre-lib .pre-build-test
 
 
