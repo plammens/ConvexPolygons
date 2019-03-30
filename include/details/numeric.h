@@ -1,6 +1,6 @@
 /**
  * @file
- * Numerical functions and routines for fuzzy comparisons.
+ * Inline functions for numerical comparisons.
  */
 
 #ifndef CONVEXPOLYGONS_NUMERIC_H
@@ -14,12 +14,12 @@ namespace numeric {
 
     inline
     bool equal(double a, double b) {
-        return std::abs(a - b) < num::EPSILON;
+        return std::abs(a - b) < numeric::EPSILON;
     }
 
     inline
     bool leq(double a, double b) {
-        return a < b + num::EPSILON;
+        return a < b + numeric::EPSILON;
     }
 
     inline

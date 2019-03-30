@@ -1,3 +1,4 @@
+#include <consts.h>
 #include "details/draw.h"
 
 #include "details/utils.h"
@@ -5,7 +6,7 @@
 
 void draw(const std::string &file, ConstRange<ConvexPolygon> polygons, bool fill) {
     checkFileForWriting(file);
-    pngwriter png(img::X_SIZE, img::Y_SIZE, img::BACKGROUND, file.c_str());
+    pngwriter png(img::SIZE.X, img::SIZE.Y, img::BACKGROUND, file.c_str());
 
     if (not polygons.empty()) {
         ScaleHelper scale(polygons);
@@ -51,23 +52,24 @@ void drawPolygon(pngwriter &png, const ConvexPolygon &pol, const ScaleHelper &sc
 ScaleHelper::ScaleHelper(ConstRange<ConvexPolygon> polygons) {
     Box bBox = boundingBox(polygons);
     Point SW = bBox.SW(), NE = bBox.NE();
-    minX = SW.x; minY = SW.y;
     double xLength = NE.x - SW.x, yLength = NE.y - SW.y;
+
+    minX = SW.x; minY = SW.y;
     maxLength = std::max(xLength, yLength);
-    xOffset = img::PADDING + int(round(img::X_DRAW_SIZE*(1 - xLength/maxLength)/2));
-    yOffset = img::PADDING + int(round(img::Y_DRAW_SIZE*(1 - yLength/maxLength)/2));
+    xOffset = img::PADDING + int(round(img::DRAW_SIZE.X*(1 - xLength/maxLength)/2));
+    yOffset = img::PADDING + int(round(img::DRAW_SIZE.Y*(1 - yLength/maxLength)/2));
 }
 
 
 int ScaleHelper::scaleX(double x) const {
-    if (maxLength == 0) return img::X_CENTER;
-    return xOffset + int(round(img::X_DRAW_SIZE*(x - minX)/maxLength));
+    if (maxLength == 0) return img::CENTER.X;
+    return xOffset + int(round(img::DRAW_SIZE.X*(x - minX)/maxLength));
 }
 
 
 int ScaleHelper::scaleY(double y) const {
-    if (maxLength == 0) return img::Y_CENTER;
-    return yOffset + int(round(img::Y_DRAW_SIZE*(y - minY)/maxLength));
+    if (maxLength == 0) return img::CENTER.Y;
+    return yOffset + int(round(img::DRAW_SIZE.Y*(y - minY)/maxLength));
 }
 
 

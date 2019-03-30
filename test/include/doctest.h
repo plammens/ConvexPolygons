@@ -2893,7 +2893,7 @@ namespace {
 } // namespace
 
 namespace detail {
-    void my_memcpy(void* dest, const void* src, unsigned num) { memcpy(dest, src, num); }
+    void my_memcpy(void* dest, const void* src, unsigned numeric) { memcpy(dest, src, numeric); }
 
     String rawMemoryToString(const void* object, unsigned size) {
         // Reverse order for little endian architectures
@@ -4007,7 +4007,7 @@ namespace {
                                       const char* tail = "") {
         const auto opt = getContextOptions();
         s << Color::LightGrey << skipPathFromFilename(file) << (opt->gnu_file_line ? ":" : "(")
-          << (opt->no_line_numbers ? 0 : line) // 0 or the real num depending on the option
+          << (opt->no_line_numbers ? 0 : line) // 0 or the real numeric depending on the option
           << (opt->gnu_file_line ? ":" : "):") << tail;
         return s;
     }

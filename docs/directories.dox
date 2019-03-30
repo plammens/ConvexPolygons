@@ -1,0 +1,17 @@
+/**
+@dir include
+All header files for the main executable
+*/
+
+
+/**
+@dir include/class
+Class header files
+*/
+
+
+/**
+@dir include/details
+@brief Header files for internal implementation details
+@details Internal helper functions, command parsing utilities, etc.
+*/
