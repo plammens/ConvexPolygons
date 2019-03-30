@@ -6,27 +6,9 @@
 
 #include <vector>
 #include <istream>
-#include <cmath>
 #include "errors.h"
 #include "consts.h"
 
-
-
-// ------------- numeric ----------
-
-namespace numeric {
-
-    inline
-    bool equal(double a, double b) {
-        return std::abs(a - b) < NUM::EPSILON;
-    }
-
-    inline
-    bool leq(double a, double b) {
-        return a < b + NUM::EPSILON;
-    }
-
-}
 
 
 // --------- input reading utils ------------
