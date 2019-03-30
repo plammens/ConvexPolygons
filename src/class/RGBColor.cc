@@ -1,7 +1,7 @@
 #include "class/RGBColor.h"
 
 #include "errors.h"
-#include "details/utils.h"
+#include "details/numeric.h"
 
 
 //-------- MEMBER FUNCTIONS --------//

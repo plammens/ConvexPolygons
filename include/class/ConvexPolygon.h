@@ -206,6 +206,7 @@ ConvexPolygon operator|(const ConvexPolygon &polA, const ConvexPolygon &polB);
  * @return the intersection of the first and second argument
  *
  * @complexity quasilinear in the total number of vertices
+ * -- \f$ O((n + m) \cdot \log(n + m)) \f$
  */
 ConvexPolygon intersection(const ConvexPolygon &, const ConvexPolygon &);
 

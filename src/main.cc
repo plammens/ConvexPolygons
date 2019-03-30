@@ -3,9 +3,8 @@
 // TODO: unify comment separators
 // TODO: final rearrange
 // TODO: docs & doxygen
-// TODO: remove using std
-// TODO: impl folder, hide utils
 // TODO: boost or not?
+// TODO: document special cases
 
 #include <iostream>
 #include "details/handlers.h"

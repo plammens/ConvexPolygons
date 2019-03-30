@@ -1,7 +1,7 @@
 #include "class/Point.h"
 
 #include "details/range.h" // Range<T>
-#include "details/utils.h"
+#include "details/numeric.h"
 
 
 //-------- ASSOCIATED NONMEMBER FUNCTIONS --------//

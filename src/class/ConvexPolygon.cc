@@ -74,7 +74,8 @@ Box ConvexPolygon::boundingBox() const {
 
 /*
  * Calculates the convex hull of a sequence of points with the
- * Graham scan algorithm. Complexity is O(n*log(n)).
+ * Graham scan algorithm. Complexity is O(n*log(n)). Returns an empty
+ * vector if the input vector is empty.
  */
 Points ConvexPolygon::ConvexHull(Points points) {
     if (points.empty()) return {};
@@ -86,15 +87,14 @@ Points ConvexPolygon::ConvexHull(Points points) {
     sort(begin, end, PointComp::yAngle(P0));
 
     // Graham scan:
-    Points hull{P0};  // starting point
-    for (auto it = begin + 1; it < end; ++it) {
-        if (*it == hull.back()) continue;  // skip duplicates
-        while (hull.size() >= 2 and not isClockwiseTurn(hull.end()[-2], hull.end()[-1], *it))
+    Points hull;
+    for (const Point &P : points | boost::adaptors::uniqued) {  // the uniqued adaptor skips duplicates
+        while (hull.size() >= 2 and not isClockwiseTurn(hull.end()[-2], hull.end()[-1], P))
             hull.pop_back();
-        hull.push_back(*it);
+        hull.push_back(P);
     }
 
-    hull.push_back(P0);  // complete the cycle
+    hull.push_back(hull.front());  // complete the cycle
     return hull;
 }
 
@@ -185,37 +185,80 @@ ConvexPolygon operator|(const ConvexPolygon &polA, const ConvexPolygon &polB) {
 
 /*
  * Internal subroutine for `intersection` that calculates intersection points between
- * the edges of the two polygons and appends them to `intersectionPoints`
+ * the edges of the two polygons (and appends them to `intersectionPoints`). The
+ * time complexity of this algorithm is linear.
  */
 inline
 void _intersectionSweepLine(const ConvexPolygon &pol1, const ConvexPolygon &pol2,
                             Points &intersectionPoints) {
-    auto it1L = pol1.getVertices().begin(), it2L = pol2.getVertices().begin();
-    auto it1R = pol1.getVertices().rbegin(), it2R = pol2.getVertices().rbegin();
 
-    // Some lambdas for commodity:
-    auto edge1Left = [&it1L](){ return Segment{it1L[0], it1L[1]}; };
-    auto edge1Right = [&it1R](){ return Segment{it1R[0], it1R[1]}; };
-    auto edge2Left = [&it2L](){ return Segment{it2L[0], it2L[1]}; };
-    auto edge2Right = [&it2R](){ return Segment{it2R[0], it2R[1]}; };
+    // aliases:
+    const Points &v1 = pol1.getVertices(), &v2 = pol2.getVertices();
 
-    auto res1 = [&](){ return intersect(edge1Left(), edge2Left()); };
-    auto res2 = [&](){ return intersect(edge1Left(), edge2Right()); };
-    auto res3 = [&](){ return intersect(edge1Right(), edge2Left()); };
-    auto res4 = [&](){ return intersect(edge1Right(), edge2Right()); };
+    /*
+     * Throughout the algorithm, we keep track of two edges on each polygon:
+     * one edge on the top half and one on the bottom half of the polygon. We
+     * do this by keeping track of two iterators for each polygon, each of which
+     * represents the start-point of an edge.
+     *
+     * The top edges will advance in clockwise order, while the bottom edges advance
+     * in counter-clockwise order (hence, their corresponding iterators will be reverse).
+     */
 
-    // Sweepline:=
-    while (not (it1L == it1R.base() or it2L == it2R.base())) {
-        for (const IntersectResult &ir : {res1(), res2(), res3(), res4()})
-            if (ir.success) intersectionPoints.push_back(ir.point);
+    auto it1Top = v1.begin(), it2Top = v2.begin();
+    // reverse iterators for bottom edges (advancing counterclockwise):
+    auto it1Bottom = v1.rbegin(), it2Bottom = v2.rbegin();
 
-        // Increment the edge whose end point has the lowest x coordinate:
-        if      (it1L[1].x <= it1R[1].x and it1L[1].x <= it2L[1].x and it1L[1].x <= it2R[1].x) ++it1L;
-        else if (it1R[1].x <= it1L[1].x and it1R[1].x <= it2L[1].x and it1R[1].x <= it2R[1].x) ++it1R;
-        else if (it2L[1].x <= it1L[1].x and it2L[1].x <= it1R[1].x and it2L[1].x <= it2R[1].x) ++it2L;
-        else ++it2R;
+    // Some lambdas for commodity (these get the edge pointed at by an iterator):
+    auto edge1Top =     [&it1Top]()   { return Segment{it1Top[0], it1Top[1]}; };
+    auto edge1Bottom =  [&it1Bottom](){ return Segment{it1Bottom[0], it1Bottom[1]}; };
+    auto edge2Top =     [&it2Top]()   { return Segment{it2Top[0], it2Top[1]}; };
+    auto edge2Bottom =  [&it2Bottom](){ return Segment{it2Bottom[0], it2Bottom[1]}; };
+
+    // Lambdas to calculate the intersection of a pair of edges:
+    auto resTT = [&](){ return intersect(edge1Top(), edge2Top()); };
+    auto resTB = [&](){ return intersect(edge1Top(), edge2Bottom()); };
+    auto resBT = [&](){ return intersect(edge1Bottom(), edge2Top()); };
+    auto resBB = [&](){ return intersect(edge1Bottom(), edge2Bottom()); };
+
+    // Add first four potential intersection points:
+    for (const IntersectResult &ir : {resTT(), resTB(), resBT(), resBB()})
+        if (ir.success) intersectionPoints.push_back(ir.point);
+
+    /*
+     * Here we start a sweepline algorithm. At each iteration, we check the intersections
+     * between the four pairs of segments, and then we increment the edge (represented
+     * by an iterator to its start-point) which has the end-point with the lowest `x`
+     * coordinate (hence the "sweepline"; it's like advancing a vertical line from left to
+     * right). We stop when we reach either polygon's rightmost vertex --- which happens
+     * when both iterators (one from the top and one from the bottom) coincide.
+     */
+
+    while (not (it1Top == it1Bottom.base() or it2Top == it2Bottom.base())) {
+        // Fond out the edge whose end point has the lowest x coordinate:
+        double xCoords[4] = {it1Top[1].x, it1Bottom[1].x, it2Top[1].x, it2Bottom[1].x};
+        unsigned minIndex = std::min_element(std::begin(xCoords), std::end(xCoords)) - std::begin(xCoords);
+
+        if        (minIndex == 0) {
+            ++it1Top;
+            for (const IntersectResult &ir : {resTT(), resTB()})
+                if (ir.success) intersectionPoints.push_back(ir.point);
+        } else if (minIndex == 1) {
+            ++it1Bottom;
+            for (const IntersectResult &ir : {resBT(), resBB()})
+                if (ir.success) intersectionPoints.push_back(ir.point);
+        } else if (minIndex == 2) {
+            ++it2Top;
+            for (const IntersectResult &ir : {resTT(), resBT()})
+                if (ir.success) intersectionPoints.push_back(ir.point);
+        } else if (minIndex == 3) {
+            ++it2Bottom;
+            for (const IntersectResult &ir : {resTB(), resBB()})
+                if (ir.success) intersectionPoints.push_back(ir.point);
+        }
     }
 }
+
 
 ConvexPolygon intersection(const ConvexPolygon &pol1, const ConvexPolygon &pol2) {
     if (pol1.empty() or pol2.empty()) return {};
@@ -223,14 +266,17 @@ ConvexPolygon intersection(const ConvexPolygon &pol1, const ConvexPolygon &pol2)
     Points intersectionPoints;
     const Points &v1 = pol1.getVertices(), &v2 = pol2.getVertices();
 
+    // Find the vertices of one polygon that are inside the other, in O(m·log(n)) each:
     for (const Point &P : v1)
         if (isInside(P, pol2)) intersectionPoints.push_back(P);
     for (const Point &P : v2)
         if (isInside(P, pol1)) intersectionPoints.push_back(P);
 
+    // Add the intersection points between pairs of edges, in O(n + m):
     if (pol1.vertexCount() > 1 and pol2.vertexCount() > 1)
         _intersectionSweepLine(pol1, pol2, intersectionPoints);
 
+    // Return the convex hull of all the intersection points:
     return ConvexPolygon(move(intersectionPoints));
 }
 

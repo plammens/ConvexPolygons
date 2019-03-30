@@ -2,7 +2,8 @@
 
 #include <numeric>  // std::accumulate
 #include <cmath>  // std::abs
-#include "details/utils.h"
+#include "errors.h"
+#include "details/numeric.h"
 
 ///////////////////////// INTERNAL HELPER FUNCTIONS ///////////////////////////
 
@@ -71,26 +72,42 @@ Vector2D Segment::direction() const {
 // Whether vectors AB and AC are in a clockwise configuration (in that order)
 bool isClockwiseTurn(const Point &A, const Point &B, const Point &C) {
     Vector2D AB = B - A, AC = C - A;
-    return crossProd(AB, AC) < 0;
+    return numeric::less(crossProd(AB, AC), 0);
 }
 
 
 // Whether vectors AB and AC are in a clockwise configuration (in that order)
 bool isCounterClockwiseTurn(const Point &A, const Point &B, const Point &C) {
     Vector2D AB = B - A, AC = C - A;
-    return crossProd(AB, AC) > 0;
+    return numeric::greater(crossProd(AB, AC), 0);
 }
 
 
 Point barycenter(ConstRange<Point> points) {
     if (points.empty()) throw ValueError("no points given for barycenter");
-    // Here we calculate the "average" of the points seen as vectors.
-    // We use a custom binary operator that converts `Point`s to `Vector2D`s along the way.
+
+    /*
+     * Here we calculate the "average" of the points, seen as vectors,
+     * using a custom binary operator that converts `Point`s to `Vector2D`s along the way.
+     * We convert them to vectors because points, as such, don't have a "sum" or
+     * a "scalar multiplication" operation defined on them, while vectors do.
+     * This way we keep an explicit distinction between points and vectors,
+     * the two sister objects of an affine space (in this case, the real, euclidean,
+     * two-dimensional affine space).
+     *
+     * In fact, below we are using the formal definition of an affine combination
+     * of points: an arbitrary origin point plus the corresponding linear combination
+     * of vectors (which start at the origin and end at each of the points). The result doesn't
+     * depend on the origin.
+     */
+
+    const Point origin = {0, 0};
     Vector2D sumVector = std::accumulate(points.begin(), points.end(), Vector2D{0, 0},
-                                         [](const Vector2D &u, const Point &P) {
-                                             return u + (const Vector2D &) (P);
+                                         [&origin](const Vector2D &u, const Point &P) {
+                                             return u + (P - origin);
                                          });
-    return Point{0, 0} + sumVector/boost::size(points);
+
+    return origin + sumVector/boost::size(points);
 }
 
 
