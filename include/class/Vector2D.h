@@ -1,6 +1,5 @@
-/** @file
- * Interface for 2D (geometric) vectors.
-*/
+/// @file
+/// Interface for 2D (geometric) vectors.
 
 #ifndef CONVEXPOLYGONS_VECTOR2D_H
 #define CONVEXPOLYGONS_VECTOR2D_H

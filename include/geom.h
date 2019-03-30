@@ -1,4 +1,5 @@
-// Geometric utilities
+/// @file
+/// Geometric utilities of various sorts.
 
 #ifndef CONVEXPOLYGONS_GEOM_H
 #define CONVEXPOLYGONS_GEOM_H

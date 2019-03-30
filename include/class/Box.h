@@ -1,6 +1,5 @@
-/** @file
- * Interface for 2D horizontal boxes.
-*/
+/// @file
+/// Interface for 2D horizontal boxes.
 
 #ifndef CONVEXPOLYGONS_BOX_H
 #define CONVEXPOLYGONS_BOX_H
@@ -12,7 +11,7 @@
 
 //! @name Free functions
 //! Utilities closely related to the Box class.
-//!@{
+///@{
 
 /**
  * Bottom-left corner of the box spanned by two points.

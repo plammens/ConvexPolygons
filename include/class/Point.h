@@ -1,6 +1,5 @@
-/** @file
- * Interface for 2D Points.
-*/
+/// @file
+/// Interface for 2D Points.
 
 #ifndef CONVEXPOLYGONS_POINT_H
 #define CONVEXPOLYGONS_POINT_H

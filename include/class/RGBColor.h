@@ -1,6 +1,5 @@
-/** @file
- * RGB representation of colors.
-*/
+/// @file
+/// RGB representation of colors.
 
 #ifndef CONVEXPOLYGONS_RGBCOLOR_H
 #define CONVEXPOLYGONS_RGBCOLOR_H
