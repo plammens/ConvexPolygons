@@ -3,10 +3,11 @@
 #include <algorithm>  // std::sort
 #include <numeric>  // std::accumulate
 #include <iterator>
-#include <boost/range/adaptors.hpp> // boost::adaptors::filter, ::sliced
+#include <boost/range/adaptors.hpp> // boost::adaptors::filter, ::sliced, ::uniqued
 #include "geom.h"  // segment intersection
 #include "details/utils.h"  // extend
 
+using namespace geom;
 
 
 //-------- MEMBER FUNCTIONS --------//
@@ -216,14 +217,14 @@ void _intersectionSweepLine(const ConvexPolygon &pol1, const ConvexPolygon &pol2
     auto edge2Bottom =  [&it2Bottom](){ return Segment{it2Bottom[0], it2Bottom[1]}; };
 
     // Lambdas to calculate the intersection of a pair of edges:
-    auto resTT = [&](){ return intersect(edge1Top(), edge2Top()); };
-    auto resTB = [&](){ return intersect(edge1Top(), edge2Bottom()); };
-    auto resBT = [&](){ return intersect(edge1Bottom(), edge2Top()); };
-    auto resBB = [&](){ return intersect(edge1Bottom(), edge2Bottom()); };
+    auto intsTT = [&](){ return geom::intersect(edge1Top(), edge2Top()); };
+    auto intsTB = [&](){ return geom::intersect(edge1Top(), edge2Bottom()); };
+    auto intsBT = [&](){ return geom::intersect(edge1Bottom(), edge2Top()); };
+    auto intsBB = [&](){ return geom::intersect(edge1Bottom(), edge2Bottom()); };
 
     // Add first four potential intersection points:
-    for (const IntersectResult &ir : {resTT(), resTB(), resBT(), resBB()})
-        if (ir.success) intersectionPoints.push_back(ir.point);
+    for (const IntersectResult &ir : {intsTT(), intsTB(), intsBT(), intsBB()})
+        if (ir) intersectionPoints.push_back(ir.getPoint());
 
     /*
      * Here we start a sweepline algorithm. At each iteration, we check the intersections
@@ -239,23 +240,16 @@ void _intersectionSweepLine(const ConvexPolygon &pol1, const ConvexPolygon &pol2
         double xCoords[4] = {it1Top[1].x, it1Bottom[1].x, it2Top[1].x, it2Bottom[1].x};
         unsigned minIndex = std::min_element(std::begin(xCoords), std::end(xCoords)) - std::begin(xCoords);
 
-        if        (minIndex == 0) {
-            ++it1Top;
-            for (const IntersectResult &ir : {resTT(), resTB()})
-                if (ir.success) intersectionPoints.push_back(ir.point);
-        } else if (minIndex == 1) {
-            ++it1Bottom;
-            for (const IntersectResult &ir : {resBT(), resBB()})
-                if (ir.success) intersectionPoints.push_back(ir.point);
-        } else if (minIndex == 2) {
-            ++it2Top;
-            for (const IntersectResult &ir : {resTT(), resBT()})
-                if (ir.success) intersectionPoints.push_back(ir.point);
-        } else if (minIndex == 3) {
-            ++it2Bottom;
-            for (const IntersectResult &ir : {resTB(), resBB()})
-                if (ir.success) intersectionPoints.push_back(ir.point);
-        }
+        // Increment the corresponding iterator and calculate new intersections:
+        IntersectResult ints[2];  // potential new intersection points
+        if      (minIndex == 0) { ++it1Top;     ints[0] = intsTT(); ints[1] = intsTB(); }
+        else if (minIndex == 1) { ++it1Bottom;  ints[0] = intsBT(); ints[1] = intsBB(); }
+        else if (minIndex == 2) { ++it2Top;     ints[0] = intsTT(); ints[1] = intsBT(); }
+        else if (minIndex == 3) { ++it2Bottom;  ints[0] = intsTB(); ints[1] = intsBB(); }
+
+        // Update intersection points:
+        for (const IntersectResult &result : ints)
+            if (result) intersectionPoints.push_back(result.getPoint());
     }
 }
 
