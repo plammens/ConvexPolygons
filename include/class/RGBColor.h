@@ -17,7 +17,7 @@ public:
      * @param r,g,b  red, green and blue values
      *
      * @pre  all values are in the interval \f$ [0, 1] \f$
-     * @throws ValueError if any of the arguments is not in \f$ [0, 1] \f$
+     * @throws error::ValueError if any of the arguments is not in \f$ [0, 1] \f$
      */
     explicit
     RGBColor(double r = 0, double g = 0, double b = 0);
@@ -27,7 +27,7 @@ public:
      * Assigns to `r`, `g`, `b`, in that order.
      * @param initList  initializer list with 3 doubles
      * @pre  initList has exactly 3 elements
-     * @throws ValueError if initList.size() != 3
+     * @throws error::ValueError if initList.size() != 3
      */
     RGBColor &operator=(const std::initializer_list<double> &initList);
 

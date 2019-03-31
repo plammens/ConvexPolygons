@@ -60,7 +60,7 @@ Point ConvexPolygon::centroid() const {
 }
 
 Box ConvexPolygon::boundingBox() const {
-    if (vertices.empty()) throw ValueError("bounding box undefined for 0-gon");
+    if (vertices.empty()) throw error::ValueError("bounding box undefined for 0-gon");
 
     // SW: south-west; NE: north-east; etc.
     Point SW = accumulate(vertices.begin(), vertices.end(), vertices.front(), bottomLeft);
@@ -106,7 +106,7 @@ Points ConvexPolygon::ConvexHull(Points points) {
 Box boundingBox(ConstRange<ConvexPolygon> polygons) {
     // skip empty polygons, and if after filtering, polygons is empty, throw an error
     polygons = boost::adaptors::filter(polygons, [](const ConvexPolygon &pol){ return not pol.empty(); });
-    if (polygons.empty()) throw ValueError("bounding box undefined for empty set");
+    if (polygons.empty()) throw error::ValueError("bounding box undefined for empty set");
 
     // Find out the bottom-left (SW) and upper-right (NE) corners of the box:
     Point SW = polygons.begin()->getVertices()[0], NE = SW;  // Initialization

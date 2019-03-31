@@ -12,13 +12,13 @@ TEST_SUITE("io commands") {
         testMap["p1"] = pol; testMap["p2"];
 
         SUBCASE("getPolygon") {
-            CHECK_THROWS_AS(getPolygon("p3", testMap), UndefinedID);
+            CHECK_THROWS_AS(getPolygon("p3", testMap), error::UndefinedID);
             CHECK(getPolygon("p1", testMap) == pol);
             CHECK(getPolygon("p2", testMap) == ConvexPolygon());
         }
         SUBCASE("getPolygons") {
             CHECK_NOTHROW(getPolygons({"p3", "p3", "p3"}, testMap));
-            CHECK_THROWS_AS(getPolygons({"p3"}, testMap).front(), UndefinedID);
+            CHECK_THROWS_AS(getPolygons({"p3"}, testMap).front(), error::UndefinedID);
             CHECK(getPolygons({"p1"}, testMap).front() == pol);
         }
     }

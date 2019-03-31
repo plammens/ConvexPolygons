@@ -91,7 +91,7 @@ namespace geom {
 
 
     Point barycenter(const ConstRange<Point> &points) {
-        if (points.empty()) throw ValueError("no points given for barycenter");
+        if (points.empty()) throw error::ValueError("no points given for barycenter");
 
         /*
          * Here we calculate the "average" of the points, seen as vectors,

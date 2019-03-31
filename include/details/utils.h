@@ -26,7 +26,7 @@ std::vector<T> readVector(std::istream &is) {
 template<typename T>
 void getArgs(std::istream &argStream, T &first) {
     if (not(argStream >> first))
-        throw ValueError("unable to parse arguments");
+        throw error::ValueError("unable to parse arguments");
 }
 
 
@@ -51,7 +51,7 @@ void prefixPath(std::string &filePath, const std::string &prefixPath) {
 
 inline
 void checkFileForWriting(const std::string &filePath) {
-    if (not fopen(filePath.c_str(), "w")) throw IOError(filePath);
+    if (not fopen(filePath.c_str(), "w")) throw error::IOError(filePath);
 }
 
 

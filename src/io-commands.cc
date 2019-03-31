@@ -8,7 +8,7 @@
 
 const ConvexPolygon &getPolygon(const std::string &id, const PolygonMap &polygons) {
     auto it = polygons.find(id);
-    if (it == polygons.end()) throw UndefinedID(id);
+    if (it == polygons.end()) throw error::UndefinedID(id);
     return it->second;
 }
 
@@ -36,13 +36,13 @@ void readAndSavePolygon(std::istream &is, PolygonMap &polygons) {
 inline
 void open(std::ifstream &stream, const std::string &filename) {
     stream.open(filename);
-    if (not stream.is_open()) throw IOError(filename);
+    if (not stream.is_open()) throw error::IOError(filename);
 }
 
 inline
 void open(std::ofstream &stream, const std::string &filename) {
     stream.open(filename);
-    if (not stream.is_open()) throw IOError(filename);
+    if (not stream.is_open()) throw error::IOError(filename);
 }
 
 

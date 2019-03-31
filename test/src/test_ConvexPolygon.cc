@@ -107,13 +107,13 @@ TEST_SUITE("ConvexPolygon") {
             CHECK(square.perimeter() == 4);
         }
         SUBCASE("centroid") {
-            CHECK_THROWS_AS(emptyPol.centroid(), ValueError);
+            CHECK_THROWS_AS(emptyPol.centroid(), error::ValueError);
             CHECK(vertex.centroid() == Point{0, 0});
             CHECK(line.centroid() == Point{0.5, 0.5});
             CHECK(hexagon.centroid() == Point{0, 0});
         }
         SUBCASE("bbox") {
-            CHECK_THROWS_AS(emptyPol.boundingBox(), ValueError);
+            CHECK_THROWS_AS(emptyPol.boundingBox(), error::ValueError);
             CHECK(vertex.boundingBox() == Box({0, 0}, {0, 0}));
             CHECK(line.boundingBox() == Box({{0, 0}, {1, 1}}));
         }

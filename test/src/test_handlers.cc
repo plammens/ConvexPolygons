@@ -6,7 +6,7 @@
 TEST_SUITE("handlers") {
     
     TEST_CASE("unknown command") {
-        CHECK_THROWS_AS(getCommandHandler("pripprò"), UnknownCommand);
+        CHECK_THROWS_AS(getCommandHandler("pripprò"), error::UnknownCommand);
     }
     
 }

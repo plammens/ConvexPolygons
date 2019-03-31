@@ -22,7 +22,7 @@
  *
  * @pre `file` is a valid file path/name for a `png` file
  * @post the file with path `file` exists and has a drawing of `polygons`
- * @throws IOError if the file can't be opened for writing
+ * @throws error::IOError if the file can't be opened for writing
  */
 void draw(const std::string &file, ConstRange<ConvexPolygon> polygons, bool fill = false);
 

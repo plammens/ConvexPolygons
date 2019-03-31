@@ -1,5 +1,3 @@
-#include "class/ConvexPolygon.h"
-#include <iostream>
 #include "details/handlers.h"
 
 #include <cassert>
@@ -78,7 +76,7 @@ void handleNAryOperation(const std::string &keyword, std::istream &argStream, Po
 void handleIOCommand(const std::string &keyword, std::istream &argStream, PolygonMap &polygons) {
     std::string file;
     argStream >> file;
-    if (file.empty()) throw SyntaxError("no file specified");
+    if (file.empty()) throw error::SyntaxError("no file specified");
     prefixPath(file, io::OUT_DIR);  // prefix with output directory
     std::vector<std::string> polygonIDs = readVector<std::string>(argStream);
 
@@ -103,7 +101,7 @@ void handleNullaryCommand(const std::string &keyword, std::istream &argStream, P
 
 CommandHandler getCommandHandler(const std::string &keyword) {
     auto it = cmdHandlerMap.find(keyword);
-    if (it == cmdHandlerMap.end()) throw UnknownCommand(keyword);
+    if (it == cmdHandlerMap.end()) throw error::UnknownCommand(keyword);
     return it->second;
 }
 
@@ -121,11 +119,11 @@ void parseCommand(const std::string &command, PolygonMap &polygons) {
         // Get appropriate handler: (may throw `UnknownCommand`)
         CommandHandler handler = getCommandHandler(keyword);
         handler(keyword, iss, polygons);
-        if (not (iss >> std::ws).eof()) throw UnusedArgument();  // check unused arguments
+        if (not (iss >> std::ws).eof()) throw error::UnusedArgument();  // check unused arguments
 
-    } catch (Error &error) {
+    } catch (error::Error &error) {
         printError(error.what());
-    } catch (Warning &warning) {
+    } catch (error::Warning &warning) {
         printWarning(warning.what());
     }
 }

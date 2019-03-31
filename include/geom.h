@@ -119,7 +119,7 @@ namespace geom {
      * @return  the equibarycenter of `points`
      *
      * @pre  `points` is not empty (i.e., `points.begin() != points.end()`)
-     * @throws ValueError if `points` is empty
+     * @throws error::ValueError if `points` is empty
      */
     Point barycenter(const ConstRange<Point> &points);
 

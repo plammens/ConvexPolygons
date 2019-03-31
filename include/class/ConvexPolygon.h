@@ -87,7 +87,7 @@ public:
      *
      * @pre the polygon is not empty
      *
-     * @throws ValueError if the polygon is empty
+     * @throws error::ValueError if the polygon is empty
      */
     Point centroid() const;
 
@@ -108,7 +108,7 @@ public:
      *
      * @complexity  linear in the number of vertices
      *
-     * @throws ValueError if the polygon is empty.
+     * @throws error::ValueError if the polygon is empty.
      */
     Box boundingBox() const;
 
@@ -163,7 +163,7 @@ private:
  * @post  every vertex of every polygon is within the returned box (see
  * the documentation for ConvexPolygon::boundingBox() for more details)
  *
- * @throws ValueError if the total number of vetices is 0
+ * @throws error::ValueError if the total number of vetices is 0
  * @complexity: linear in the total number of vertices
  */
 Box boundingBox(ConstRange<ConvexPolygon> polygons);

@@ -13,7 +13,7 @@ RGBColor::RGBColor(double r, double g, double b) {
 }
 
 RGBColor &RGBColor::operator=(const std::initializer_list<double> &initList) {
-    if (initList.size() != 3) throw ValueError("color assignment needs exactly 3 arguments");
+    if (initList.size() != 3) throw error::ValueError("color assignment needs exactly 3 arguments");
     auto it = initList.begin();
     setR(it[0]);
     setG(it[1]);
@@ -45,7 +45,7 @@ void RGBColor::setB(double blue) {
 //-------- STATIC FUNCTIONS --------//
 
 void RGBColor::checkRange(double val) {
-    if (val < 0 or val > 1) throw ValueError("color values should be in [0, 1]");
+    if (val < 0 or val > 1) throw error::ValueError("color values should be in [0, 1]");
 }
 
 
