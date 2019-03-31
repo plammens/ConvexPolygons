@@ -24,7 +24,8 @@ void handlePolygonMethod(const std::string &keyword, std::istream &argStream, Po
     getArgs(argStream, id);
     ConvexPolygon &pol = getPolygon(id, polygons);  // throws `UndefinedID` if nonexistent
 
-    if (keyword == cmd::PRINT) printPolygon(id, pol);
+    if      (keyword == cmd::PRINT) printPolygon(id, pol);
+    else if (keyword == cmd::PRETTYPRINT) prettyPrint(id, pol);
     else if (keyword == cmd::AREA) std::cout << pol.area() << std::endl;
     else if (keyword == cmd::PERIMETER) std::cout << pol.perimeter() << std::endl;
     else if (keyword == cmd::VERTICES) std::cout << pol.vertexCount() << std::endl;

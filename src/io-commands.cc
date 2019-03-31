@@ -96,6 +96,7 @@ void printPolygon(const std::string &id, const ConvexPolygon &pol, std::ostream 
 
     const Points &vertices = pol.getVertices();
     const long end = vertices.size() - 1;
+    // we use ints instead of iterators to keep the less-than comparison safe for empty polygons
     for (long i = 0; i < end; ++i)
         os << ' ' << vertices[i];
 
@@ -122,4 +123,17 @@ ConstRange<ConvexPolygon> getPolygons(const std::vector<std::string> &polygonIDs
             };
     // (Lazily) apply the lambda to each ID:
     return boost::adaptors::transform(polygonIDs, getter);
+}
+
+
+void prettyPrint(const std::string &id, const ConvexPolygon &pol, std::ostream &os) {
+    os << id;
+
+    const Points &vertices = pol.getVertices();
+    const long end = vertices.size() - 1;
+    // we use ints instead of iterators to keep the less-than comparison safe for empty polygons
+    for (long i = 0; i < end; ++i)
+        os << " {" << vertices[i].x << ", " << vertices[i].y << "}";
+
+    os << std::endl;
 }

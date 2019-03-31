@@ -1,4 +1,5 @@
-// io commands for calculator
+/// @file
+/// Input-output operations for the polygon calculator
 
 #ifndef CONVEXPOLYGONS_COMMANDS_H
 #define CONVEXPOLYGONS_COMMANDS_H
@@ -24,6 +25,8 @@ void readAndSavePolygon(std::istream &is, PolygonMap &polygons, const std::strin
 
 // Print polygon to an output stream in plain format
 void printPolygon(const std::string &id, const ConvexPolygon &pol, std::ostream &os = std::cout);
+
+void prettyPrint(const std::string &id, const ConvexPolygon &pol, std::ostream &os = std::cout);
 
 // Print a list of defined polygon identifiers
 void list(const PolygonMap &polygons);

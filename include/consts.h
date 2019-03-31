@@ -14,6 +14,7 @@ namespace cmd {
             POLYGON = "polygon",
             DELETE = "delete",
             PRINT = "print",
+            PRETTYPRINT = "pretty-print",
             AREA = "area",
             PERIMETER = "perimeter",
             VERTICES = "vertices",

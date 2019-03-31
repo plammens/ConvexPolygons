@@ -1,8 +1,4 @@
-# TODO: refactor into config and auto variables
-
-############################# Global variables ################################
-
-BROWSER = firefox
+############################# User-defined constants ################################
 
 ##### Directory names #####
 
@@ -10,32 +6,56 @@ INCLUDE_DIR := include
 SRC_DIR := src
 CLASS_SUBDIR := class
 LIB_ROOT_DIR := libs
-
 TEST_DIR := test
-TEST_TEXT_DIR = $(TEST_DIR)/text
+DOCS_DIR = docs
 
+# directory for build files (binaries, object files, etc.):
 BUILD_DIR := build
+
+# output root directory for main program:
+OUT_DIR := out
+
+
+
+##### Configuration #####
+
+# directory to find any additional static library files (.a):
+USER_LIB_DIR := $(HOME)/libs/lib
+
+# browser (for viewing html docs):
+BROWSER := firefox
+
+# name of main executable:
+MAIN_NAME := main
+
+# test suite and test executable name:
+TEST_SUITE := doctest
+TEST_NAME := test
+
+
+
+
+############################# Macros ################################
+
+
+##### Directory names #####
+
+TEST_TEXT_DIR = $(TEST_DIR)/text
 BIN_DIR = $(BUILD_DIR)/bin
 OBJ_DIR = $(BUILD_DIR)/obj
-DOCS_DIR = docs
+
 DEP_DIR = $(BUILD_DIR)/depend
 LIB_INCLUDE_DIR = $(LIB_ROOT_DIR)/include
 LIB_FILE_DIR = $(LIB_ROOT_DIR)/lib
 
-# dircetory for program's output files:
-OUT_DIR := out
 
+##### file paths #####
 
-##### names #####
-
-# name of main program:
-MAIN_NAME := main
-MAIN_EXE = $(BIN_DIR)/$(MAIN_NAME).x# output path for main program
+MAIN_EXE = $(BIN_DIR)/$(MAIN_NAME).x
 MAIN_OBJ = $(OBJ_DIR)/$(MAIN_NAME).o
 
-TEST_SUITE := doctest
-TEST_NAME := test
 TEST_EXE = $(BIN_DIR)/$(TEST_NAME).x
+
 
 
 ##### Compiler options and flags ######
@@ -44,7 +64,7 @@ CXX = g++
 CXXFLAGS = -std=c++11 -O2 -D NO_FREETYPE
 
 CXX_COMPILE_FLAGS = $(CXXFLAGS) -I $(INCLUDE_DIR) -I $(LIB_INCLUDE_DIR)
-CXX_LINK_FLAGS = $(CXXFLAGS) -L $(LIB_FILE_DIR) -l PNGwriter -l png
+CXX_LINK_FLAGS = $(CXXFLAGS) -L $(LIB_FILE_DIR) -L $(USER_LIB_DIR) -l PNGwriter -l png
 
 CXX_TEST_COMPILE_FLAGS = $(CXX_COMPILE_FLAGS) -I $(TEST_DIR)/$(INCLUDE_DIR) -Og
 CXX_TEST_LINK_FLAGS = $(CXX_LINK_FLAGS) -Og
@@ -67,6 +87,7 @@ test_objects = $(patsubst %.cc,$(OBJ_DIR)/%.o, $(notdir $(test_sources)))
 
 # dependency files for automatic Makefile rule prerequisites
 depends = $(patsubst $(OBJ_DIR)/%.o,$(DEP_DIR)/%.d,$(objects) $(test_objects))
+
 
 
 
