@@ -1,0 +1,16 @@
+/*!
+
+@mainpage
+
+Welcome to the reference manual for this Convex Polygon calculator. Here
+you will find detailed information about all of the publicly exposed
+symbols and functionality in the project. For a broader view of
+the project, consult the [`README.html`](../../README.html) file,
+found in the project's root directory.
+
+You can navigate this reference with the search bar (top-right) or
+the tabs in the header (classes, namespaces, etc.).
+
+Generated with [doxygen](http://www.doxygen.nl).
+
+*/
