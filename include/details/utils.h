@@ -1,5 +1,5 @@
-// @file
-// General-purpose utilities (header-only)
+/// @file
+/// General-purpose utilities (header-only)
 
 #ifndef CONVEXPOLYGONS_UTILS_H
 #define CONVEXPOLYGONS_UTILS_H
@@ -31,6 +31,14 @@ std::vector<T> readVector(std::istream &is) {
 }
 
 
+/// Base case of the recursive variadic template getArgs()
+template<typename T>
+void getArgs(std::istream &argStream, T &first) {
+    if (not(argStream >> first))
+        throw error::ValueError("unable to parse arguments");
+}
+
+
 /**
  * Variadic template that reads values from an input stream
  * into each of its arguments.
@@ -48,14 +56,6 @@ template<typename T, typename ... Types>
 void getArgs(std::istream &argStream, T &first, Types &... slots) {
     getArgs(argStream, first);
     getArgs(argStream, slots...);
-}
-
-
-/// Base case of the recursive variadic template getArgs()
-template<typename T>
-void getArgs(std::istream &argStream, T &first) {
-    if (not(argStream >> first))
-        throw error::ValueError("unable to parse arguments");
 }
 
 
@@ -96,7 +96,7 @@ constexpr unsigned long _size(const std::vector<T> &vec, const Types &... others
     return vec.size() + _size(others...);
 }
 
-// Base case for _size
+// Base case for _size()
 template<typename T>
 constexpr unsigned long _size(const std::vector<T> &vec) {
     return vec.size();
