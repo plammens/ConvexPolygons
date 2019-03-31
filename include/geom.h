@@ -10,7 +10,6 @@
 
 
 /// Namespace for geometric utilities of various sorts
-
 namespace geom {
 
     //-------- VECTOR COMPUTATIONS --------//
@@ -53,14 +52,21 @@ namespace geom {
          */
         bool xCoord(const Point &A, const Point &B);
 
+
         /**
          * Functor for a comparator that, given an origin point,
          * compares points based on the angle they form with
          * the y-axis. That is, every point \f$ P \f$ is compared
          * based on the angle that \f$ \overrightarrow{OP} \f$
          * forms with the unit vector \f$ \hat{\jmath} = (0, 1) \f$,
-         * where \f$ O \f$ is the instance's origin point.
-         * Can be constructed with one argument, the origin point.
+         * where \f$ O \f$ is the instance's origin point. \f$ A \f$
+         * comes before \f$ B \f$ in this strict total order iff the angle
+         * that \f$ \overrightarrow{OA} \f$ forms with the y-axis is
+         * strictly smaller than the angle formed by
+         * \f$ \overrightarrow{OB} \f$.
+         *
+         * In case of equality, points that are closer to the origin
+         * are prioritized.
          *
          * @pre all of the vectors starting at the origin and ending
          * at each of the points to be compared form an angle with the
@@ -71,24 +77,17 @@ namespace geom {
             Point origin;  ///< origin from which vectors to compared points start
 
             /**
-             * Strict total ordering comparison for points, based on the angle
-             * formed with the y-axis.
-             *
+             * Strict total ordering comparison function.
              * @param A,B points to be compared
              * @return whether `A` comes before `B` in the ordering defined
-             * by this instance; equivalently, whether the angle that
-             * \f$ \overrightarrow{OA} \f$ forms with the y-axis is smaller
-             * than the angle formed by \f$ \overrightarrow{OB} \f$.
-             *
-             * @pre the angles that \f$ \overrightarrow{OA} \f$ and
-             * \f$ \overrightarrow{OB} \f$ form with the y-axis are within
-             * \f$ [0, \pi] \f$. Equivalently, \f$ A_x \ge O_x \f$ and
-             * \f$ B_x \ge O_x \f$, where \f$ O \f$ denotes the `yAngle::origin`.
+             * by this instance. See the docs for geom::comp::yAngle for details.
+             * @pre see the docs for geom::comp::yAngle.
              */
             bool operator()(const Point &A, const Point &B);
         };
 
     }
+
 
     /**
      * Whether a sequence of three points forms a (strictly) clockwise turn
@@ -101,6 +100,7 @@ namespace geom {
      */
     bool isClockwiseTurn(const Point &A, const Point &B, const Point &C);
 
+
     /**
      * Whether a sequence of three points forms a (strictly) counter-clockwise turn
      * @param A,B,C  points under consideration
@@ -112,6 +112,7 @@ namespace geom {
      */
     bool isCounterClockwiseTurn(const Point &A, const Point &B, const Point &C);
 
+
     /**
      * Equibarycenter of a range of points.
      * @param points  range of points to calculate the barycenter of
@@ -120,9 +121,10 @@ namespace geom {
      * @pre  `points` is not empty (i.e., `points.begin() != points.end()`)
      * @throws ValueError if `points` is empty
      */
-    Point barycenter(ConstRange <Point> points);
+    Point barycenter(const ConstRange<Point> &points);
 
     ///@}
+
 
 
 
