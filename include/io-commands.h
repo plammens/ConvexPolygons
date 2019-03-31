@@ -116,9 +116,11 @@ ConvexPolygon &getPolygon(const std::string &id, PolygonMap &polygons);
  * @return a (non-evaluated) range of polygons corresponding to each of the `id`s
  * (in the same order)
  *
+ * @complexity constant
+ *
  * @note Since the returned range is lazy-evaluated, it may be that no exception is thrown
- * when calling this function (e.g., an error::UndefinedID), but it may be
- * thrown later when trying to access the contents of the range.
+ * when calling this function, but it may be thrown later when trying to access the
+ * contents of the range (e.g., an error::UndefinedID).
  */
 ConstRange<ConvexPolygon> getPolygons(const std::vector<std::string> &polygonIDs, const PolygonMap &polygonMap);
 

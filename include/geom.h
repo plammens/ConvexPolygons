@@ -120,6 +120,8 @@ namespace geom {
      *
      * @pre  `points` is not empty (i.e., `points.begin() != points.end()`)
      * @throws error::ValueError if `points` is empty
+     *
+     * @complexity linear
      */
     Point barycenter(const ConstRange<Point> &points);
 

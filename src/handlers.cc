@@ -1,11 +1,38 @@
 #include "details/handlers.h"
 
 #include <cassert>
+#include <iostream>
 #include "io-commands.h"  // save, load, list...
 #include "draw.h"  // draw
 #include "errors.h"
 #include "details/utils.h"  // getArgs
 
+
+//-------- INTERNAL --------//
+
+//---- Console messages ----//
+
+inline
+void printOk() {
+    std::cout << "ok" << std::endl;
+}
+
+
+inline
+void printError(const std::string &error) {
+    // \e[31;1m is the ANSI escape sequence for bright red text
+    std::cerr << "\e[31;1m" << "error: " << error << "\e[0m" << std::endl;
+}
+
+inline
+void printWarning(const std::string &warning) {
+    // \e[33m is the ANSI escape sequence for yellow text
+    std::cerr << "\e[33m" << "warning: " << warning << "\e[0m" << std::endl;
+}
+
+
+
+//-------- EXPOSED FUNCTIONS --------//
 
 void handleIDManagement(const std::string &keyword, std::istream &argStream, PolygonMap &polygons) {
     std::string id;
@@ -108,7 +135,7 @@ CommandHandler getCommandHandler(const std::string &keyword) {
 
 
 // Check whether command is valid and run corresponding handler
-void parseCommand(const std::string &command, PolygonMap &polygons) {
+void parseCommand(const std::string &command, PolygonMap &polygonMap) {
     if (command.empty()) return;  // ignore empty lines
 
     try {
@@ -119,7 +146,7 @@ void parseCommand(const std::string &command, PolygonMap &polygons) {
 
         // Get appropriate handler: (may throw `UnknownCommand`)
         CommandHandler handler = getCommandHandler(keyword);
-        handler(keyword, iss, polygons);
+        handler(keyword, iss, polygonMap);
         if (not (iss >> std::ws).eof()) throw error::UnusedArgument();  // check unused arguments
 
     } catch (error::Error &error) {

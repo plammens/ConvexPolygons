@@ -1,65 +1,68 @@
-// Command handlers that handle user input and dispatch to the appropriate function
+/// @file
+/// Command handlers that handle user input and dispatch to the appropriate function.
+/// Alongside other input-output handling facilities.
 
 #ifndef CONVEXPOLYGONS_HANDLERS_H
 #define CONVEXPOLYGONS_HANDLERS_H
 
-#include <functional> // function
-#include <iostream>
+#include <functional> // std::function
+#include <istream>
 #include <map>
 #include <string>
 #include "consts.h"
 #include "polygonmap.h"
 
-// Command handler signature
+
+/** @name Command handlers
+ *
+ * Routines that handle user-issued commands and dispatch to the appropriate function.
+ * They all share the same signature:
+ * \code{.cpp}
+ * handlerName(const std::string &keyword, std::istream &argStream, PolygonMap &polygonMap);
+ * \endcode
+ *
+ * @param keyword  command keyword
+ * @param argStream  input stream of arguments to the command
+ * @param polygonMap  map of polygons with which to execute the command
+ *
+ * @exceptions Any exception thrown by executing the command or parsing the arguments.
+ * Most common exceptions are:
+ *  - error::UndefinedID
+ *  - error::ValueError
+ *  - error::SyntaxError
+ */
+///@{
+
+/// Command handler signature
 typedef std::function<void(const std::string &, std::istream &, PolygonMap &)> CommandHandler;
 
 
-// ---------------------------------------------------------------
-
-
-// non-const version
-
-// Subroutine to handle creation/assignment of a single polygon
+/// Subroutine to handle creation/assignment of a single polygon
 void handleIDManagement(const std::string &keyword, std::istream &argStream, PolygonMap &polygons);
 
-// Subroutine to handle commands involving printing info about a single polygon
+/// Subroutine to handle commands involving printing info about a single polygon
 void handlePolygonMethod(const std::string &keyword, std::istream &argStream, PolygonMap &polygons);
 
-// Subroutine to handle operations with polygons
+/// Subroutine to handle binary operations with polygons
 void handleBinaryOperation(const std::string &keyword, std::istream &argStream, PolygonMap &polygons);
 
+/// Subroutine to handle n-ary operations with polygons
 void handleNAryOperation(const std::string &keyword, std::istream &argStream, PolygonMap &polygons);
 
-// Subroutine to handle file-related commands
+/// Subroutine to handle file-related commands
 void handleIOCommand(const std::string &keyword, std::istream &argStream, PolygonMap &polygons);
 
-// Run commands that take no arguments
+/// Subroutine to run commands that take no arguments
 void handleNullaryCommand(const std::string &keyword, std::istream &argStream, PolygonMap &polygons);
 
 
-inline
-void printOk() {
-    std::cout << "ok" << std::endl;
-}
+///@}
 
 
-inline
-void printError(const std::string &error) {
-    // \e[31;1m is the ANSI escape sequence for bright red text
-    std::cerr << "\e[31;1m" << "error: " << error << "\e[0m" << std::endl;
-}
 
-inline
-void printWarning(const std::string &warning) {
-    // \e[33m is the ANSI escape sequence for yellow text
-    std::cerr << "\e[33m" << "warning: " << warning << "\e[0m" << std::endl;
-}
+//-------- COMMAND HANDLER MAP --------//
 
-
-// ----------------------------------------------------------------
-
-
-// Maps each command keyword to its corresponding command handler
+/// Maps each command keyword to its corresponding command handler
 const std::map<std::string, CommandHandler> cmdHandlerMap = {
         {cmd::POLYGON,      handleIDManagement},
         {cmd::DELETE,       handleIDManagement},
@@ -80,11 +83,30 @@ const std::map<std::string, CommandHandler> cmdHandlerMap = {
         {cmd::PAINT,        handleIOCommand}
 };
 
-// Gets the command handler associated to the command `keyword`
+/**
+ * Gets the command handler associated to a keyword.
+ * @param keyword  command keyword
+ * @return the command handler corresponding to `keyword`
+ *
+ * @pre `keyword` is in ::cmdHandlerMap (i.e., it is recognized)
+ * @throws error::UnknownCommand if `keyword` isn't recognized as
+ * a valid command keyword
+ */
 CommandHandler getCommandHandler(const std::string &keyword);
 
 
-void parseCommand(const std::string &command, PolygonMap &polygons);
+
+//-------- COMMAND PARSING --------//
+
+/**
+ * Parses a complete command (as a string). Commands correspond to an entire
+ * line of user input. Catches any exception that inherits from error::Error
+ * or error::Warning.
+ *
+ * @param[in] command  full command (keyword + arguments) issued by the user
+ * @param[in, out] polygonMap  polygon map in which the operations are to be performed
+ */
+void parseCommand(const std::string &command, PolygonMap &polygonMap);
 
 
 #endif //CONVEXPOLYGONS_HANDLERS_H
