@@ -40,15 +40,12 @@ void getArgs(std::istream &argStream, T &first, Types &... slots) {
 
 
 inline
-int checkDirectory(const std::string &dir) {
-    return system(("mkdir -p " + dir).c_str());
-}
-
-
-inline
 void prefixPath(std::string &filePath, const std::string &prefixPath) {
-    if (checkDirectory(prefixPath) != 0) throw IOError("directory " + prefixPath);
-    filePath.insert(0, prefixPath);
+    if (prefixPath.empty()) return;
+
+    std::string prefix = prefixPath;
+    if (prefix.back() != '/') prefix.push_back('/');
+    filePath.insert(0, prefix);
 }
 
 

@@ -1,24 +1,70 @@
-#include <consts.h>
 #include "details/draw.h"
 
+#include <pngwriter.h>
+#include "consts.h"
 #include "details/utils.h"
 
 
-void draw(const std::string &file, ConstRange<ConvexPolygon> polygons, bool fill) {
-    checkFileForWriting(file);
-    pngwriter png(img::SIZE.X, img::SIZE.Y, img::BACKGROUND, file.c_str());
 
-    if (not polygons.empty()) {
-        ScaleHelper scale(polygons);
-        for (const ConvexPolygon &pol : polygons)
-            drawPolygon(png, pol, scale, fill);
-    }
+//-------- INTERNAL UTILITIES --------//
 
-    png.close();
+//---- Scale helper ----//
+
+/*
+ * Utility functor to map vertices from a set of polygons to their pixel-coordinates.
+ * Scales the coordinates appropriately so that the bounding box of the given
+ * polygons fits the image completely, centered and maintaining the aspect ratio.
+ */
+class _ScaleHelper {
+public:
+    // Constructs a scale helper from a set of polygons. Calculates their bounding box
+    // and sets the internal variables accordingly.
+    _ScaleHelper(ConstRange<ConvexPolygon> polygons);
+
+    int scaleX(double x) const;  // calculate the pixel x-coord. corresponding to this x-coord.
+    int scaleY(double y) const;  // calculate the pixel y-coord. corresponding to this y-coord.
+    std::pair<int, int> operator()(const Point &P) const;  // both at once
+
+private:
+    double minX, minY, maxLength;
+    int xOffset, yOffset;
+};
+
+
+_ScaleHelper::_ScaleHelper(ConstRange<ConvexPolygon> polygons) {
+    Box bBox = boundingBox(polygons);
+    Point SW = bBox.SW(), NE = bBox.NE();
+    double xLength = NE.x - SW.x, yLength = NE.y - SW.y;
+
+    minX = SW.x; minY = SW.y;
+    maxLength = std::max(xLength, yLength);
+    xOffset = img::PADDING + int(round(img::DRAW_SIZE.X*(1 - xLength/maxLength)/2));
+    yOffset = img::PADDING + int(round(img::DRAW_SIZE.Y*(1 - yLength/maxLength)/2));
 }
 
 
-void drawPolygon(pngwriter &png, const ConvexPolygon &pol, const ScaleHelper &scale, bool fill) {
+int _ScaleHelper::scaleX(double x) const {
+    if (maxLength == 0) return img::CENTER.X;
+    return xOffset + int(round(img::DRAW_SIZE.X*(x - minX)/maxLength));
+}
+
+
+int _ScaleHelper::scaleY(double y) const {
+    if (maxLength == 0) return img::CENTER.Y;
+    return yOffset + int(round(img::DRAW_SIZE.Y*(y - minY)/maxLength));
+}
+
+
+std::pair<int, int> _ScaleHelper::operator()(const Point &P) const {
+    return {scaleX(P.x), scaleY(P.y)};
+}
+
+
+//---- draw helper ----//
+
+// Draws (and fills, if `fill` is true) a single polygon, scaling its coordinates
+// with the given scale helper.
+void _draw(pngwriter &png, const ConvexPolygon &pol, const _ScaleHelper &scale, const bool fill) {
     if (pol.empty()) return;
 
     // Some aliases:
@@ -49,31 +95,24 @@ void drawPolygon(pngwriter &png, const ConvexPolygon &pol, const ScaleHelper &sc
 }
 
 
-ScaleHelper::ScaleHelper(ConstRange<ConvexPolygon> polygons) {
-    Box bBox = boundingBox(polygons);
-    Point SW = bBox.SW(), NE = bBox.NE();
-    double xLength = NE.x - SW.x, yLength = NE.y - SW.y;
 
-    minX = SW.x; minY = SW.y;
-    maxLength = std::max(xLength, yLength);
-    xOffset = img::PADDING + int(round(img::DRAW_SIZE.X*(1 - xLength/maxLength)/2));
-    yOffset = img::PADDING + int(round(img::DRAW_SIZE.Y*(1 - yLength/maxLength)/2));
+
+//-------- DRAW --------//
+
+void draw(const std::string &file, ConstRange<ConvexPolygon> polygons, const bool fill) {
+    checkFileForWriting(file);
+    pngwriter png(img::SIZE.X, img::SIZE.Y, img::BACKGROUND, file.c_str());
+
+    if (not polygons.empty()) {
+        _ScaleHelper scale(polygons);
+        for (const ConvexPolygon &pol : polygons)
+            _draw(png, pol, scale, fill);
+    }
+
+    png.close();
 }
 
 
-int ScaleHelper::scaleX(double x) const {
-    if (maxLength == 0) return img::CENTER.X;
-    return xOffset + int(round(img::DRAW_SIZE.X*(x - minX)/maxLength));
-}
 
 
-int ScaleHelper::scaleY(double y) const {
-    if (maxLength == 0) return img::CENTER.Y;
-    return yOffset + int(round(img::DRAW_SIZE.Y*(y - minY)/maxLength));
-}
-
-
-std::pair<int, int> ScaleHelper::operator()(const Point &P) const {
-    return {scaleX(P.x), scaleY(P.y)};
-}
 

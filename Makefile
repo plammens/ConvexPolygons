@@ -98,6 +98,7 @@ libs: $(LIB_FILE_DIR)/libPNGwriter.a | .pre-lib
 
 
 run: build
+	@mkdir -p $(OUT_DIR)
 	@echo
 	@printf "\e[1mExecuting main program...\e[0m ($(MAIN_EXE))\n\n"
 	@$(MAIN_EXE)
