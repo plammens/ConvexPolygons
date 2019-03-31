@@ -67,6 +67,7 @@ const std::map<std::string, CommandHandler> cmdHandlerMap = {
         {cmd::POLYGON,      handleIDManagement},
         {cmd::DELETE,       handleIDManagement},
         {cmd::PRINT,        handlePolygonMethod},
+        {cmd::PRETTYPRINT,  handlePolygonMethod},
         {cmd::AREA,         handlePolygonMethod},
         {cmd::PERIMETER,    handlePolygonMethod},
         {cmd::VERTICES,     handlePolygonMethod},
