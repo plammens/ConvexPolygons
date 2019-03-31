@@ -11,7 +11,7 @@ void handleIDManagement(const std::string &keyword, std::istream &argStream, Pol
     std::string id;
     getArgs(argStream, id);
 
-    if (keyword == cmd::POLYGON) readAndSavePolygon(argStream, polygons, id);
+    if (keyword == cmd::POLYGON) readPolygon(argStream, polygons, id);
     else if (keyword == cmd::DELETE) polygons.erase(id);
     else assert(false);
 

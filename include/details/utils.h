@@ -1,5 +1,5 @@
-// General-purpose utilities
-// (header-only)
+// @file
+// General-purpose utilities.
 
 #ifndef CONVEXPOLYGONS_UTILS_H
 #define CONVEXPOLYGONS_UTILS_H
