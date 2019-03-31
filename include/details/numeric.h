@@ -1,7 +1,5 @@
-/**
- * @file
- * Inline functions for numerical comparisons.
- */
+/// @file
+/// Inline functions for numerical comparisons (header-only)
 
 #ifndef CONVEXPOLYGONS_NUMERIC_H
 #define CONVEXPOLYGONS_NUMERIC_H
