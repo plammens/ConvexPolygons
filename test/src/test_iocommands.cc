@@ -1,6 +1,6 @@
 #include <doctest.h>
 #include <sstream>
-#include "details/iocommands.h"
+#include "io-commands.h"
 #include "errors.h"
 
 

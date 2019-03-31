@@ -4,8 +4,8 @@
 #define CONVEXPOLYGONS_COMMANDS_H
 
 #include <iostream>
-#include "polygonmap.h"
-#include "range.h"
+#include "details/polygonmap.h"
+#include "details/range.h"
 
 
 // Gets polygon with ID `id` in `polygons`; throws `UndefinedID` if nonexistent

@@ -1,4 +1,4 @@
-#include "details/draw.h"
+#include "draw.h"
 
 #include <pngwriter.h>
 #include "consts.h"

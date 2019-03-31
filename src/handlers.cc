@@ -3,8 +3,8 @@
 #include "details/handlers.h"
 
 #include <cassert>
-#include "details/iocommands.h"  // save, load, list...
-#include "details/draw.h"  // draw
+#include "io-commands.h"  // save, load, list...
+#include "draw.h"  // draw
 #include "errors.h"
 #include "details/utils.h"  // getArgs
 
