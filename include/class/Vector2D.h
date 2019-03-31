@@ -55,15 +55,6 @@ Vector2D operator/(const Vector2D &u, double a); ///< Same as operator*(), but f
  */
 Vector2D operator+(const Vector2D &u, const Vector2D &v);
 
-/**
- * Two-dimensional cross product.
- * @param u  left operand of the cross product
- * @param v  right operand of the cross product
- * @return the `z` component of the cross product:
- * \f$ (u_x, u_y, 0)\times(v_x, v_y, 0) =  u_x v_y - u_y v_x \f$.
- */
-double crossProd(const Vector2D & u, const Vector2D& v);
-
 ///@}
 
 

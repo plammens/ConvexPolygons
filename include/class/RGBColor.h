@@ -17,7 +17,7 @@ public:
      * @param r,g,b  red, green and blue values
      *
      * @pre  all values are in the interval \f$ [0, 1] \f$
-     * @throws  ValueError if any of the arguments is not in \f$ [0, 1] \f$
+     * @throws ValueError if any of the arguments is not in \f$ [0, 1] \f$
      */
     explicit
     RGBColor(double r = 0, double g = 0, double b = 0);

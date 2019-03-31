@@ -101,8 +101,8 @@ public:
      * @post every vertex is within the space delimited by the returned box.
      * That is, every vertex \f$ p \f$ of the polygon satisfies:
      * \f$  SW_x \leq p_x \leq NE_x  \ \land \  SW_y \leq p_y \leq NE_y \f$
-     * where \f$ SW \f$ is \link #Box::SW() `B.SW()` \endlink and \f$ NE \f$ is
-     * \link #Box::NE() `B.NE()` \endlink (`B` is the returned box).
+     * where \f$ SW \f$ is \link #Box::SW() `B.SW()`\endlink and \f$ NE \f$ is
+     * \link #Box::NE() `B.NE()`\endlink (`B` is the returned box).
      * Moreover, \f$ SW = (\min_{p\in P} p_x, \min_{p\in P} p_y) \f$ and
      * \f$ NE = (\max_{p\in P} p_x, \max_{p\in P} p_y) \f$ where \f$ P \f$ is the set of vertices.
      *
@@ -163,7 +163,7 @@ private:
  * @post  every vertex of every polygon is within the returned box (see
  * the documentation for ConvexPolygon::boundingBox() for more details)
  *
- * @throws  ValueError if the total number of vetices is 0
+ * @throws ValueError if the total number of vetices is 0
  * @complexity: linear in the total number of vertices
  */
 Box boundingBox(ConstRange<ConvexPolygon> polygons);

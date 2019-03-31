@@ -2,6 +2,7 @@
 
 #include <cmath>  // std::sqrt
 #include "details/numeric.h"
+#include "geom.h"
 
 
 
@@ -36,10 +37,6 @@ Vector2D operator/(const Vector2D &u, double a) {
 
 Vector2D operator+(const Vector2D &u, const Vector2D &v) {
     return {u.x + v.x, u.y + v.y};
-}
-
-double crossProd(const Vector2D &u, const Vector2D &v) {
-    return u.x*v.y - u.y*v.x;
 }
 
 
