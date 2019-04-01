@@ -28,15 +28,22 @@ pay a visit to the [reference manual](#Reference manual).
 # Features and usage
 
 The calculator works in a command-line environment. Each line from
-`stdin` is interpreted as a single command. Commands follow the classical
+`stdin` is interpreted as a single command. Commands follow a classical
 `<keyword> [arguments]` structure.
+
+The whole calculator revolves around 2D convex polygons. You can create, delete,
+draw, intersect, unite... convex polygons. Each polygon is stored as an object with
+a unique identifier (ID). Identifiers can be composed of almost any combination
+of letters, numbers and  symbols.
+
+Jump to the [list of available commands](#Commands) to view what you can do with the calculator, or
+go to the [examples section](#Examples) to take a look at some prepackaged examples.
+
+## Commands
 
 Below you'll find a list of all available commands. `<angle>` brackets indicate
 a positional argument, while `[square]` brackets denote an optional argument. 
 Ellipses (`[like so...]`) indicate an arbitrary number of arguments.
-
-
-## Commands
 
 ### Polygon / ID management
 
@@ -95,24 +102,31 @@ The `centroid` command prints the centroid of the given polygon.
 
 ### IO commands
 
+Here `<file>` denotes a valid file path.
+
 
  - `save <file> [polygon IDs...]`
 
-The `save` command saves the given polygons in a file, overwriting it if it
-already existed. The format is the same as for `print`.
+The `save` command saves the given polygons in a file, overwriting it if it already existed. The format is the same as for `print`.
 
 
  -  `load <file>`
 
-The `load` command loads the polygons stored in a file, in the same way as
-`polygon`, but retrieving the vertexes and identifiers from the specified file.
+The `load` command loads the polygons stored in a file, in the same way as `polygon`, but retrieving the vertexes and identifiers from the specified file.
+
+- `include <file>`
+
+This command parses the contents of `file` as if each line in the file were written directly
+to `stdin`. Standard output from the parsing of the commands will be suppressed, although any errors will still be displayed. Useful for scripting and testing.
 
 ### Drawing commands
 
 
  - `setcol <ID> <R> <G> <B>`
 
-The `setcol` command associates a color to the given polygon.
+The `setcol` command associates a color to the given polygon. `R`, `G` and `B` are the red,
+green, and blue color values respectively; they should all be real numbers in the range 
+$[0, 1]$.
 
 
  - `draw <file> [polygon IDs...]` 
@@ -153,14 +167,18 @@ the first polygon is inside the second polygon.
  -  `bbox <ID1> [polygon IDs...]`
 
 The `bbox` command associates a new polygon to `ID1`, with the four vertices corresponding to the
-bounding box of the given polygons.
+bounding box of the given polygons. Keep in mind that the bounding box of an empty set is undefined.
+
+
+
+## Comments and empty lines
+
+Lines starting with a `#` will be ignored. Likewise, empty lines will be ignored.
 
 
 ## Errors and warnings
 
-Some commands, such as asking for the bounding box of the empty set, will produce an error. In these cases an error message (in bright red, if your
-console supports ANSI escape codes :smile:) will be printed to `stderr`.
-The author has tried to make the error messages as straightforward as
+Some commands, such as asking for the bounding box of the empty set, will produce an error. In these cases an error message (in bright red, if your console supports ANSI escape codes ​) will be printed to `stderr`. The author has tried to make the error messages as straightforward as
 possible.
 
 Other commands will produce warnings. This means that the command finished
@@ -173,13 +191,39 @@ the program is functioning).
 
 You can find usage examples under the folder `examples`. Each example has its own sub-folder. Each sub-folder contains an input text file, a shell script to run the example, and any output files the example may have. 
 
-For *example* (get it?), to run example 1, run
+For *example* (get it?), to run the `squares` example, run the following command.
 
 ```bash
-sh example/example1/run.sh
+sh examples/example1/run.sh
 ```
 
-To run all examples at once, run
+This very simple example creates two squares and calculates their union and their intersection:
+
+```text
+# examples/square/in.txt
+# a small example
+
+# setup two overlapping squares:
+polygon s1  0 0 2 0 2 2 0 2
+polygon s2  1 1 1 3 3 1 3 3
+
+# computations:
+intersection s3 s1 s2
+union u s1 s2
+
+# output:
+setcol s1 0.6 0.1 0
+setcol s2 0 0.1 0.6
+setcol s3 1 0 1
+
+paint before.png s1 s2
+paint intersection.png s1 s2 s3
+paint union.png u s1 s2
+```
+
+Once it finishes its execution, you should find three pictures in the `examples/squares` directory.
+
+To run all examples, run
 
 ```bash
 make examples
