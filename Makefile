@@ -121,8 +121,7 @@ libs: $(LIB_FILE_DIR)/libPNGwriter.a | .pre-lib
 	@printf "\e[1mDone building libs.\e[0m\n\n"
 
 
-run: build
-	@mkdir -p $(OUT_DIR)
+run: build $(OUT_DIR)
 	@echo
 	@printf "\e[1mExecuting main program...\e[0m ($(MAIN_EXE))\n\n"
 	@$(MAIN_EXE)
@@ -150,7 +149,7 @@ docs:
 view-docs:
 	$(BROWSER) $(DOCS_DIR)/html/index.html &
 
-examples: build
+examples: build $(OUT_DIR)
 	@for script in $(example_scripts) ; do \
 		printf "\e[1mRunning $$script...\e[0m\n" ; \
 		sh $$script ; \
@@ -197,6 +196,8 @@ $(OBJ_DIR):
 $(DEP_DIR):
 	mkdir -p $(DEP_DIR)
 
+$(OUT_DIR):
+	mkdir -p $(OUT_DIR)
 
 
 ############## Library rules ##############
@@ -223,5 +224,4 @@ $(OBJ_DIR)/test%.o: test%.cc | $(OBJ_DIR) $(DEP_DIR)
 
 $(TEST_DIR)/text:
 	mkdir -p $(TEST_DIR)/text
-
 
