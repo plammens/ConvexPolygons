@@ -244,7 +244,21 @@ Mac, you probably won't need to install anything. If you're running Windows, ins
 with the aforementioned packages should be enough.
 
 No external dependencies need to be installed separately; they come bundled with the project.
-To build everything (libraries, main program and test), run the following command.
+That said, if you don't have [pngwriter](https://github.com/pngwriter/pngwriter) installed, you can build it from source straight from the
+project by running
+
+```bash
+make libs
+```
+
+.
+
+If for some reason (such as not having `cmake` installed) the installation of `pngwriter` fails, 
+you can proceed to [installing `pngwriter` manually](<https://github.com/jordi-petit/ap2-imatges>). Don't forget to set the `USER_LIB_DIR` variable in the `Makefile` to whatever your installation path is. (It should be the path where the `libPNGwriter.a` file is located.)
+
+--------------
+
+To build everything (main program and test), run the following command.
 
 ```bash
 make all  # (or just `make`)
@@ -252,12 +266,6 @@ make all  # (or just `make`)
 
 This should do three things: build the `pngwriter` library from source and install it locally
 into `./libs/` (where `./` is the project root), build the main executable, and build the tests.
-
-If for some reason (such as not having `cmake` installed) the installation of `pngwriter` fails, 
-you can remove the `libs` prerequisite from the `all` rule in the `Makefile` and proceed to
-[installing `pngwriter` manually](<https://github.com/jordi-petit/ap2-imatges>). Don't forget to set the `USER_LIB_DIR` variable in the `Makefile`
-to whatever your installation path is. (It should be the path where the `libPNGwriter.a` file is
-located.)
 
 Other useful `make` targets:
 

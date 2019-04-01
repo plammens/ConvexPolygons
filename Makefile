@@ -103,7 +103,7 @@ example_scripts = $(shell find $(EXAMPLES_DIR) -type f -name '*.sh')
 		.pre-build .pre-lib .pre-build-test
 
 
-all: libs build build-test
+all: build build-test examples
 
 
 build: .pre-build $(MAIN_EXE)
@@ -150,7 +150,7 @@ docs:
 view-docs:
 	$(BROWSER) $(DOCS_DIR)/html/index.html &
 
-examples:
+examples: build
 	@for script in $(example_scripts) ; do \
 		printf "\e[1mRunning $$script...\e[0m\n" ; \
 		sh $$script ; \
