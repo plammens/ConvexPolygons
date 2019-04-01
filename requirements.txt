@@ -1,4 +1,0 @@
-GNU coreutils >=8.0
-GNU Make >=4.0
-CMake >=3.0
-gcc >=7.0

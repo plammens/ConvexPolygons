@@ -1,0 +1,19 @@
+# a small example
+
+# setup two overlapping squares:
+polygon s1  0 0 2 0 2 2 0 2
+polygon s2  1 1 1 3 3 1 3 3
+
+# computations:
+intersection s3 s1 s2
+union u s1 s2
+
+# output:
+setcol s1 0.6 0.1 0
+setcol s2 0 0.1 0.6
+setcol s3 1 0 1
+
+paint before.png s1 s2
+paint intersection.png s1 s2 s3
+paint union.png u s1 s2
+

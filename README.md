@@ -1,7 +1,5 @@
-> **Note:** this Markdown document contains math blocks intended to be parsed 
-> with MathJax. To properly view this document, you can either
-> use a Markdown viewer like [Typora](https://www.typora.io), or view
-> the [exported `html` document](README.html) in this repository. 
+> **Note:** to properly view this document, you can either use a Markdown viewer 
+> like [Typora](https://www.typora.io), or view the [exported `html` document](README.html) in this repository. 
 
 
 Convex Polygon Calculator
@@ -23,7 +21,8 @@ polygons! :smile:
 The author knows this will be a dream come true for many people...
 
 Start by reading the [features and usage](#Features and usage) section, and then move on to the
-[setup and execution](#Setup, testing and execution) section when you're ready!
+[setup and execution](#Setup, testing and execution) section when you're ready! And if you're still documentation-hungry,
+pay a visit to the [reference manual](#Reference manual).
 
 
 # Features and usage
@@ -32,21 +31,23 @@ The calculator works in a command-line environment. Each line from
 `stdin` is interpreted as a single command. Commands follow the classical
 `<keyword> [arguments]` structure.
 
-Below you'll find a list of all available commands.
+Below you'll find a list of all available commands. `<angle>` brackets indicate
+a positional argument, while `[square]` brackets denote an optional argument. 
+Ellipses (`[like so...]`) indicate an arbitrary number of arguments.
 
 
 ## Commands
 
 ### Polygon / ID management
 
- -  `polygon`
+ -  `polygon <ID>`
 
 The `polygon` command associates an identifier with a convex polygon made by a
 set of zero or more points. If the polygon identifier is new, it will create
 it. If it already existed, it will overwrite the previous polygon. New
 polygons are black.
 
- - `delete`
+ - `delete <ID>`
 
 Deletes the polygon with the given identifier (i,e., frees the identifier).
 
@@ -58,7 +59,7 @@ Prints a list of currently defined identifiers, in lexicographical order.
 ### Polygon-printing commands
 
 
- - `print`
+ - `print <polygon ID>`
 
 The `print` command prints the name and the vertices of a given
 polygon. The output contains the vertices in the convex hull of the
@@ -67,41 +68,41 @@ polygon, in clockwise order, starting from the vertex will lowest `x` coordinate
 with space separated coordinartes.
 
 
- - `pretty-print`
+ - `pretty-print <polygon ID>`
 
  Like `print`, but with slightly nicer format.
 
 ### Polygon info commands
 
-- `area`
+- `area <ID>`
 
 The `area` command prints the area of the given polygon.
 
- - `perimeter`
+ - `perimeter <ID>`
 
 The `perimeter` command prints the perimeter of the given polygon.
 
 
- - `vertices`
+ - `vertices <ID>`
 
 The `vertices` command prints the number of vertices of the convex hull of the
 given polygon.
 
 
- - `centroid`
+ - `centroid <ID>` 
 
 The `centroid` command prints the centroid of the given polygon.
 
 ### IO commands
 
 
- - `save`
+ - `save <file> [polygon IDs...]`
 
 The `save` command saves the given polygons in a file, overwriting it if it
 already existed. The format is the same as for `print`.
 
 
- -  `load`
+ -  `load <file>`
 
 The `load` command loads the polygons stored in a file, in the same way as
 `polygon`, but retrieving the vertexes and identifiers from the specified file.
@@ -109,53 +110,82 @@ The `load` command loads the polygons stored in a file, in the same way as
 ### Drawing commands
 
 
- - `setcol`
+ - `setcol <ID> <R> <G> <B>`
 
 The `setcol` command associates a color to the given polygon.
 
 
- - `draw` 
+ - `draw <file> [polygon IDs...]` 
 
 The `draw` command draws a list of polygons in a PNG file, each one with its
-associated color. The polygons are scaled to fit nicely in the image.
+associated color. The polygons are scaled to fit nicely in the image, mantaining
+their aspect ratio.
 
-- `paint`:
+- `paint <file> [polygon IDs...]`
+
+Like `draw`, but fills the interior of polygons instead of just sketching the edges.
+
+### Polygon operations
 
 
- - `intersection`
+ - `intersection <ID1> <ID2> [ID3]`
 
 This command may receive two or three parameters:
 
-- When receiving two parameters `p1`and `p2`, `p1`should be updated to the
-- intersection of the original `p1` and `p2`.
+When receiving two parameters, say,  `p1` and `p2`, `p1` gets updated to 
+the intersection of the original `p1` and `p2`.
 
-- When receiving three parameters `p1`, `p2` and `p3`, `p1`should be updated
-- to the intersection of `p2` and `p3`.
-
-Take into account that identifiers may be repeated.
+When receiving three parameters `p1`, `p2` and `p3`, `p1` gets be updated
+to the intersection of `p2` and `p3`.
 
 
- -  `union`
+ -  `union <ID1> <ID2> [ID3]`
 
-Just as the `intersection` command, but with the convex union of polygons.
-
-
- - `inside`
-
-Given two polygons, the `inside` command prints `yes` or `not` to tell whether
-the first is inside the second or not.
+Just as the `intersection` command, but for the convex union of polygons.
 
 
- -  `bbox` command
+ - `inside <ID1> <ID2>`
 
-The `bbox` command creates a new polygon with the four vertices corresponding to the
+Given two polygons, the `inside` command prints `yes` or `no` depending on whether
+the first polygon is inside the second polygon.
+
+
+ -  `bbox <ID1> [polygon IDs...]`
+
+The `bbox` command associates a new polygon to `ID1`, with the four vertices corresponding to the
 bounding box of the given polygons.
 
 
-### Commands without answer
+## Errors and warnings
 
-As seen in the examples, some commands do not really produce an answer. In
-this case `ok` must be printed, unless there was some error.
+Some commands, such as asking for the bounding box of the empty set, will produce an error. In these cases an error message (in bright red, if your
+console supports ANSI escape codes :smile:) will be printed to `stderr`.
+The author has tried to make the error messages as straightforward as
+possible.
+
+Other commands will produce warnings. This means that the command finished
+its execution correctly, but that some suspicious situation was found that
+the user may want to be aware of (to avoid misunderstandings about how
+the program is functioning).
+
+
+## Examples
+
+You can find usage examples under the folder `examples`. Each example has its own sub-folder. Each sub-folder contains an input text file, a shell script to run the example, and any output files the example may have. 
+
+For *example* (get it?), to run example 1, run
+
+```bash
+sh example/example1/run.sh
+```
+
+To run all examples at once, run
+
+```bash
+make examples
+```
+
+.
 
 
 
@@ -254,6 +284,11 @@ refer to [doctest's docs](https://github.com/onqtam/doctest/blob/master/doc/mark
 
 If you're still suspicious... well, just dive into the source.
 
+One of the highlights of the test suite is a `Python`-generated file containing the description of
+two polygons with 100 000 points each, of which the intersection is calculated! They're two
+overlapping slightly rotated circles, so the total number of vertices should be 200 000. In fact,
+thats one of the test cases &mdash; check out [`test/src/test_from_file.cc`](./test/src/test_from_file.cc).
+
 
 # Project structure
 
@@ -266,6 +301,7 @@ The most important directories in the project root are:
 - `src`: contains all of the main source files
 - `libs`: contains all library files (external dependencies)
 - `test`: contains test files (test sources, generators, generated tests, etc. )
+- `examples`: some short usage examples
 
 Other directories that are made on-the-run:
 
@@ -297,10 +333,44 @@ Internal symbols are prefixed with an underscore.
 ### Files
 Header files are given the extension `.h`. Source files are given the extension `.cc`.
 
-
 # Design choices
 
-## Error handling
+Two main design  principles were kept in mind when developing this project: modularity and scalability. Here are some of the consequences:
+
+- Command handlers are grouped into so-called "command handlers": in *very* broad terms, instead of writing something like this,
+
+```c++
+void parseCommand(const std::string &kwd, [...]) {
+    if (kwd == "polygon") {
+        std::string id;
+        std::cin >> id;
+        newPolygon(id, ...);
+    } else if (kwd == "delete") {
+        std::string id;
+        std::cin >> id;
+        delPolygon(id, ...);
+    } [...]
+}
+```
+
+​	one does things like
+
+```c++
+void handleIDManagement(const std::string &kwd, [...]) {
+    std::string id;
+    std::cin >> id;
+    
+    if (kwd == "polygon") newPolygon(id, [...]);
+    else if (kwd == "delete") delPolygon(id, [...]);
+    } [...]
+}
+```
+
+​	by grouping commands together with the same "argument signature".
+
+- No `using namespace::std;` declarations, to avoid name conflicts. The author has learned it the hard way...
+- Custom `namespace`s for certain things
+- And more... But I don't have time to write this right now
 
 
 # Additional details

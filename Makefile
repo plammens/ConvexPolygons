@@ -7,7 +7,8 @@ SRC_DIR := src
 CLASS_SUBDIR := class
 LIB_ROOT_DIR := libs
 TEST_DIR := test
-DOCS_DIR = docs
+DOCS_DIR := docs
+EXAMPLES_DIR = examples
 
 # directory for build files (binaries, object files, etc.):
 BUILD_DIR := build
@@ -88,6 +89,8 @@ test_objects = $(patsubst %.cc,$(OBJ_DIR)/%.o, $(notdir $(test_sources)))
 # dependency files for automatic Makefile rule prerequisites
 depends = $(patsubst $(OBJ_DIR)/%.o,$(DEP_DIR)/%.d,$(objects) $(test_objects))
 
+# example scripts:
+example_scripts = $(shell find $(EXAMPLES_DIR) -type f -name '*.sh')
 
 
 
@@ -96,7 +99,7 @@ depends = $(patsubst $(OBJ_DIR)/%.o,$(DEP_DIR)/%.d,$(objects) $(test_objects))
 ############### Phony rules ###############
 
 .PHONY: all build build-test debug libs run test \
-		clean clean-build clean-out docs view-docs \
+		clean clean-build clean-out docs view-docs examples \
 		.pre-build .pre-lib .pre-build-test
 
 
@@ -146,6 +149,13 @@ docs:
 
 view-docs:
 	$(BROWSER) $(DOCS_DIR)/html/index.html &
+
+examples:
+	@for script in $(example_scripts) ; do \
+		printf "\e[1mRunning $$script...\e[0m\n" ; \
+		sh $$script ; \
+		echo ; \
+	done
 
 
 # Just some text:
