@@ -421,8 +421,9 @@ void handleIDManagement(const std::string &kwd, [...]) {
 ​	by grouping commands together with the same "argument signature".
 
 - No `using namespace::std;` declarations, to avoid name conflicts. The author has learned it the hard way...
-- Custom `namespace`s for certain things
-- And more... But I don't have time to write this right now
+- Custom `namespace`s for certain things: all geometric utilities are grouped together under the
+  `geom` namespace, for instance
+- Usage of [`Boost.Range`](<https://www.boost.org/doc/libs/1_69_0/libs/range/doc/html/index.html>) to allow for lazy-evaluated ranges and range adaptors, and to enhance the flexibility of the algorithms (by taking a `boost::any_range` instead of just a `std::vector`, for instance).
 
 
 # Additional details
