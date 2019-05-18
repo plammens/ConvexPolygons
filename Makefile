@@ -1,3 +1,8 @@
+# TODO: suffix awareness (.cc vs .cpp) 
+# TODO: test_impl file flexibility (test/src/main.cpp)
+# TODO: separate library section (append instead of embed)
+
+
 ############################# User-defined constants ################################
 
 ##### Directory names #####
