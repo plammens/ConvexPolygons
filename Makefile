@@ -209,9 +209,10 @@ $(OUT_DIR):
 
 # Build PNGwriter library from source:
 $(LIB_FILE_DIR)/libPNGwriter.a:
-	cmake $(LIB_ROOT_DIR)/pngwriter/CMakeLists.txt -DPNGwriter_USE_FREETYPE=OFF -DCMAKE_INSTALL_PREFIX=$(LIB_ROOT_DIR)
-	make -C $(LIB_ROOT_DIR)/pngwriter --no-print-directory
-	make -C $(LIB_ROOT_DIR)/pngwriter install --no-print-directory
+	rm -rf $(LIB_ROOT_DIR)/pngwriter/build-install
+	mkdir -p $(LIB_ROOT_DIR)/pngwriter/build-install
+	cd $(LIB_ROOT_DIR)/pngwriter/build-install && cmake ../ -DPNGwriter_USE_FREETYPE=OFF -DCMAKE_INSTALL_PREFIX=$(LIB_ROOT_DIR)
+	make -C $(LIB_ROOT_DIR)/pngwriter/build-install install --no-print-directory
 
 
 
