@@ -1,1 +1,0 @@
-/usr/bin/c++.exe  -O3 -DNDEBUG  -Wl,--enable-auto-import CMakeFiles/lyapunov.dir/examples/lyapunov.cc.o  -o lyapunov.exe -Wl,--out-implib,liblyapunov.dll.a -Wl,--major-image-version,0,--minor-image-version,0  libPNGwriter.dll.a /usr/lib/libpng.dll.a /usr/lib/libz.dll.a 
