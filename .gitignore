@@ -40,6 +40,7 @@ README.html
 /build/**
 /out/**
 /libs/pngwriter/**
+/libs/pngwriter-build-install/**
 /libs/lib/**
 /test/text/**
 /docs/html/**

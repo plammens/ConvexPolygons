@@ -212,11 +212,11 @@ $(OUT_DIR):
 
 # Build PNGwriter library from source:
 $(LIB_FILE_DIR)/libPNGwriter.a:
-	mkdir -p $(LIB_ROOT_DIR)/pngwriter/build-install
-	cd $(LIB_ROOT_DIR)/pngwriter/build-install && \
-		cmake ../ -DPNGwriter_USE_FREETYPE=OFF -DCMAKE_INSTALL_PREFIX=../../ && \
-		echo && $(PYTHON) ../../pngwriter_fix.py && echo
-	make -C $(LIB_ROOT_DIR)/pngwriter/build-install install --no-print-directory
+	mkdir -p $(LIB_ROOT_DIR)/pngwriter-build-install
+	cd $(LIB_ROOT_DIR)/pngwriter-build-install && \
+		cmake ../pngwriter/ -DPNGwriter_USE_FREETYPE=OFF -DCMAKE_INSTALL_PREFIX=../ && \
+		echo && $(PYTHON) ../pngwriter_fix.py && echo && \
+		make install --no-print-directory
 
 
 
