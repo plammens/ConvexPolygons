@@ -1,0 +1,38 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/cygdrive/c/Users/Paolo/Code/CLionProjects/convex-polygons/libs/pngwriter/src/pngwriter.cc
+pngwriter.h
+/cygdrive/c/Users/Paolo/Code/CLionProjects/convex-polygons/libs/pngwriter/src/pngwriter.h
+
+/cygdrive/c/Users/Paolo/Code/CLionProjects/convex-polygons/libs/pngwriter/src/pngwriter.h
+png.h
+-
+zlib.h
+-
+ft2build.h
+-
+iostream
+-
+string
+-
+ios
+-
+cmath
+-
+cwchar
+-
+cstring
+-
+cstdlib
+-
+cstdio
+-
+csetjmp
+-
+

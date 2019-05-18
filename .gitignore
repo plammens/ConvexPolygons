@@ -39,13 +39,11 @@ README.html
 
 /build/**
 /out/**
-/libs/pngwriter/build-install/**
+/libs/pngwriter/**
 /libs/lib/**
 /test/text/**
 /docs/html/**
 /docs/latex/**
-libs/lib/
-libs/pngwriter/.appveyor.yml
-libs/pngwriter/.gitignore
-libs/pngwriter/.travis.yml
-libs/pngwriter/CHANGELOG.md
+/examples/**/*.png
+/examples/intersection/in.txt
+.idea/workspace.xml

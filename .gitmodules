@@ -1,0 +1,4 @@
+[submodule "libs/pngwriter"]
+	path = libs/pngwriter
+	url = https://github.com/pngwriter/pngwriter.git
+	branch = master

@@ -38,6 +38,9 @@ MAIN_NAME := main
 TEST_SUITE := doctest
 TEST_NAME := test
 
+# Python interpreter
+PYTHON := python3
+
 
 
 
@@ -115,7 +118,7 @@ build: .pre-build $(MAIN_EXE)
 	@printf "\e[1mDone building main.\e[0m\n\n"
 
 build-test: debug .pre-build-test $(TEST_EXE) $(TEST_DIR)/text
-	python3 test/generator.py
+	$(PYTHON) test/generator.py
 	@printf "\e[1mDone building tests.\e[0m\n\n"
 
 debug: CXXFLAGS += -Wall -Og
@@ -209,10 +212,10 @@ $(OUT_DIR):
 
 # Build PNGwriter library from source:
 $(LIB_FILE_DIR)/libPNGwriter.a:
-	rm -rf $(LIB_ROOT_DIR)/pngwriter/build-install
 	mkdir -p $(LIB_ROOT_DIR)/pngwriter/build-install
 	cd $(LIB_ROOT_DIR)/pngwriter/build-install && \
-		cmake ../ -DPNGwriter_USE_FREETYPE=OFF -DCMAKE_INSTALL_PREFIX=$(LIB_ROOT_DIR)
+		cmake ../ -DPNGwriter_USE_FREETYPE=OFF -DCMAKE_INSTALL_PREFIX=../../ && \
+		echo && $(PYTHON) ../../pngwriter_fix.py && echo
 	make -C $(LIB_ROOT_DIR)/pngwriter/build-install install --no-print-directory
 
 

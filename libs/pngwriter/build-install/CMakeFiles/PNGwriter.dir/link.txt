@@ -1,0 +1,1 @@
+/usr/bin/c++.exe  -O3 -DNDEBUG   -shared -Wl,--enable-auto-import -o cygPNGwriter.dll -Wl,--out-implib,libPNGwriter.dll.a -Wl,--major-image-version,0,--minor-image-version,0 CMakeFiles/PNGwriter.dir/src/pngwriter.cc.o /usr/lib/libpng.dll.a /usr/lib/libz.dll.a -lm 

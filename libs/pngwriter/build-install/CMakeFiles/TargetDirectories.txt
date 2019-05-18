@@ -1,0 +1,13 @@
+/cygdrive/c/Users/Paolo/Code/CLionProjects/convex-polygons/libs/pngwriter/build-install/CMakeFiles/rebuild_cache.dir
+/cygdrive/c/Users/Paolo/Code/CLionProjects/convex-polygons/libs/pngwriter/build-install/CMakeFiles/install/strip.dir
+/cygdrive/c/Users/Paolo/Code/CLionProjects/convex-polygons/libs/pngwriter/build-install/CMakeFiles/list_install_components.dir
+/cygdrive/c/Users/Paolo/Code/CLionProjects/convex-polygons/libs/pngwriter/build-install/CMakeFiles/lyapunov.dir
+/cygdrive/c/Users/Paolo/Code/CLionProjects/convex-polygons/libs/pngwriter/build-install/CMakeFiles/pngtest.dir
+/cygdrive/c/Users/Paolo/Code/CLionProjects/convex-polygons/libs/pngwriter/build-install/CMakeFiles/PNGwriter.dir
+/cygdrive/c/Users/Paolo/Code/CLionProjects/convex-polygons/libs/pngwriter/build-install/CMakeFiles/install/local.dir
+/cygdrive/c/Users/Paolo/Code/CLionProjects/convex-polygons/libs/pngwriter/build-install/CMakeFiles/test.dir
+/cygdrive/c/Users/Paolo/Code/CLionProjects/convex-polygons/libs/pngwriter/build-install/CMakeFiles/blackwhite.dir
+/cygdrive/c/Users/Paolo/Code/CLionProjects/convex-polygons/libs/pngwriter/build-install/CMakeFiles/edit_cache.dir
+/cygdrive/c/Users/Paolo/Code/CLionProjects/convex-polygons/libs/pngwriter/build-install/CMakeFiles/diamond.dir
+/cygdrive/c/Users/Paolo/Code/CLionProjects/convex-polygons/libs/pngwriter/build-install/CMakeFiles/install.dir
+/cygdrive/c/Users/Paolo/Code/CLionProjects/convex-polygons/libs/pngwriter/build-install/CMakeFiles/readwrite.dir

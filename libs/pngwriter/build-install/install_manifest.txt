@@ -1,0 +1,7 @@
+/cygdrive/c/Users/Paolo/Code/CLionProjects/convex-polygons/libs/pngwriter/build-install/libs/lib/libPNGwriter.dll.a
+/cygdrive/c/Users/Paolo/Code/CLionProjects/convex-polygons/libs/pngwriter/build-install/libs/bin/cygPNGwriter.dll
+/cygdrive/c/Users/Paolo/Code/CLionProjects/convex-polygons/libs/pngwriter/build-install/libs/include/pngwriter.h
+/cygdrive/c/Users/Paolo/Code/CLionProjects/convex-polygons/libs/pngwriter/build-install/libs/lib/cmake/PNGwriter/PNGwriterTargets.cmake
+/cygdrive/c/Users/Paolo/Code/CLionProjects/convex-polygons/libs/pngwriter/build-install/libs/lib/cmake/PNGwriter/PNGwriterTargets-release.cmake
+/cygdrive/c/Users/Paolo/Code/CLionProjects/convex-polygons/libs/pngwriter/build-install/libs/lib/cmake/PNGwriter/PNGwriterConfig.cmake
+/cygdrive/c/Users/Paolo/Code/CLionProjects/convex-polygons/libs/pngwriter/build-install/libs/lib/cmake/PNGwriter/PNGwriterConfigVersion.cmake
