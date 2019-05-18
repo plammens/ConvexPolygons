@@ -20,9 +20,9 @@ polygons! :smile:
 
 The author knows this will be a dream come true for many people...
 
-Start by reading the [features and usage](#Features and usage) section, and then move on to the
-[setup and execution](#Setup, testing and execution) section when you're ready! And if you're still documentation-hungry,
-pay a visit to the [reference manual](#Reference manual).
+Start by reading the [features and usage](#features-and-usage) section, and then move on to the
+[setup and execution](#setup-testing-and-execution-instructions) section when you're ready! And if you're still documentation-hungry,
+pay a visit to the [reference manual](#reference-manual).
 
 
 # Features and usage
@@ -36,8 +36,8 @@ draw, intersect, unite... convex polygons. Each polygon is stored as an object w
 a unique identifier (ID). Identifiers can be composed of almost any combination
 of letters, numbers and  symbols.
 
-Jump to the [list of available commands](#Commands) to view what you can do with the calculator, or
-go to the [examples section](#Examples) to take a look at some prepackaged examples.
+Jump to the [list of available commands](#commands) to view what you can do with the calculator, or
+go to the [examples section](#examples) to take a look at some prepackaged examples.
 
 ## Commands
 
@@ -365,7 +365,7 @@ Other directories that are made on-the-run:
   - `depend`: auto-generated dependency information files
 - `out`: the (optional) output directory. The program will prefix all
   output files it produces with this path. Also, when loading files,
-  the program will look for them here. Have a look [here](#Changing the output directory) for customizing
+  the program will look for them here. Have a look [here](#changing-the-output-directory) for customizing
   this directory.
 
 Finally, the `docs` directory contains additional files needed for the documentation and 

@@ -211,7 +211,8 @@ $(OUT_DIR):
 $(LIB_FILE_DIR)/libPNGwriter.a:
 	rm -rf $(LIB_ROOT_DIR)/pngwriter/build-install
 	mkdir -p $(LIB_ROOT_DIR)/pngwriter/build-install
-	cd $(LIB_ROOT_DIR)/pngwriter/build-install && cmake ../ -DPNGwriter_USE_FREETYPE=OFF -DCMAKE_INSTALL_PREFIX=$(LIB_ROOT_DIR)
+	cd $(LIB_ROOT_DIR)/pngwriter/build-install && \
+		cmake ../ -DPNGwriter_USE_FREETYPE=OFF -DCMAKE_INSTALL_PREFIX=$(LIB_ROOT_DIR)
 	make -C $(LIB_ROOT_DIR)/pngwriter/build-install install --no-print-directory
 
 
