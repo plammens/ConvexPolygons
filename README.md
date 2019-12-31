@@ -9,16 +9,16 @@ Table of contents:
 [TOC]
 
 
-
 # Introduction
+
+:warning: Sarcastic enthusiasm ahead (for historical reasons) :warning:
 
 This project brings to you a Convex Polygon calculator; a small command-line
 program that is able to compute the convex hull of a set of points, the
 intersection and convex union of convex polygons, the area,
-perimeter, and centroid of a polygon... and more! Heck, it can even draw these
-polygons! :smile:
+perimeter, and centroid of a polygon... and more! It can even draw these polygons!
 
-The author knows this will be a dream come true for many people...
+The author knows this will be a dream come true for many people... 
 
 Start by reading the [features and usage](#features-and-usage) section, and then move on to the
 [setup and execution](#setup-testing-and-execution-instructions) section when you're ready! And if you're still documentation-hungry,
