@@ -1,6 +1,9 @@
-> **Note:** to properly view this document, you can either use a Markdown viewer 
+> **Note:** to properly view this document, you can either use a Markdown viewer that supports [TOC]
 > like [Typora](https://www.typora.io), or view the [exported `html` document](README.html) in this repository. 
 
+> :warning: Some sarcastic enthusiasm ahead (for historical reasons)
+>
+> :warning: I refer to myself as "the author" below (also for historical reasons) 
 
 Convex Polygon Calculator
 ====================
@@ -8,10 +11,7 @@ Convex Polygon Calculator
 Table of contents:
 [TOC]
 
-
 # Introduction
-
-:warning: Sarcastic enthusiasm ahead (for historical reasons) :warning:
 
 This project brings to you a Convex Polygon calculator; a small command-line
 program that is able to compute the convex hull of a set of points, the
